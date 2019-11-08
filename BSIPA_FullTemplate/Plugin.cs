@@ -13,103 +13,31 @@ namespace $safeprojectname$
 {
     public class Plugin : IBeatSaberPlugin
     {
+        internal static string Name => "$projectname$";
         internal static Ref<PluginConfig> config;
         internal static IConfigProvider configProvider;
-        private bool customUIExists = false;
 
-        #region Setting Properties
-        public static bool ExampleBoolSetting
-        {
-            get { return config.Value.ExampleBoolSetting; }
-            set
-            {
-                config.Value.ExampleBoolSetting = value;
-                configProvider.Store(config.Value);
-            }
-        }
-
-        public static int ExampleIntSetting
-        {
-            get { return config.Value.ExampleIntSetting; }
-            set
-            {
-                config.Value.ExampleIntSetting = value;
-                configProvider.Store(config.Value);
-            }
-        }
-        public static Color ExampleColorSetting
-        {
-            get { return config.Value.ExampleColorSetting.ToColor(); }
-            set
-            {
-                // ExampleColorSetting is stored as a float array in the json config file.
-                config.Value.ExampleColorSetting = value.ToFloatAry() ;
-                configProvider.Store(config.Value);
-            }
-        }
-        public static int ExampleTextSegment
-        {
-            get { return config.Value.ExampleTextSegment; }
-            set
-            {
-                config.Value.ExampleTextSegment = value;
-                configProvider.Store(config.Value);
-            }
-        }
-        public static string ExampleStringSetting
-        {
-            get { return config.Value.ExampleStringSetting; }
-            set
-            {
-                config.Value.ExampleStringSetting = value;
-                configProvider.Store(config.Value);
-
-            }
-        }
-        public static float ExampleSliderSetting
-        {
-            get { return config.Value.ExampleSliderSetting; }
-            set
-            {
-                config.Value.ExampleSliderSetting = value;
-                configProvider.Store(config.Value);
-            }
-        }
-        public static float ExampleListSetting
-        {
-            get { return config.Value.ExampleListSetting; }
-            set
-            {
-                config.Value.ExampleListSetting = value;
-                configProvider.Store(config.Value);
-            }
-        }
-
-        private static float _exampleGameplayListSetting = 0;
-        public static float ExampleGameplayListSetting
-        {
-            get { return _exampleGameplayListSetting; }
-            set
-            {
-                _exampleGameplayListSetting = value;
-            }
-        }
+        #region Gameplay Settings
+        internal static bool ExampleGameplayBoolSetting { get; set; }
+        public static float ExampleGameplayListSetting { get; set; }
         #endregion
+
 
         public void Init(IPALogger logger, [Config.Prefer("json")] IConfigProvider cfgProvider)
         {
-            IPA.Logging.StandardLogger.PrintFilter = IPA.Logging.Logger.LogLevel.All;
             Logger.log = logger;
             Logger.log.Debug("Logger initialied.");
 
             configProvider = cfgProvider;
 
-            config = configProvider.MakeLink<PluginConfig>((p, v) => {
+            config = configProvider.MakeLink<PluginConfig>((p, v) =>
+            {
                 // Build new config file if it doesn't exist or RegenerateConfig is true
                 if (v.Value == null || v.Value.RegenerateConfig)
                 {
                     Logger.log.Debug("Regenerating PluginConfig");
-                    p.Store(v.Value = new PluginConfig() {
+                    p.Store(v.Value = new PluginConfig()
+                    {
                         // Set your default settings here.
                         RegenerateConfig = false,
                         ExampleBoolSetting = false,
@@ -127,13 +55,10 @@ namespace $safeprojectname$
 
         public void OnApplicationStart()
         {
+            ExampleGameplayBoolSetting = true;
             Logger.log.Debug("OnApplicationStart");
-            // Check if CustomUI is installed.
-            customUIExists = IPA.Loader.PluginManager.AllPlugins.FirstOrDefault(c => c.Metadata.Name == "Custom UI") != null;
-            // If Custom UI is installed, create the UI
-            if (customUIExists)
-                CustomUI.Utilities.BSEvents.menuSceneLoadedFresh += MenuLoadedFresh;
-            
+            CustomUI.Utilities.BSEvents.menuSceneLoadedFresh += MenuLoadedFresh;
+
         }
 
         public void OnApplicationQuit()
@@ -164,7 +89,10 @@ namespace $safeprojectname$
         /// <param name="nextScene">The scene you are transitioning to.</param>
         public void OnActiveSceneChanged(Scene prevScene, Scene nextScene)
         {
-
+            if (nextScene.name == "MenuCore")
+            {
+                var exampleGameObject = new GameObject($"{Name}.ExampleMonobehaviour").AddComponent<ExampleMonobehaviour>();
+            }
         }
 
         /// <summary>

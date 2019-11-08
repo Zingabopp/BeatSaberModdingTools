@@ -21,24 +21,26 @@ namespace $safeprojectname$.UI
         public static void CreateSettingsUI()
         {
             //This will create a menu tab in the settings menu for your plugin
-            var pluginSettingsSubmenu = SettingsUI.CreateSubMenu("$safeprojectname$");
+            var pluginSettingsSubmenu = SettingsUI.CreateSubMenu(Plugin.Name);
 
             // Example code for creating a true/false toggle button 
-            var exampleToggle = pluginSettingsSubmenu.AddBool("Bool Example Name", "Example mouse over description.");
-            exampleToggle.GetValue += delegate { return Plugin.ExampleBoolSetting; };
-            exampleToggle.SetValue += delegate (bool value) {
+            var exampleToggle = pluginSettingsSubmenu.AddBool("Bool Example", "Example mouse over description.");
+            exampleToggle.GetValue += delegate { return Plugin.config.Value.ExampleBoolSetting; };
+            exampleToggle.SetValue += delegate (bool value)
+            {
                 // This code is run when the toggle is toggled.
-                Plugin.ExampleBoolSetting = value;
+                Plugin.config.Value.ExampleBoolSetting = value;
             };
 
             // Example code for creating an integer setting.
             int exampleIntMin = 0;
             int exampleIntMax = 10;
             int exampleIntIncrement = 1;
-            var exampleInt = pluginSettingsSubmenu.AddInt("Int Example Name", "Int example mouse over description", exampleIntMin, exampleIntMax, exampleIntIncrement);
-            exampleInt.GetValue += delegate { return Plugin.ExampleIntSetting; };
-            exampleInt.SetValue += delegate (int value) {
-                Plugin.ExampleIntSetting = value;
+            var exampleInt = pluginSettingsSubmenu.AddInt("Int Example", "Int example mouse over description", exampleIntMin, exampleIntMax, exampleIntIncrement);
+            exampleInt.GetValue += delegate { return Plugin.config.Value.ExampleIntSetting; };
+            exampleInt.SetValue += delegate (int value)
+            {
+                Plugin.config.Value.ExampleIntSetting = value;
             };
 
 
@@ -46,26 +48,29 @@ namespace $safeprojectname$.UI
             //            Index stored in the config:      0      1      2
             string[] textSegmentOptions = new string[] { "ex1", "ex2", "ex3" };
             var textSegmentsExample = pluginSettingsSubmenu.AddTextSegments("Example Text Seg", "Text segments example mouse over description", textSegmentOptions);
-            textSegmentsExample.GetValue += delegate { return Plugin.ExampleTextSegment; };
-            textSegmentsExample.SetValue += delegate (int value) {
-                Plugin.ExampleTextSegment = value;
+            textSegmentsExample.GetValue += delegate { return Plugin.config.Value.ExampleTextSegment; };
+            textSegmentsExample.SetValue += delegate (int value)
+            {
+                Plugin.config.Value.ExampleTextSegment = value;
             };
 
             // Example code to create a setting where you can enter text with the in-game keyboard.
             var exampleString = pluginSettingsSubmenu.AddString("Example string", "String example mouse over description");
-            exampleString.GetValue += delegate { return Plugin.ExampleStringSetting; };
-            exampleString.SetValue += delegate (string value) {
-                Plugin.ExampleStringSetting = value;
+            exampleString.GetValue += delegate { return Plugin.config.Value.ExampleStringSetting; };
+            exampleString.SetValue += delegate (string value)
+            {
+                Plugin.config.Value.ExampleStringSetting = value;
             };
 
             // Creates a submenu inside your settings for organization.
             var exampleSubMenu = pluginSettingsSubmenu.AddSubMenu("Example SubMenu", "Example SubMenu mouse over description", true);
 
             // Creates a color picker inside the previously created SubMenu.
-            var exampleColorPick = exampleSubMenu.AddColorPicker("Example Color Picker", "Color picker example mouse over description", Plugin.ExampleColorSetting);
-            exampleColorPick.GetValue += delegate { return Plugin.ExampleColorSetting; };
-            exampleColorPick.SetValue += delegate (UnityEngine.Color value) {
-                Plugin.ExampleColorSetting = value;
+            var exampleColorPick = exampleSubMenu.AddColorPicker("Example Color Picker", "Color picker example mouse over description", Plugin.config.Value.ExampleColorSetting.ToColor());
+            exampleColorPick.GetValue += delegate { return Plugin.config.Value.ExampleColorSetting.ToColor(); };
+            exampleColorPick.SetValue += delegate (UnityEngine.Color value)
+            {
+                Plugin.config.Value.ExampleColorSetting = value.ToFloatAry();
             };
 
             // Creates a slider setting. 
@@ -74,22 +79,25 @@ namespace $safeprojectname$.UI
             float sliderIncrement = 1;
             bool intValues = false; // Setting to true will show integer values on the slider.
             var exampleSlider = exampleSubMenu.AddSlider("Example Slider", "Slider example mouse over description", sliderMin, sliderMax, sliderIncrement, intValues);
-            exampleSlider.GetValue += delegate { return Plugin.ExampleSliderSetting; };
-            exampleSlider.SetValue += delegate (float value) {
-                Plugin.ExampleSliderSetting = value;
+            exampleSlider.GetValue += delegate { return Plugin.config.Value.ExampleSliderSetting; };
+            exampleSlider.SetValue += delegate (float value)
+            {
+                Plugin.config.Value.ExampleSliderSetting = value;
             };
 
             // Creates a list setting you can scroll through with backwards and forwards buttons.
             float[] floatValues = { 0f, 1f, 2f, 3f, 4f };
             string[] textValues = { "ex0", "ex1", "ex2", "ex3", "ex4" };
             var exampleList = exampleSubMenu.AddList("Example List", floatValues, "List example mouse over description");
-            exampleList.GetValue += delegate { return Plugin.ExampleListSetting; };
-            exampleList.SetValue += delegate (float value) {
-                Plugin.ExampleSliderSetting = value;
+            exampleList.GetValue += delegate { return Plugin.config.Value.ExampleListSetting; };
+            exampleList.SetValue += delegate (float value)
+            {
+                Plugin.config.Value.ExampleSliderSetting = value;
             };
             // Shows strings as the values instead of the float that's actually stored.
-            exampleList.GetTextForValue = (val) => {
-                return textValues[(int) val];
+            exampleList.GetTextForValue = (val) =>
+            {
+                return textValues[(int)val];
             };
         }
 
@@ -98,16 +106,17 @@ namespace $safeprojectname$.UI
         /// </summary>
         public static void CreateGameplayOptionsUI()
         {
-            string pluginName = "$safeprojectname$";
             string parentMenu = "MainMenu";
             string subMenuName = "ExamplePluginMenu"; // Name of SubMenu, pass this to the settings you want to have in this menu.
             //Example submenu option
-            var pluginSubmenu = GameplaySettingsUI.CreateSubmenuOption(GameplaySettingsPanels.ModifiersLeft, pluginName, parentMenu, subMenuName, "You can keep all your plugin's gameplay options nested within this one button");
+            var pluginSubmenu = GameplaySettingsUI.CreateSubmenuOption(GameplaySettingsPanels.ModifiersLeft, Plugin.Name, parentMenu, subMenuName, "You can keep all your plugin's gameplay options nested within this one button");
 
             //Example Toggle Option within a submenu
             var exampleToggle = GameplaySettingsUI.CreateToggleOption(GameplaySettingsPanels.ModifiersLeft, "Example Toggle", subMenuName, "Put a toggle for a setting you want easily accessible in game here.");
-            exampleToggle.GetValue = /* Fetch the initial value for the option here*/ false;
-            exampleToggle.OnToggle += (value) => {
+            exampleToggle.GetValue = Plugin.ExampleGameplayBoolSetting;
+            exampleToggle.OnToggle += (value) =>
+            {
+                Plugin.ExampleGameplayBoolSetting = value;
                 /*  You can execute whatever you want to occur when the value is toggled here, usually that would include updating wherever the value is pulled from   */
                 Logger.log.Debug($"Toggle is {(value ? "On" : "Off")}");
             };
@@ -117,13 +126,14 @@ namespace $safeprojectname$.UI
             float[] floatValues = { 0f, 1f, 2f, 3f, 4f };
             string[] textValues = { "ex0", "ex1", "ex2", "ex3", "ex4" };
             var exampleList = GameplaySettingsUI.CreateListOption(GameplaySettingsPanels.ModifiersLeft, "Example List", subMenuName, "List example mouse over description");
-            exampleList.GetValue += delegate { return Plugin.ExampleGameplayListSetting; };
             for (int i = 0; i < 5; i++)
                 exampleList.AddOption(i, textValues[i]);
-            exampleList.OnChange += (value) => {
+            exampleList.GetValue += delegate { return Plugin.ExampleGameplayListSetting; };
+            exampleList.OnChange += (value) =>
+            {
                 // Execute code based on what value is selected.
                 Plugin.ExampleGameplayListSetting = value;
-                Logger.log.Debug($"Example GameplaySetting List value changed to {textValues[(int)value]}");
+                Logger.log.Info($"Example GameplaySetting List value changed to {textValues[(int)value]}");
             };
         }
 
