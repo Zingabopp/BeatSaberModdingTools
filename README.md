@@ -10,5 +10,9 @@ A set of templates for creating Beat Saber mods.
   * AssemblyName, AssemblyVersion, and BeatSaberGameVersion are read from the manifest.json.
 * Copies the mod dll to BeatSaberFolder\Plugins.
 
+
+# How To Use
+Copy the template zip (or folder) into "\<UserFolder>\Documents\Visual Studio <2019/2017>\Templates\ProjectTemplates\C#"
+
 # BSIPA Full Template
 * This template demonstrating how to create a basic mod and how to use CustomUI.
