@@ -1,0 +1,14 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/nike4613/ModSaber-MetadataFileSchema/master/Schema.json",
+  "author": "",
+  "description": "",
+  "gameVersion": "1.5.0",
+  "id": "$safeprojectname$",
+  "name": "$projectname$",
+  "version": "0.0.1",
+  "dependsOn": {
+    "BSIPA": "^3.13.2",
+    "CustomUI": "^1.7.1"
+  },
+  "features": []
+}

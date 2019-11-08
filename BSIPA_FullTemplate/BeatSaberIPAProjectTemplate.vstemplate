@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>BSIPA Plugin</Name>
+    <Description>A template for a new Beat Saber IPA plugin.</Description>
+    <Icon>beat_saber.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <RequiredFrameworkVersion>4.6.1</RequiredFrameworkVersion>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>c8e6036f-9e1a-4192-9675-e8e94cfe2537</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>BSPlugin</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="ProjectTemplate.csproj" ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj">
+	  <ProjectItem ReplaceParameters="false">CreateJunctions.bat</ProjectItem>
+	  <ProjectItem ReplaceParameters="true" TargetFileName=".gitignore">gitignore.txt</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true">manifest.json</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true">Plugin.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true">PluginConfig.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true">Logger.cs</ProjectItem>
+	  <ProjectItem ReplaceParameters="true" TargetFileName="UI\$safeprojectname$_UI.cs">UI.cs</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>
