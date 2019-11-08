@@ -18,7 +18,7 @@ A set of templates for creating Beat Saber mods.
   * Open your project folder and drag your Beat Saber game folder onto CreateJunctions.bat.
   * Use a csproj.user file:
     * Copy [ProjectName.csproj.user](https://github.com/Zingabopp/BeatSaberTemplates/blob/master/ProjectName.csproj.user) to your project folder and rename so ProjectName matches the name on your .csproj file.
-    * Open the csproj.user file and put the path to your Beat Saber folder inside the <BeatSaberFolder> tag.
+    * Open the csproj.user file and put the path to your Beat Saber folder inside the \<BeatSaberFolder> tag.
 
 # BSIPA Full Template
 * This template demonstrating how to create a basic mod and how to use CustomUI.
