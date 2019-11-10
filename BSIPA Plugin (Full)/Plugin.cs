@@ -150,10 +150,9 @@ namespace $safeprojectname$
         /// </summary>
         public void MenuLoadedFresh()
         {
-            {
-                Logger.log.Debug("Creating plugin's UI");
-                UI.$safeprojectname$_UI.CreateUI();
-            }
+            Plugin.configProvider.Store(Plugin.config.Value);
+            Logger.log.Debug("Creating plugin's UI");
+            UI.$safeprojectname$_UI.CreateUI();
         }
         /// <summary>
         /// Called when the a scene's assets are loaded.
