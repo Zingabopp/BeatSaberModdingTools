@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="BeatSaberTemplateInstaller.c6a253d2-2234-4376-ad66-f769645c1516" Version="0.3" Language="en-US" Publisher="Zingabopp" />
+        <DisplayName>Beat Saber Mod Templates</DisplayName>
+        <Description xml:space="preserve">Installer for several Beat Saber mod templates.</Description>
+        <MoreInfo>https://github.com/Zingabopp/BeatSaberTemplates</MoreInfo>
+        <License>LICENSE.txt</License>
+        <Icon>beat_saber.ico</Icon>
+        <PreviewImage>beat_saber.ico</PreviewImage>
+        <Preview>true</Preview>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0, 17.0)" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6.1,)" />
+    </Dependencies>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,17.0)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="BSIPA Plugin (Full)" d:TargetPath="|BSIPA Plugin (Full);TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" TargetVersion="[15.0,17.0)" />
+        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="BSIPA Plugin (Core)" TargetVersion="[15.0,17.0)" d:TargetPath="|BSIPA Plugin (Core);TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+    </Assets>
+</PackageManifest>

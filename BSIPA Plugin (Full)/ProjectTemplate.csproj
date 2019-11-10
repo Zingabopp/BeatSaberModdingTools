@@ -12,12 +12,11 @@
     <AssemblyName>$safeprojectname$</AssemblyName>
     <TargetFrameworkVersion>v$targetframeworkversion$</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <PathMap>$(SolutionDir)=C:\</PathMap>
-    <DebugType>portable</DebugType>
     <BeatSaberFolder>$(ProjectDir)References</BeatSaberFolder>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -139,7 +138,8 @@
       <Using Namespace="Newtonsoft.Json" />
       <Using Namespace="Newtonsoft.Json.Linq" />
       <Using Namespace="System.Text.RegularExpressions" />
-      <Code Type="Fragment" Language="cs"><![CDATA[
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
             try
             {
                 string manifestFile = "manifest.json";
@@ -243,7 +243,8 @@
                 Log.LogErrorFromException(ex);
                 return false;
             }
-      ]]></Code>
+      ]]>
+      </Code>
     </Task>
   </UsingTask>
   <!-- Source: https://stackoverflow.com/a/38127938 -->
@@ -258,7 +259,8 @@
       <Using Namespace="System.IO.Compression" />
       <Using Namespace="System.IO" />
       <Using Namespace="System.Threading" />
-      <Code Type="Fragment" Language="cs"><![CDATA[
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
         try
         {
           var zipDir = new DirectoryInfo(Path.GetDirectoryName(Path.GetFullPath(ZipFileName)));
@@ -286,7 +288,8 @@
           Log.LogErrorFromException(ex);
           return false;
         }
-      ]]></Code>
+      ]]>
+      </Code>
     </Task>
   </UsingTask>
   <UsingTask TaskName="GetCommitHash" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
@@ -296,7 +299,8 @@
     </ParameterGroup>
     <Task>
       <Using Namespace="System.Diagnostics" />
-      <Code Type="Fragment" Language="cs"><![CDATA[
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
             CommitShortHash = "local";
             try
             {

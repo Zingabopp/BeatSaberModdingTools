@@ -6,20 +6,20 @@
     <Icon>beat_saber.ico</Icon>
     <ProjectType>CSharp</ProjectType>
     <RequiredFrameworkVersion>4.6.1</RequiredFrameworkVersion>
-    <SortOrder>1</SortOrder>
-    <TemplateID>c8e6036f-9e1a-4192-9675-e8e94cfe2537</TemplateID>
+    <SortOrder>1000</SortOrder>
+    <TemplateID>7595fb77-09c1-4792-9f6c-fa73375e6708</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
     <DefaultName>BSPlugin</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
-	<LanguageTag>csharp</LanguageTag>
-	<PlatformTag>windows</PlatformTag>
-	<ProjectTypeTag>library</ProjectTypeTag>
-	<ProjectTypeTag>games</ProjectTypeTag>
+    <LanguageTag>csharp</LanguageTag>
+    <PlatformTag>windows</PlatformTag>
+    <ProjectTypeTag>library</ProjectTypeTag>
+    <ProjectTypeTag>games</ProjectTypeTag>
   </TemplateData>
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj">
-	  <ProjectItem ReplaceParameters="false">CreateJunctions.bat</ProjectItem>
-	  <ProjectItem ReplaceParameters="true" TargetFileName=".gitignore">gitignore.txt</ProjectItem>
+      <ProjectItem ReplaceParameters="false">CreateJunctions.bat</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName=".gitignore">gitignore.txt</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">manifest.json</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">Plugin.cs</ProjectItem>
@@ -27,8 +27,9 @@
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">ReflectionUtilExample.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">PluginConfig.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true">Logger.cs</ProjectItem>
-	  <ProjectItem ReplaceParameters="true" TargetFileName="UI\$safeprojectname$_UI.cs">UI.cs</ProjectItem>
-	  <ProjectItem ReplaceParameters="true" TargetFileName="HarmonyPatches\LevelListTableCellOverride.cs">LevelListTableCellOverride.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="UI\$safeprojectname$_UI.cs">UI.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="HarmonyPatches\LevelListTableCellOverride.cs">LevelListTableCellOverride.cs</ProjectItem>
+
     </Project>
   </TemplateContent>
 </VSTemplate>
