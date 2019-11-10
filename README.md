@@ -1,14 +1,14 @@
 # BeatSaberTemplates
-A set of templates for creating Beat Saber mods.
+A set of templates for creating Beat Saber plugins.
 
 **All Templates**
 * Have the option of creating directory junctions to important folders in your Beat Saber directory (Managed/Libs/Plugins).
   * Drag your Beat Saber folder into "CreateJunctions.bat" inside your project directory.
   * Alternatively, specify the full path to your Beat Saber folder with the BeatSaberFolder property inside a csproj.user file.
-* Check AssemblyVersion.cs against the mod version specified in manifest.json and issue a build error message when they don't match.
+* Check AssemblyVersion.cs against the plugin version specified in manifest.json and issue a build error message when they don't match.
 * Automatically zip Release builds using the file name format <AssemblyName>-<AssemblyVersion>-bs<BeatSaberGameVersion>-<GithubCommitHash>.zip.
   * AssemblyName, AssemblyVersion, and BeatSaberGameVersion are read from the manifest.json.
-* Copies the mod dll to BeatSaberFolder\Plugins.
+* Copies the plugin dll to BeatSaberFolder\Plugins.
 
 
 # How To Use
@@ -22,8 +22,7 @@ A set of templates for creating Beat Saber mods.
     1. Copy [ProjectName.csproj.user](https://github.com/Zingabopp/BeatSaberTemplates/blob/master/ProjectName.csproj.user) to your project folder and rename so ProjectName matches the name on your .csproj file.
     2. Open the csproj.user file and put the path to your Beat Saber folder inside the \<BeatSaberFolder> tag.
 
-# BSIPA Full Template
-* This template demonstrates how to create a basic mod and use CustomUI. It also has examples for using Harmony and ReflectionUtil.
-
-# BSIPA Core Template
-* This template creates a bare plugin.
+# Available Templates
+* **BSIPA Full Template:** This template demonstrates how to create a basic plugin and use CustomUI. It also has examples for using Harmony and ReflectionUtil.
+* **BSIPA Core Template:** This template creates a bare plugin.
+* **BSIPA Disableable Template:** This template creates a plugin that can be enable/disabled while the game is running.
