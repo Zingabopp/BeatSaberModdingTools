@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("BSIPA Plugin (Core)")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Jared Ball")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("BSIPA Plugin (Core)")]
-[assembly: AssemblyCopyright("Copyright © Jared Ball 2019")]
+[assembly: AssemblyCopyright("Copyright © Zingabopp 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
