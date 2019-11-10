@@ -29,7 +29,6 @@ namespace $safeprojectname$.HarmonyPatches
         static void Postfix(LevelListTableCell __instance, ref IPreviewBeatmapLevel level, ref TextMeshProUGUI ____authorText)
         {
             ____authorText.text = $"({Plugin.Name}) {____authorText.text}";
-            ____authorText.SetAllDirty();
             ____authorText.ForceMeshUpdate();
             Logger.log.Warn($"Changed: {____authorText.text}");
         }
