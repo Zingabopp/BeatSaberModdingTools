@@ -15,6 +15,10 @@ namespace $safeprojectname$
 {
     public class Plugin : IBeatSaberPlugin
     {
+        // TODO: Change YourGitHub to the name of your GitHub account, or use the form "com.company.project.product"
+        public const string HarmonyId = "com.github.YourGitHub.$safeprojectname$";
+        public const string SongCoreHarmonyId = "com.kyle1413.BeatSaber.SongCore";
+        internal static HarmonyInstance harmony;
         internal static string Name => "$projectname$";
         internal static Ref<PluginConfig> config;
         internal static IConfigProvider configProvider;
@@ -53,6 +57,7 @@ namespace $safeprojectname$
                 }
                 config = v;
             });
+            harmony = HarmonyInstance.Create(HarmonyId);
         }
 
         public void OnApplicationStart()
@@ -60,17 +65,41 @@ namespace $safeprojectname$
             ExampleGameplayBoolSetting = true;
             Logger.log.Debug("OnApplicationStart");
             CustomUI.Utilities.BSEvents.menuSceneLoadedFresh += MenuLoadedFresh;
+            ApplyHarmonyPatches();
+        }
+
+        /// <summary>
+        /// Attempts to apply all the Harmony patches in this assembly.
+        /// </summary>
+        public static void ApplyHarmonyPatches()
+        {
             try
             {
-                var harmony = HarmonyInstance.Create("com.github.YourRepoName.$safeprojectname$");
+                Logger.log.Debug("Applying Harmony patches.");
                 harmony.PatchAll(Assembly.GetExecutingAssembly());
             }
             catch (Exception ex)
             {
-                Logger.log.Critical("Error applying Harmony patches.");
-                Logger.log.Critical(ex);
+                Logger.log.Critical("Error applying Harmony patches: " + ex.Message);
+                Logger.log.Debug(ex);
             }
+        }
 
+        /// <summary>
+        /// Attempts to remove all the Harmony patches that used our HarmonyId.
+        /// </summary>
+        public static void RemoveHarmonyPatches()
+        {
+            try
+            {
+                // Removes all patches with this HarmonyId
+                harmony.UnpatchAll(HarmonyId);
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Critical("Error removing Harmony patches: " + ex.Message);
+                Logger.log.Debug(ex);
+            }
         }
 
         public void OnApplicationQuit()
