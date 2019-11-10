@@ -77,6 +77,13 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
+    <ProjectReference Include="..\BSIPA Plugin %28Disableable%29\BSIPA Plugin %28Disableable%29.csproj">
+      <Project>{F87FD4E5-9CC9-4E02-B5BF-E8E65665375F}</Project>
+      <Name>BSIPA Plugin %28Disableable%29</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
     <ProjectReference Include="..\BSIPA Plugin %28Full%29\BSIPA Plugin %28Full%29.csproj">
       <Project>{A9A679E8-92C9-47C6-BCC2-59F40AEA549E}</Project>
       <Name>BSIPA Plugin %28Full%29</Name>
