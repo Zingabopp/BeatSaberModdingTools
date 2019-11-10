@@ -14,7 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <PathMap>$(SolutionDir)=C:\</PathMap>
     <DebugType>portable</DebugType>
-	<BeatSaberFolder>$(ProjectDir)References</BeatSaberFolder>
+    <BeatSaberFolder>$(ProjectDir)References</BeatSaberFolder>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +46,10 @@
     </Reference>
     <Reference Include="IPA.Loader">
       <HintPath>$(BeatSaberFolder)\Beat Saber_Data\Managed\IPA.Loader.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony.1.2.0.1">
+      <HintPath>References\Libs\0Harmony.1.2.0.1.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
@@ -82,11 +86,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HarmonyPatches\LevelListTableCellOverride.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="PluginConfig.cs" />
     <Compile Include="ExampleMonobehaviour.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionUtilExample.cs" />
     <Compile Include="UI\$safeprojectname$_UI.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -94,9 +100,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CreateJunctions.bat" />
-	<None Include=".gitignore" />
+    <None Include=".gitignore" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!--Build Targets-->
   <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(NCrunch)' != '1'">
     <Message Text="Copying $(OutputPath)$(AssemblyName).dll to Plugins folder" Importance="high" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(BeatSaberFolder)\Plugins\$(AssemblyName).dll" />
@@ -115,6 +123,7 @@
     <Message Text="PluginVersion: $(PluginVersion), AssemblyVersion: $(AssemblyVersion), GameVersion: $(GameVersion)" Importance="high" />
     <ZipDir ZipFileName="$(OutDir)zip\$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitShortHash).zip" DirectoryName="$(IntermediateOutputPath)zip" />
   </Target>
+  <!--Build Tasks-->
   <UsingTask TaskName="GetManifestInfo" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
     <ParameterGroup>
       <GameVersion ParameterType="System.String" Output="true" />
@@ -123,9 +132,9 @@
     </ParameterGroup>
     <Task>
       <Reference Include="$(USERPROFILE)\.nuget\packages\newtonsoft.json\12.0.2\lib\netstandard1.3\Newtonsoft.Json.dll" />
-	  <Reference Include="System.Runtime" />
-	  <Reference Include="System.Dynamic.Runtime" />
-	  <Reference Include="System.ObjectModel" />
+      <Reference Include="System.Runtime" />
+      <Reference Include="System.Dynamic.Runtime" />
+      <Reference Include="System.ObjectModel" />
       <Using Namespace="System.IO" />
       <Using Namespace="Newtonsoft.Json" />
       <Using Namespace="Newtonsoft.Json.Linq" />
@@ -237,7 +246,7 @@
       ]]></Code>
     </Task>
   </UsingTask>
-    <!-- Source: https://stackoverflow.com/a/38127938 -->
+  <!-- Source: https://stackoverflow.com/a/38127938 -->
   <UsingTask TaskName="ZipDir" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
     <ParameterGroup>
       <ZipFileName ParameterType="System.String" Required="true" />
@@ -287,8 +296,7 @@
     </ParameterGroup>
     <Task>
       <Using Namespace="System.Diagnostics" />
-      <Code Type="Fragment" Language="cs">
-        <![CDATA[
+      <Code Type="Fragment" Language="cs"><![CDATA[
             CommitShortHash = "local";
             try
             {
@@ -319,4 +327,4 @@
   <PropertyGroup>
     <PostBuildEvent></PostBuildEvent>
   </PropertyGroup>
- </Project>
+</Project>

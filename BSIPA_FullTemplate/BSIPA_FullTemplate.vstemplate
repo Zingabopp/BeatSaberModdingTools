@@ -24,9 +24,11 @@
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">manifest.json</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">Plugin.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">ExampleMonobehaviour.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true">ReflectionUtilExample.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">PluginConfig.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true">Logger.cs</ProjectItem>
 	  <ProjectItem ReplaceParameters="true" TargetFileName="UI\$safeprojectname$_UI.cs">UI.cs</ProjectItem>
+	  <ProjectItem ReplaceParameters="true" TargetFileName="HarmonyPatches\LevelListTableCellOverride.cs">LevelListTableCellOverride.cs</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

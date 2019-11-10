@@ -7,7 +7,9 @@ using IPA.Config;
 using IPA.Utilities;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using Harmony;
 using IPALogger = IPA.Logging.Logger;
+using System.Reflection;
 
 namespace $safeprojectname$
 {
@@ -58,6 +60,16 @@ namespace $safeprojectname$
             ExampleGameplayBoolSetting = true;
             Logger.log.Debug("OnApplicationStart");
             CustomUI.Utilities.BSEvents.menuSceneLoadedFresh += MenuLoadedFresh;
+            try
+            {
+                var harmony = HarmonyInstance.Create("com.github.YourRepoName.$safeprojectname$");
+                harmony.PatchAll(Assembly.GetExecutingAssembly());
+            }
+            catch (Exception ex)
+            {
+                Logger.log.Critical("Error applying Harmony patches.");
+                Logger.log.Critical(ex);
+            }
 
         }
 
@@ -89,9 +101,17 @@ namespace $safeprojectname$
         /// <param name="nextScene">The scene you are transitioning to.</param>
         public void OnActiveSceneChanged(Scene prevScene, Scene nextScene)
         {
+            if (nextScene.name == "HealthWarning")
+            {
+                var reflectionUtilExample = new GameObject($"{Name}.ReflectionUtilExample").AddComponent<ReflectionUtilExample>();
+            }
             if (nextScene.name == "MenuCore")
             {
                 var exampleGameObject = new GameObject($"{Name}.ExampleMonobehaviour").AddComponent<ExampleMonobehaviour>();
+            }
+            if (nextScene.name == "GameCore")
+            {
+
             }
         }
 
