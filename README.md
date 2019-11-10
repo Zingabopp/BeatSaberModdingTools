@@ -23,7 +23,7 @@ A set of templates for creating Beat Saber mods.
     2. Open the csproj.user file and put the path to your Beat Saber folder inside the \<BeatSaberFolder> tag.
 
 # BSIPA Full Template
-* This template demonstrates how to create a basic mod and how to use CustomUI. It also has examples for using Harmony and ReflectionUtil.
+* This template demonstrates how to create a basic mod and use CustomUI. It also has examples for using Harmony and ReflectionUtil.
 
 # BSIPA Core Template
 * This template creates a bare plugin.
