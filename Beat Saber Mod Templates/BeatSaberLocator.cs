@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using BeatSaberModTemplates.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,8 +45,12 @@ namespace BeatSaberModTemplates
         {
             if (string.IsNullOrEmpty(path?.Trim()))
                 return false;
-            DirectoryInfo bsDir = new DirectoryInfo(path);
-            bool valid = bsDir.Exists;
+            DirectoryInfo bsDir = null;
+            try
+            {
+                bsDir = new DirectoryInfo(path);
+            }
+            catch { return false; }
             if (bsDir.Exists)
             {
                 var files = bsDir.GetFiles("Beat Saber.exe");
@@ -53,26 +58,5 @@ namespace BeatSaberModTemplates
             }
             return false;
         }
-    }
-
-    public struct BeatSaberInstall
-    {
-        public string Path;
-        public InstallType InstallType;
-        public BeatSaberInstall(string path, InstallType installType)
-        {
-            Path = path;
-            InstallType = installType;
-        }
-        public override string ToString()
-        {
-            return $"{InstallType.ToString()}: {Path}";
-        }
-    }
-
-    public enum InstallType
-    {
-        Steam,
-        Oculus
     }
 }

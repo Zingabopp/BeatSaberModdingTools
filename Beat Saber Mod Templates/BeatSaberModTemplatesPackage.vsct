@@ -32,8 +32,7 @@
     with command ids defined by other packages. -->
     <Menus>
       <Menu guid="guidBeatSaberModTemplatesPackageCmdSet" id="TopLevelMenu" priority="0x700" type="Menu">
-        <Parent guid="guidBeatSaberModTemplatesPackageCmdSet"
-                id="ExtensionsMenuGroup" />
+        <Parent guid="guidBeatSaberModTemplatesPackageCmdSet" id="ExtensionsMenuGroup" />
         <Strings>
           <ButtonText>BSMT</ButtonText>
           <CommandName>BeatSaberTemplateMenu</CommandName>
@@ -72,6 +71,13 @@
           <ButtonText>Set Beat Saber Directory...</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidBeatSaberModTemplatesPackageCmdSet" id="cmdidOpenSettingsWindowCommand" priority="0x0100" type="Button">
+        <Parent guid="guidBeatSaberModTemplatesPackageCmdSet" id="MyMenuGroup" />
+        <Icon guid="guidImages" id="bmpPic1" />
+        <Strings>
+          <ButtonText>OpenSettingsWindow</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -82,6 +88,7 @@
             inside a button definition. An important aspect of this declaration is that the element id
             must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
       <Bitmap guid="guidImages1" href="Resources\SetBeatSaberDirCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages" href="Commands\Resources\OpenSettingsWindowCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
     </Bitmaps>
   </Commands>
 
@@ -95,9 +102,19 @@
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="ExtensionsMenuGroup" value="0x1022" />
       <IDSymbol name="cmdidSetBeatSaberDirCommand" value="0x0101" />
+      <IDSymbol value="256" name="cmdidOpenSettingsWindowCommand" />
     </GuidSymbol>
 
     <GuidSymbol value="{3caebdb6-8ff9-43b2-be29-f9d02e8bfc7f}" name="guidImages1">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{b9f6d358-1c18-4a0c-b5f6-c97f6edee317}" name="guidImages">
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
       <IDSymbol name="bmpPicSearch" value="3" />

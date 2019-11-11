@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.Shell;
+using BeatSaberModTemplates.Commands;
 using Task = System.Threading.Tasks.Task;
 
 namespace BeatSaberModTemplates
@@ -48,6 +49,7 @@ namespace BeatSaberModTemplates
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await SetBeatSaberDirCommand.InitializeAsync(this);
+            await BeatSaberModTemplates.Commands.OpenSettingsWindowCommand.InitializeAsync(this);
         }
 
         #endregion

@@ -3,11 +3,12 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using BeatSaberModTemplates.Models;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
-namespace BeatSaberModTemplates
+namespace BeatSaberModTemplates.Commands
 {
     /// <summary>
     /// Command handler
@@ -94,7 +95,7 @@ namespace BeatSaberModTemplates
             string message = string.Empty;
             if(bsInstalls.Length > 0)
             {
-                message = string.Join("\n", bsInstalls);
+                message = string.Join<BeatSaberInstall>("\n", bsInstalls);
             }
             else
             {
