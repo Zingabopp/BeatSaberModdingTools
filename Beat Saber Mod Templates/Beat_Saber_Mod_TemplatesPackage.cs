@@ -24,13 +24,13 @@ namespace BeatSaberModTemplates
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [Guid(Beat_Saber_Mod_TemplatesPackage.PackageGuidString)]
-    public sealed class Beat_Saber_Mod_TemplatesPackage : AsyncPackage
+    [Guid(BeatSaberModTemplatesPackage.PackageGuidString)]
+    public sealed class BeatSaberModTemplatesPackage : AsyncPackage
     {
         /// <summary>
         /// Beat_Saber_Mod_TemplatesPackage GUID string.
         /// </summary>
-        public const string PackageGuidString = "7c7cde21-747e-488b-849d-e9c867870d61";
+        public const string PackageGuidString = "ce163df3-bae3-4fe0-882b-da2bde0f5d8e";
 
         #region Package Members
 
