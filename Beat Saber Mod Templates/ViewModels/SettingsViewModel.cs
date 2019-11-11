@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BeatSaberModTemplates.ViewModels
 {
-    public class SettingsViewModel
+    public class SettingsViewModel : ViewModelBase
     {
         public SettingsViewModel()
         {
