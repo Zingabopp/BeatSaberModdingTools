@@ -22,10 +22,11 @@ namespace BeatSaberModTemplates.Views
     /// </summary>
     public partial class SettingsWindow : Window
     {
+        SettingsViewModel SettingsViewModel;
         public SettingsWindow()
         {
-            var viewModel = new SettingsViewModel();
-            DataContext = viewModel;
+            SettingsViewModel = new SettingsViewModel();
+            DataContext = SettingsViewModel;
             InitializeComponent();
             //DialogResult = true;
         }

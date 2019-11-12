@@ -26,7 +26,7 @@ namespace BeatSaberModTemplates.ViewModels
                 return false;
             }
             var fullInstallPath = Path.GetFullPath(beatSaberInstall.Path);
-            if (BeatSaberLocations.Any(i => string.Equals(fullInstallPath, Path.GetFullPath(i.Path), StringComparison.CurrentCultureIgnoreCase)))
+            if (!BeatSaberLocations.Any(i => string.Equals(fullInstallPath, Path.GetFullPath(i.Path), StringComparison.CurrentCultureIgnoreCase)))
             {
                 BeatSaberLocations.Add(beatSaberInstall);
                 return true;

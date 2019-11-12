@@ -8,10 +8,10 @@
              xmlns:models="clr-namespace:BeatSaberModTemplates.Models"
              xmlns:converters="clr-namespace:BeatSaberModTemplates.Converters"
              mc:Ignorable="d"
-             Height="300" Width="450" ResizeMode="NoResize" ShowInTaskbar="False" DataContext="vm:SettingsViewModel">
+             Height="300" Width="450" ResizeMode="NoResize" ShowInTaskbar="False">
     <Window.Resources>
         <converters:InstallTypeConverter x:Key="InstallTypeConverter"/>
-        <CollectionViewSource x:Key="InstallListSource" d:DesignSource="{d:DesignInstance {x:Type models:BeatSaberInstall}, CreateList=True}"/>
+        <CollectionViewSource x:Key="InstallListSource" Source="{Binding BeatSaberLocations}" d:DesignSource="{d:DesignInstance {x:Type models:BeatSaberInstall}, CreateList=True}"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -19,20 +19,17 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Column="0">
-            <DataGrid ItemsSource="{Binding Path=BeatSaberLocations}" AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single" IsManipulationEnabled="False">
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <DataGrid Grid.Row="1" ItemsSource="{Binding Source={StaticResource InstallListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single" IsManipulationEnabled="False">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="*">
                         <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate DataType="{x:Type models:BeatSaberInstall}">
-                                <Grid x:Name="InstallRow" Height="50" Background="Blue">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="20"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding Path=Path}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Path=InstallType, Converter={StaticResource InstallTypeConverter}}"/>
-                                </Grid>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Path}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
