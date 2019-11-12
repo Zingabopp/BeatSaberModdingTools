@@ -24,6 +24,7 @@ namespace BeatSaberModTemplates.Models
 
     public enum InstallType
     {
+        Manual,
         Steam,
         Oculus
     }

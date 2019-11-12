@@ -24,12 +24,21 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <DataGrid Grid.Row="1" ItemsSource="{Binding Source={StaticResource InstallListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single" IsManipulationEnabled="False">
+            <DataGrid Grid.Row="1" ItemsSource="{Binding Source={StaticResource InstallListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" 
+                      SelectionMode="Single" IsManipulationEnabled="False" RowHeight="20">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=Path}"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition x:Name="IconColumn" Width="20"/>
+                                        <ColumnDefinition x:Name="SourceColumn" Width="100"/>
+                                        <ColumnDefinition x:Name="PathColumn" Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image x:Name="SourceImage" Grid.Column="0" Source="{Binding Path=InstallType, Converter={StaticResource InstallTypeConverter}}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Path=Path}"/>
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -43,13 +52,13 @@
                 <ColumnDefinition Width="10"/>
             </Grid.ColumnDefinitions>
             <UniformGrid HorizontalAlignment="Right" Rows="1" Columns="3" Grid.Column="1" >
-                <Button Margin="0,0,10,0" MinWidth="70" Click="okButton_Click">
+                <Button Margin="0,0,10,0" MinWidth="70" Click="OkButton_Click">
                     <TextBlock Text="OK"/>
                 </Button>
-                <Button Margin="0,0,10,0" Click="cancelButton_Click">
+                <Button Margin="0,0,10,0" Click="CancelButton_Click">
                     <TextBlock Text="Cancel"/>
                 </Button>
-                <Button Click="applyButton_Click">
+                <Button Click="ApplyButton_Click">
                     <TextBlock Text="Apply"/>
                 </Button>
             </UniformGrid>

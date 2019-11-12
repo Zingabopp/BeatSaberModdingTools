@@ -31,18 +31,18 @@ namespace BeatSaberModTemplates.Views
             //DialogResult = true;
         }
 
-        void applyButton_Click(object sender, RoutedEventArgs e)
+        void ApplyButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        void okButton_Click(object sender, RoutedEventArgs e)
+        void OkButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
             Close();
         }
 
-        void cancelButton_Click(object sender, RoutedEventArgs e)
+        void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
             Close();
