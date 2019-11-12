@@ -20,7 +20,7 @@ namespace $safeprojectname$
         public void Init(IPALogger logger, [Config.Prefer("json")] IConfigProvider cfgProvider)
         {
             Logger.log = logger;
-            Logger.log.Debug("Logger initialied.");
+            Logger.log.Debug("Logger initialised.");
 
             configProvider = cfgProvider;
 
