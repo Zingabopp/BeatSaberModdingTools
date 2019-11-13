@@ -32,8 +32,9 @@ namespace BeatSaberModTemplates.ViewModels
             AddLocation(new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual));
         }
 
+        #region Public Properties
         /// <summary>
-        /// Beat Saber install locations
+        /// An <see cref="ObservableCollection{T}"/> of <see cref="BeatSaberInstall"/>.
         /// </summary>
         public ObservableCollection<BeatSaberInstall> BeatSaberLocations { get; set; }
 
@@ -62,26 +63,11 @@ namespace BeatSaberModTemplates.ViewModels
             }
         }
 
-        private RelayCommand<string> _addInstall;
-        public RelayCommand<string> AddInstall
-        {
-            get
-            {
-                if (_addInstall == null)
-                    _addInstall = new RelayCommand<string>(s =>
-                    {
-                        AddLocation(new BeatSaberInstall(Path.GetFullPath(s), InstallType.Manual));
-                    },
-                    s =>
-                    {
-                        return NewLocationIsValid;
-                    });
-
-                return _addInstall;
-            }
-        }
-
         private string _newLocationInput = "";
+        /// <summary>
+        /// Contains the user-provided path intended to be added to <see cref="BeatSaberLocations"/>.
+        /// When changed, restarts <see cref="NotifyLocationTimer"/> and sets <see cref="NewLocationIsValid"/> to false immediately.
+        /// </summary>
         public string NewLocationInput
         {
             get { return _newLocationInput; }
@@ -92,26 +78,11 @@ namespace BeatSaberModTemplates.ViewModels
                 NotifyLocationTimer.Stop();
                 var oldVal = _newLocationInput;
                 _newLocationInput = value;
-                if(PathDidChange(oldVal, value))
+                if (PathDidChange(oldVal, value))
                     NewLocationIsValid = false;
                 NotifyLocationTimer.Start();
             }
         }
-
-        private bool PathDidChange(string oldPath, string newPath)
-        {
-            if (string.IsNullOrEmpty(oldPath) || string.IsNullOrEmpty(newPath))
-                return true;
-            var directorySeparators = new string[] { Path.DirectorySeparatorChar.ToString(), Path.AltDirectorySeparatorChar.ToString() };
-            var oldPathLastChar = oldPath.Substring(oldPath.Length - 1);
-            var newPathLastChar = newPath.Substring(newPath.Length - 1);
-            if (directorySeparators.Any(s => s.Equals(oldPathLastChar)))
-                return true;
-            if (oldPath.Equals(newPath.Substring(0, newPath.Length - 1)) && directorySeparators.Any(s => s.Equals(newPathLastChar)))
-                return false;
-            return true;
-        }
-
         private bool _newLocationIsValid;
         public bool NewLocationIsValid
         {
@@ -134,6 +105,49 @@ namespace BeatSaberModTemplates.ViewModels
                 }
             }
         }
+
+        #region Commands
+
+        private RelayCommand<string> _addInstall;
+        /// <summary>
+        /// Adds the specified location to <see cref="BeatSaberLocations"/> as <see cref="InstallType.Manual"/>.
+        /// </summary>
+        public RelayCommand<string> AddInstall
+        {
+            get
+            {
+                if (_addInstall == null)
+                    _addInstall = new RelayCommand<string>(s =>
+                    {
+                        AddLocation(new BeatSaberInstall(Path.GetFullPath(s), InstallType.Manual));
+                    },
+                    s =>
+                    {
+                        return NewLocationIsValid;
+                    });
+
+                return _addInstall;
+            }
+        }
+
+        #endregion
+        #endregion
+
+        private bool PathDidChange(string oldPath, string newPath)
+        {
+            if (string.IsNullOrEmpty(oldPath) || string.IsNullOrEmpty(newPath))
+                return true;
+            var directorySeparators = new string[] { Path.DirectorySeparatorChar.ToString(), Path.AltDirectorySeparatorChar.ToString() };
+            var oldPathLastChar = oldPath.Substring(oldPath.Length - 1);
+            var newPathLastChar = newPath.Substring(newPath.Length - 1);
+            if (directorySeparators.Any(s => s.Equals(oldPathLastChar)))
+                return true;
+            if (oldPath.Equals(newPath.Substring(0, newPath.Length - 1)) && directorySeparators.Any(s => s.Equals(newPathLastChar)))
+                return false;
+            return true;
+        }
+
+
 
         private TimeSpan _notifyLocationTimerInterval = new TimeSpan(0, 0, 0, 0, 500);
 
