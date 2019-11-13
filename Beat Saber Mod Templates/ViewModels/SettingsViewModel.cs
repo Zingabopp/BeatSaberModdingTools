@@ -11,11 +11,19 @@ namespace BeatSaberModTemplates.ViewModels
 {
     public class SettingsViewModel : ViewModelBase
     {
+        public ObservableCollection<BeatSaberInstall> DesignExample => new ObservableCollection<BeatSaberInstall>()
+        {
+            new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam),
+            new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus),
+            new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual)
+        };
+
         public SettingsViewModel()
         {
             var detectedLocations = BeatSaberLocator.GetBeatSaberPathsFromRegistry();
             BeatSaberLocations = new ObservableCollection<BeatSaberInstall>(detectedLocations);
-            AddLocation(new BeatSaberInstall(@"C:\TestPath", InstallType.Oculus));
+            AddLocation(new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus));
+            AddLocation(new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual));
         }
 
         /// <summary>

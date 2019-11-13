@@ -15,14 +15,14 @@ namespace BeatSaberModTemplates.Converters
 {
     public class InstallTypeConverter : IValueConverter
     {
-        static InstallTypeConverter()
-        {
-            
-        }
+        private const string SteamIconPath = "BeatSaberModTemplates.Icons.Steam.png";
+        private const string OculusIconPath = "BeatSaberModTemplates.Icons.Oculus.png";
+        private const string ManualIconPath = "BeatSaberModTemplates.Icons.Manual.png";
 
-        static Lazy<BitmapImage> SteamIcon = new Lazy<BitmapImage>(() => LoadImageFromResource("BeatSaberModTemplates.Icons.Steam.png"));
-        static Lazy<BitmapImage> OculusIcon;
-        static Lazy<BitmapImage> ManualIcon;
+        static readonly Lazy<BitmapImage> SteamIcon = new Lazy<BitmapImage>(() => LoadImageFromResource(SteamIconPath));
+        static readonly Lazy<BitmapImage> OculusIcon = new Lazy<BitmapImage>(() => LoadImageFromResource(OculusIconPath));
+        static readonly Lazy<BitmapImage> ManualIcon = new Lazy<BitmapImage>(() => LoadImageFromResource(ManualIconPath));
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is InstallType installType)
@@ -39,21 +39,26 @@ namespace BeatSaberModTemplates.Converters
                         break;
                 }
             }
-            return "ERROR";
+            return string.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
                 return null;
-            switch(value.ToString().ToLower())
+            if (value is BitmapImage image)
             {
-                case "steam":
-                    return InstallType.Steam;
-                case "oculus":
-                    return InstallType.Oculus;
+                switch (image.UriSource.OriginalString)
+                {
+                    case SteamIconPath:
+                        return InstallType.Steam;
+                    case OculusIconPath:
+                        return InstallType.Oculus;
+                    default:
+                        return InstallType.Manual;
+                }
             }
-            return null;
+            return InstallType.Manual;
         }
 
         private static BitmapImage LoadImageFromResource(string path)

@@ -51,6 +51,7 @@
     <Compile Include="BeatSaberLocator.cs" />
     <Compile Include="Commands\OpenSettingsWindowCommand.cs" />
     <Compile Include="Converters\InstallTypeConverter.cs" />
+    <Compile Include="Converters\TrimmedTextBlockVisibilityConverter.cs" />
     <Compile Include="GeneralSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -122,11 +123,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Commands\Resources\OpenSettingsWindowCommand.png" />
-    <EmbeddedResource Include="Icons\Steam.ico" />
-    <EmbeddedResource Include="Icons\Steam.png">
+    <EmbeddedResource Include="Icons\Manual.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="Icons\Sources.txt" />
+    <EmbeddedResource Include="Icons\Oculus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Icons\Steam.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Resources\SetBeatSaberDirCommand.png" />
     <VSCTCompile Include="BeatSaberModTemplatesPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
