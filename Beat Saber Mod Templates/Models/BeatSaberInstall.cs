@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace BeatSaberModTemplates.Models
 {
     public class BeatSaberInstall
     {
-        public string Path { get; private set; }
+        public string InstallPath { get; private set; }
         public InstallType InstallType { get; private set; }
 
         public BeatSaberInstall(string path, InstallType installType)
         {
-            Path = path;
+            InstallPath = path.TrimEnd(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
             InstallType = installType;
         }
         public override string ToString()
         {
-            return $"{InstallType.ToString()}: {Path}";
+            return $"{InstallType.ToString()}: {InstallPath}";
         }
     }
 
