@@ -35,7 +35,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="200"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <DataGrid Grid.Row="1" ItemsSource="{Binding Source={StaticResource InstallListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" 
@@ -48,9 +48,13 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition x:Name="IconColumn" Width="20"/>
                                         <ColumnDefinition x:Name="PathColumn" Width="*"/>
+                                        <ColumnDefinition x:Name="DeleteColumn" Width="20"/>
                                     </Grid.ColumnDefinitions>
                                     <Image x:Name="SourceImage" Grid.Column="0" Source="{Binding Path=InstallType, Converter={StaticResource InstallTypeConverter}}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding Path=InstallPath}" Style="{StaticResource PathTextBlock}" Margin="10,0,0,0"/>
+                                    <Button x:Name="DeleteButton" Grid.Column="2">
+                                        <TextBlock Text="-" Margin="0,-2,0,0" Foreground="Red"/>
+                                    </Button>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
