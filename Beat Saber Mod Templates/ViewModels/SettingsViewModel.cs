@@ -28,6 +28,7 @@ namespace BeatSaberModTemplates.ViewModels
             _syncContext = SynchronizationContext.Current;
             var detectedLocations = BeatSaberLocator.GetBeatSaberPathsFromRegistry();
             BeatSaberLocations = new ObservableCollection<BeatSaberInstall>(detectedLocations);
+            AddLocation(new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam));
             AddLocation(new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus));
             AddLocation(new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual));
         }
@@ -130,6 +131,27 @@ namespace BeatSaberModTemplates.ViewModels
             }
         }
 
+        private RelayCommand<string> _removeInstall;
+        /// <summary>
+        /// Adds the specified location to <see cref="BeatSaberLocations"/> as <see cref="InstallType.Manual"/>.
+        /// </summary>
+        public RelayCommand<string> RemoveInstall
+        {
+            get
+            {
+                if (_removeInstall == null)
+                    _removeInstall = new RelayCommand<string>(s =>
+                    {
+                        RemoveLocation(s);
+                    },
+                    s =>
+                    {
+                        return BeatSaberLocations.FirstOrDefault(i => i.InstallPath == s && i.InstallType == InstallType.Manual) != null;
+                    });
+
+                return _addInstall;
+            }
+        }
         #endregion
         #endregion
 
@@ -180,6 +202,15 @@ namespace BeatSaberModTemplates.ViewModels
             return true;
         }
 
+        private bool RemoveLocation(string path)
+        {
+            var install = BeatSaberLocations.Where(i => i.InstallPath == path).FirstOrDefault();
+            if(install != null)
+            {
+                return BeatSaberLocations.Remove(install);
+            }
+            return false;
+        }
         public bool CanAddLocation(string pathStr)
         {
             if (string.IsNullOrEmpty(pathStr))

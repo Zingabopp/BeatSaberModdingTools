@@ -13,6 +13,7 @@
         <converters:InstallTypeConverter x:Key="InstallTypeConverter"/>
         <converters:TrimmedTextBlockVisibilityConverter x:Key="TrimToVisConverter"/>
         <CollectionViewSource x:Key="InstallListSource" Source="{Binding BeatSaberLocations}" d:Source="{Binding DesignExample}"/>
+        <vm:SettingsViewModel x:Key="ViewModel"/>
         <Style x:Key="PathTextBlock" TargetType="{x:Type TextBlock}">
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             <Setter Property="ToolTip">
@@ -25,20 +26,27 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="Button" x:Key="DeleteButtonStyle">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=InstallType}" Value="Manual">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="200"/>
             <RowDefinition Height="40" />
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0">
+        <Grid x:Name="LocationListGrid" Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="200"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <DataGrid Grid.Row="1" ItemsSource="{Binding Source={StaticResource InstallListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" 
+            <DataGrid Grid.Row="0" ItemsSource="{Binding Source={StaticResource InstallListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" 
                       SelectionMode="Single" IsManipulationEnabled="False" RowHeight="20">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="*">
@@ -52,7 +60,8 @@
                                     </Grid.ColumnDefinitions>
                                     <Image x:Name="SourceImage" Grid.Column="0" Source="{Binding Path=InstallType, Converter={StaticResource InstallTypeConverter}}"/>
                                     <TextBlock Grid.Column="1" Text="{Binding Path=InstallPath}" Style="{StaticResource PathTextBlock}" Margin="10,0,0,0"/>
-                                    <Button x:Name="DeleteButton" Grid.Column="2">
+                                    <Button x:Name="DeleteButton" Grid.Column="2" Visibility="Hidden"
+                                            Command="Delete" Style="{StaticResource DeleteButtonStyle}">
                                         <TextBlock Text="-" Margin="0,-2,0,0" Foreground="Red"/>
                                     </Button>
                                 </Grid>
@@ -61,30 +70,27 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <Grid x:Name="AddLocationGrid" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="LocationInput" Grid.Column="0" Text="{Binding NewLocationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Grid.Column="1" Command="{Binding AddInstall}" CommandParameter="{Binding Text, ElementName=LocationInput}" IsDefault="{Binding IsFocused, ElementName=LocationInput}" Content="Add Location"/>
+            </Grid>
         </Grid>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>
-            <TextBox x:Name="LocationInput" Grid.Column="0" Text="{Binding NewLocationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Button Grid.Column="1" Command="{Binding AddInstall}" CommandParameter="{Binding Text, ElementName=LocationInput}" IsDefault="{Binding IsFocused, ElementName=LocationInput}" Content="Add Location"/>
-        </Grid>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" x:Name="OkCancelButtons">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="240"/>
                 <ColumnDefinition Width="10"/>
             </Grid.ColumnDefinitions>
-            <UniformGrid HorizontalAlignment="Right" Rows="1" Columns="3" Grid.Column="1" >
+            <UniformGrid Grid.Column="1" HorizontalAlignment="Right" Rows="1" Columns="2" >
                 <Button Margin="0,10,10,0" MinWidth="70" Click="OkButton_Click">
                     <TextBlock Text="OK"/>
                 </Button>
                 <Button Margin="0,10,10,0" Click="CancelButton_Click">
                     <TextBlock Text="Cancel"/>
-                </Button>
-                <Button Margin="0,10,0,0" Click="ApplyButton_Click">
-                    <TextBlock Text="Apply"/>
                 </Button>
             </UniformGrid>
         </Grid>
