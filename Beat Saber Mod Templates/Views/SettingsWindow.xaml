@@ -122,7 +122,7 @@
                         <CheckBox Content="Copy plugin to Beat Saber on Build." ToolTip="Copies the plugin to IPA\Pending."/>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Header="Reference Source Type:">
+                <GroupBox Header="Reference Source Type:" Margin="3,0,0,0">
                     <StackPanel Orientation="Vertical">
                         <StackPanel.Resources>
                             <Style TargetType="RadioButton">
