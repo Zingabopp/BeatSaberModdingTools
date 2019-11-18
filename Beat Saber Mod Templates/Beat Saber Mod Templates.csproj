@@ -134,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Commands\Resources\OpenSettingsWindowCommand.png" />
+    <Content Include="TODO.txt" />
     <EmbeddedResource Include="Icons\Manual.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
