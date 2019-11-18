@@ -8,7 +8,7 @@
              xmlns:models="clr-namespace:BeatSaberModTemplates.Models"
              xmlns:converters="clr-namespace:BeatSaberModTemplates.Converters"
              mc:Ignorable="d"
-             Height="400" Width="550" ResizeMode="NoResize" ShowInTaskbar="True" Title="Beat Saber Mod Template Settings" Topmost="True"
+             Height="425" Width="550" ResizeMode="NoResize" ShowInTaskbar="True" Title="Beat Saber Mod Template Settings" Topmost="True"
         d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <converters:InstallTypeImageConverter x:Key="InstallTypeImageConverter"/>
@@ -103,7 +103,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="LocationInput" Grid.Column="0" Text="{Binding NewLocationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                           VerticalContentAlignment="Center" />
-                <Button Grid.Column="1" Command="{Binding AddInstall}" CommandParameter="{Binding Text, ElementName=LocationInput}" IsDefault="{Binding IsFocused, ElementName=LocationInput}" Content="Add Location"/>
+                <Button Grid.Column="1" Margin="5,0,0,0" Command="{Binding AddInstall}" CommandParameter="{Binding Text, ElementName=LocationInput}" IsDefault="{Binding IsFocused, ElementName=LocationInput}" Content="Add Location"/>
             </Grid>
         </Grid>
         </GroupBox>
@@ -119,6 +119,7 @@
                         <CheckBox Content="Generate csproj.user on template creation."/>
                         <CheckBox Content="Generate csproj.user on project load." ToolTip="Creates a csproj.user file when a compatible project is opened."/>
                         <CheckBox x:Name="ChkManifestDefaults" Content="Fill manifest.json defaults." ToolTip="Fills in your set defaults in manifest.json when a project is created with a template."/>
+                        <CheckBox Content="Copy plugin to Beat Saber on Build." ToolTip="Copies the plugin to IPA\Pending."/>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Reference Source Type:">

@@ -16,6 +16,8 @@ namespace BeatSaberModTemplates.Models
 
         public bool SetManifestJsonDefaults { get; set; }
 
+        public bool CopyToIPAPendingOnBuild { get; set; }
+
 
     }
 }
