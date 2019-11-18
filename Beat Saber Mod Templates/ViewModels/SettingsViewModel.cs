@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Threading;
 using System.Windows.Threading;
+using System.Collections.Specialized;
 
 namespace BeatSaberModTemplates.ViewModels
 {
     public class SettingsViewModel : ViewModelBase
     {
-        private readonly SynchronizationContext _syncContext;
         public ObservableCollection<BeatSaberInstall> DesignExample => new ObservableCollection<BeatSaberInstall>()
         {
             new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam),
@@ -25,7 +25,6 @@ namespace BeatSaberModTemplates.ViewModels
 
         public SettingsViewModel()
         {
-            _syncContext = SynchronizationContext.Current;
             var detectedLocations = BeatSaberLocator.GetBeatSaberPathsFromRegistry();
             BeatSaberLocations = new ObservableCollection<BeatSaberInstall>(detectedLocations);
             AddLocation(new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam));
@@ -34,10 +33,33 @@ namespace BeatSaberModTemplates.ViewModels
         }
 
         #region Public Properties
+        private ObservableCollection<BeatSaberInstall> _beatSaberLocations;
         /// <summary>
         /// An <see cref="ObservableCollection{T}"/> of <see cref="BeatSaberInstall"/>.
         /// </summary>
-        public ObservableCollection<BeatSaberInstall> BeatSaberLocations { get; set; }
+        public ObservableCollection<BeatSaberInstall> BeatSaberLocations
+        {
+            get { return _beatSaberLocations; }
+            set
+            {
+                if (_beatSaberLocations == value)
+                    return;
+                if (_beatSaberLocations != null)
+                    _beatSaberLocations.CollectionChanged -= BeatSaberLocations_CollectionChanged;
+                _beatSaberLocations = value;
+                _beatSaberLocations.CollectionChanged += BeatSaberLocations_CollectionChanged;
+            }
+        }
+
+        private void BeatSaberLocations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                if (e.OldItems.Contains(ChosenInstall))
+                    ChosenInstall = BeatSaberLocations.FirstOrDefault();
+                AddInstall.RaiseCanExecuteChanged();
+            }
+        }
 
         /// <summary>
         /// If true, automatically generate a csproj.user file with the chosen BeatSaberDir when creating projects from supported templates.
@@ -55,12 +77,13 @@ namespace BeatSaberModTemplates.ViewModels
         /// </summary>
         public BeatSaberInstall ChosenInstall
         {
-            get { return _chosenInstall; }
+            get { return _chosenInstall ?? BeatSaberLocations.FirstOrDefault(); }
             set
             {
-                if (_chosenInstall == null && value == null)
+                if (_chosenInstall == value || value == null)
                     return;
-                throw new NotImplementedException();
+                _chosenInstall = value;
+                NotifyPropertyChanged();
             }
         }
 
@@ -90,15 +113,9 @@ namespace BeatSaberModTemplates.ViewModels
             get { return _newLocationIsValid; }
             private set
             {
-                var oldValue = _newLocationIsValid;
                 if (_newLocationIsValid == value)
                     return;
-                if (!value)
-                    _newLocationIsValid = false;
-                else
-                    _newLocationIsValid = value;
-                if (oldValue == _newLocationIsValid)
-                    return;
+                _newLocationIsValid = value;
                 if (!_newLocationIsValid)
                 {
                     AddInstall.RaiseCanExecuteChanged();
@@ -121,9 +138,11 @@ namespace BeatSaberModTemplates.ViewModels
                     _addInstall = new RelayCommand<string>(s =>
                     {
                         AddLocation(new BeatSaberInstall(Path.GetFullPath(s), InstallType.Manual));
+                        _addInstall.RaiseCanExecuteChanged();
                     },
                     s =>
                     {
+                        NewLocationIsValid = CanAddLocation(s);
                         return NewLocationIsValid;
                     });
 
@@ -131,25 +150,29 @@ namespace BeatSaberModTemplates.ViewModels
             }
         }
 
-        private RelayCommand<string> _removeInstall;
+        private RelayCommand<BeatSaberInstall> _removeInstall;
         /// <summary>
         /// Adds the specified location to <see cref="BeatSaberLocations"/> as <see cref="InstallType.Manual"/>.
         /// </summary>
-        public RelayCommand<string> RemoveInstall
+        public RelayCommand<BeatSaberInstall> RemoveInstall
         {
             get
             {
                 if (_removeInstall == null)
-                    _removeInstall = new RelayCommand<string>(s =>
+                    _removeInstall = new RelayCommand<BeatSaberInstall>(i =>
                     {
-                        RemoveLocation(s);
+                        if (i == null)
+                            return;
+                        RemoveLocation(i);
                     },
-                    s =>
+                    i =>
                     {
-                        return BeatSaberLocations.FirstOrDefault(i => i.InstallPath == s && i.InstallType == InstallType.Manual) != null;
+                        if (i == null)
+                            return false;
+                        return i.InstallType == InstallType.Manual && BeatSaberLocations.Contains(i);
                     });
 
-                return _addInstall;
+                return _removeInstall;
             }
         }
         #endregion
@@ -199,17 +222,16 @@ namespace BeatSaberModTemplates.ViewModels
         private bool AddLocation(BeatSaberInstall beatSaberInstall)
         {
             BeatSaberLocations.Add(beatSaberInstall);
+            if (BeatSaberLocations.Any(i => i.InstallPath == NewLocationInput.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)))
+                NewLocationIsValid = false;
             return true;
         }
 
-        private bool RemoveLocation(string path)
+        private bool RemoveLocation(BeatSaberInstall install)
         {
-            var install = BeatSaberLocations.Where(i => i.InstallPath == path).FirstOrDefault();
-            if(install != null)
-            {
-                return BeatSaberLocations.Remove(install);
-            }
-            return false;
+            bool result = BeatSaberLocations.Remove(install);
+            NewLocationIsValid = CanAddLocation(NewLocationInput);
+            return result;
         }
         public bool CanAddLocation(string pathStr)
         {
@@ -219,17 +241,23 @@ namespace BeatSaberModTemplates.ViewModels
             }
             try
             {
+                pathStr = pathStr.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
                 var fullInstallPath = Path.GetFullPath(pathStr).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-                if (!Directory.Exists(fullInstallPath))
-                    return false;
-                if (BeatSaberLocations.Any(i => string.Equals(fullInstallPath, Path.GetFullPath(i.InstallPath), StringComparison.CurrentCultureIgnoreCase)))
+                if (Directory.Exists(fullInstallPath) && Path.IsPathRooted(pathStr) && !pathStr.EndsWith(":"))
                 {
-                    return false;
+                    bool locationExists = BeatSaberLocations.Any(i =>
+                       {
+                           var comp = Path.GetFullPath(i.InstallPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                           return string.Equals(fullInstallPath, comp, StringComparison.CurrentCultureIgnoreCase);
+                       });
+                    if (!locationExists)
+                    {
+                        return true;
+                    }
                 }
             }
             catch { return false; }
-
-            return true;
+            return false;
         }
     }
 }

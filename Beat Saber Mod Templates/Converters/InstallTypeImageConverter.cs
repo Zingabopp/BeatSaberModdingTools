@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 
 namespace BeatSaberModTemplates.Converters
 {
-    public class InstallTypeConverter : IValueConverter
+    public class InstallTypeImageConverter : IValueConverter
     {
         private const string SteamIconPath = "BeatSaberModTemplates.Icons.Steam.png";
         private const string OculusIconPath = "BeatSaberModTemplates.Icons.Oculus.png";

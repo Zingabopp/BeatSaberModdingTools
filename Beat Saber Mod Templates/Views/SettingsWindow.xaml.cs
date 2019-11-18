@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BeatSaberModTemplates.Models;
 using BeatSaberModTemplates.ViewModels;
 using Microsoft.VisualStudio.PlatformUI;
 
@@ -46,6 +47,15 @@ namespace BeatSaberModTemplates.Views
         {
             DialogResult = false;
             Close();
+        }
+
+        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(e.Source is DataGridRow dataGridRow && dataGridRow.DataContext is BeatSaberInstall install)
+            {
+                SettingsViewModel.ChosenInstall = install;
+                e.Handled = true;
+            }
         }
     }
 

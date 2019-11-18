@@ -8,9 +8,12 @@
              xmlns:models="clr-namespace:BeatSaberModTemplates.Models"
              xmlns:converters="clr-namespace:BeatSaberModTemplates.Converters"
              mc:Ignorable="d"
-             Height="400" Width="550" ResizeMode="NoResize" ShowInTaskbar="False" d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel, IsDesignTimeCreatable=True}">
+             Height="400" Width="550" ResizeMode="NoResize" ShowInTaskbar="True" Title="Beat Saber Mod Template Settings" Topmost="True"
+        d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
-        <converters:InstallTypeConverter x:Key="InstallTypeConverter"/>
+        <converters:InstallTypeImageConverter x:Key="InstallTypeImageConverter"/>
+        <converters:InstallTypeStringConverter x:Key="InstallTypeStringConverter"/>
+        <converters:InstallPathMultivalueConverter x:Key="InstallPathMultivalueConverter"/>
         <converters:TrimmedTextBlockVisibilityConverter x:Key="TrimToVisConverter"/>
         <CollectionViewSource x:Key="InstallListSource" Source="{Binding BeatSaberLocations}" d:Source="{Binding DesignExample}"/>
         <vm:SettingsViewModel x:Key="ViewModel"/>
@@ -25,44 +28,66 @@
                     </ToolTip>
                 </Setter.Value>
             </Setter>
-        </Style>
-        <Style TargetType="Button" x:Key="DeleteButtonStyle">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=InstallType}" Value="Manual">
-                    <Setter Property="Visibility" Value="Visible"/>
+                <DataTrigger Value="True">
+                    <DataTrigger.Binding>
+                        <MultiBinding Converter="{StaticResource InstallPathMultivalueConverter}">
+                            <Binding RelativeSource="{RelativeSource Self}" Path="DataContext" />
+                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}" Path="DataContext.ChosenInstall" />
+                        </MultiBinding>
+                    </DataTrigger.Binding>
+                    <Setter Property="FontWeight" Value="Bold"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="110" />
+            <RowDefinition Height="*"/>
             <RowDefinition Height="40" />
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid x:Name="LocationListGrid" Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
             <DataGrid Grid.Row="0" ItemsSource="{Binding Source={StaticResource InstallListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" 
-                      SelectionMode="Single" IsManipulationEnabled="False" RowHeight="20">
+                      SelectionMode="Single" IsManipulationEnabled="False" RowHeight="22" CanUserResizeRows="False" CanUserResizeColumns="False"
+                      RowHeaderWidth="0">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridRow">
+                        <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick"/>
+                    </Style>
+                    <Style TargetType="Button">
+                        <Style.Setters>
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </Style.Setters>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=InstallType, Converter={StaticResource InstallTypeStringConverter}}" Value="Manual">
+                                <Setter Property="IsEnabled" Value="True"/>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid Margin="3,0,3,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition x:Name="IconColumn" Width="20"/>
                                         <ColumnDefinition x:Name="PathColumn" Width="*"/>
                                         <ColumnDefinition x:Name="DeleteColumn" Width="20"/>
                                     </Grid.ColumnDefinitions>
-                                    <Image x:Name="SourceImage" Grid.Column="0" Source="{Binding Path=InstallType, Converter={StaticResource InstallTypeConverter}}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Path=InstallPath}" Style="{StaticResource PathTextBlock}" Margin="10,0,0,0"/>
-                                    <Button x:Name="DeleteButton" Grid.Column="2" Visibility="Hidden"
-                                            Command="Delete" Style="{StaticResource DeleteButtonStyle}">
-                                        <TextBlock Text="-" Margin="0,-2,0,0" Foreground="Red"/>
+                                    <Image x:Name="SourceImage" Grid.Column="0" Source="{Binding Path=InstallType, Converter={StaticResource InstallTypeImageConverter}}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Path=InstallPath}" Style="{StaticResource PathTextBlock}" Margin="10,0,10,0" />
+                                    <Button x:Name="DeleteButton" Grid.Column="2" 
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.RemoveInstall}"
+                                            CommandParameter="{Binding}" Margin="0,1,0,1">
+                                        <TextBlock Text="X" FontSize="15" VerticalAlignment="Center" Margin="0,-2,0,0" Foreground="Red"/>
                                     </Button>
                                 </Grid>
                             </DataTemplate>
@@ -75,7 +100,8 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="LocationInput" Grid.Column="0" Text="{Binding NewLocationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox x:Name="LocationInput" Grid.Column="0" Text="{Binding NewLocationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          VerticalContentAlignment="Center" />
                 <Button Grid.Column="1" Command="{Binding AddInstall}" CommandParameter="{Binding Text, ElementName=LocationInput}" IsDefault="{Binding IsFocused, ElementName=LocationInput}" Content="Add Location"/>
             </Grid>
         </Grid>

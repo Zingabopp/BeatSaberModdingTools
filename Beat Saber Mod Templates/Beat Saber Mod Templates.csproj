@@ -50,7 +50,9 @@
   <ItemGroup>
     <Compile Include="BeatSaberLocator.cs" />
     <Compile Include="Commands\OpenSettingsWindowCommand.cs" />
-    <Compile Include="Converters\InstallTypeConverter.cs" />
+    <Compile Include="Converters\InstallPathMultivalueConverter.cs" />
+    <Compile Include="Converters\InstallTypeImageConverter.cs" />
+    <Compile Include="Converters\InstallTypeStringConverter.cs" />
     <Compile Include="Converters\TrimmedTextBlockVisibilityConverter.cs" />
     <Compile Include="GeneralSettings.Designer.cs">
       <AutoGen>True</AutoGen>
