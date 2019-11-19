@@ -37,6 +37,8 @@ namespace BeatSaberModTemplates
             Settings.BuildReferenceType = (byte)newSettings.BuildReferenceType;
             Settings.Manifest_Author = newSettings.Manifest_Author;
             Settings.Manifest_Donation = newSettings.Manifest_Donation;
+            Settings.Manifest_AuthorEnabled = newSettings.Manifest_AuthorEnabled;
+            Settings.Manifest_DonationEnabled = newSettings.Manifest_DonationEnabled;
             Settings.Save();
         }
 
@@ -51,7 +53,8 @@ namespace BeatSaberModTemplates
             try
             {
                 CurrentSettings = new ReadOnlySettingsModel(Settings.ChosenInstallPath, Settings.GenerateUserFileWithTemplate, Settings.GenerateUserFileOnExisting,
-                     Settings.SetManifestJsonDefaults, Settings.CopyToIPAPendingOnBuild, (BuildReferenceType)Settings.BuildReferenceType, Settings.Manifest_Author, Settings.Manifest_Donation);
+                     Settings.SetManifestJsonDefaults, Settings.CopyToIPAPendingOnBuild, (BuildReferenceType)Settings.BuildReferenceType,
+                     Settings.Manifest_Author, Settings.Manifest_Donation, Settings.Manifest_AuthorEnabled, Settings.Manifest_DonationEnabled);
             }
             catch (NullReferenceException)
             {

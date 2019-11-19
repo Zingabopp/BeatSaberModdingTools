@@ -22,9 +22,9 @@ namespace BeatSaberModTemplates.Models
 
         string Manifest_Author { get; }
 
-        bool Manifest_AuthorEnabled { get; }
-
         string Manifest_Donation { get; }
+
+        bool Manifest_AuthorEnabled { get; }
 
         bool Manifest_DonationEnabled { get; }
     }

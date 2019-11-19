@@ -118,5 +118,29 @@ namespace BeatSaberModTemplates.Properties {
                 this["Manifest_Donation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Manifest_AuthorEnabled {
+            get {
+                return ((bool)(this["Manifest_AuthorEnabled"]));
+            }
+            set {
+                this["Manifest_AuthorEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Manifest_DonationEnabled {
+            get {
+                return ((bool)(this["Manifest_DonationEnabled"]));
+            }
+            set {
+                this["Manifest_DonationEnabled"] = value;
+            }
+        }
     }
 }

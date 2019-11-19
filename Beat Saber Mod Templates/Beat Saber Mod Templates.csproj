@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BeatSaberLocator.cs" />
     <Compile Include="Commands\OpenSettingsWindowCommand.cs" />
+    <Compile Include="Converters\ComparisonConverter.cs" />
     <Compile Include="Converters\InstallPathMultivalueConverter.cs" />
     <Compile Include="Converters\InstallTypeImageConverter.cs" />
     <Compile Include="Converters\InstallTypeStringConverter.cs" />

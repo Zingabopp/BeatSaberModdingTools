@@ -26,13 +26,17 @@ namespace BeatSaberModTemplates.Models
 
         public string Manifest_Donation { get; }
 
+        public bool Manifest_AuthorEnabled { get; }
+
+        public bool Manifest_DonationEnabled { get; }
+
         public ReadOnlySettingsModel()
         {
             ChosenInstallPath = string.Empty;
         }
 
         public ReadOnlySettingsModel(string chosenPath, bool genUserWithTemp, bool genUserExisting, bool setManDefaults, bool copyToPending,
-            BuildReferenceType buildReferenceType, string manifest_Author, string manifest_Donation)
+            BuildReferenceType buildReferenceType, string manifest_Author, string manifest_Donation, bool manifest_AuthorEnabled, bool manifest_DonationEnabled)
         {
             ChosenInstallPath = chosenPath;
             GenerateUserFileWithTemplate = genUserWithTemp;
@@ -42,6 +46,8 @@ namespace BeatSaberModTemplates.Models
             BuildReferenceType = buildReferenceType;
             Manifest_Author = manifest_Author;
             Manifest_Donation = manifest_Donation;
+            Manifest_AuthorEnabled = manifest_AuthorEnabled;
+            Manifest_DonationEnabled = manifest_DonationEnabled;
         }
 
         public ReadOnlySettingsModel(ISettingsModel settingsModel)
@@ -54,6 +60,9 @@ namespace BeatSaberModTemplates.Models
             BuildReferenceType = settingsModel.BuildReferenceType;
             Manifest_Author = settingsModel.Manifest_Author;
             Manifest_Donation = settingsModel.Manifest_Donation;
+            Manifest_AuthorEnabled = settingsModel.Manifest_AuthorEnabled;
+            Manifest_DonationEnabled = settingsModel.Manifest_DonationEnabled;
+
         }
 
         public bool Equals(ISettingsModel other)
@@ -65,7 +74,9 @@ namespace BeatSaberModTemplates.Models
                 && BuildReferenceType == other.BuildReferenceType
                 && ChosenInstallPath == other.ChosenInstallPath
                 && Manifest_Author == other.Manifest_Author
-                && Manifest_Donation == other.Manifest_Donation;
+                && Manifest_Donation == other.Manifest_Donation
+                && Manifest_AuthorEnabled == other.Manifest_AuthorEnabled
+                && Manifest_DonationEnabled == other.Manifest_DonationEnabled;
         }
 
         object ICloneable.Clone()

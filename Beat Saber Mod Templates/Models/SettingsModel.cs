@@ -26,6 +26,10 @@ namespace BeatSaberModTemplates.Models
 
         public string Manifest_Donation { get; set; }
 
+        public bool Manifest_AuthorEnabled { get; set; }
+
+        public bool Manifest_DonationEnabled { get; set; }
+
         public SettingsModel() 
         {
             ChosenInstallPath = string.Empty;
@@ -41,6 +45,8 @@ namespace BeatSaberModTemplates.Models
             BuildReferenceType = settingsModel.BuildReferenceType;
             Manifest_Author = settingsModel.Manifest_Author;
             Manifest_Donation = settingsModel.Manifest_Donation;
+            Manifest_AuthorEnabled = settingsModel.Manifest_AuthorEnabled;
+            Manifest_DonationEnabled = settingsModel.Manifest_DonationEnabled;
         }
 
         object ICloneable.Clone()
@@ -57,7 +63,9 @@ namespace BeatSaberModTemplates.Models
                 && BuildReferenceType == other.BuildReferenceType
                 && ChosenInstallPath == other.ChosenInstallPath
                 && Manifest_Author == other.Manifest_Author
-                && Manifest_Donation == other.Manifest_Donation;
+                && Manifest_Donation == other.Manifest_Donation
+                && Manifest_AuthorEnabled == other.Manifest_AuthorEnabled
+                && Manifest_DonationEnabled == other.Manifest_DonationEnabled;
         }
     }
 }

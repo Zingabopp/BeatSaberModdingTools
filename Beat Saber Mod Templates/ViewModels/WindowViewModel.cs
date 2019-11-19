@@ -36,7 +36,11 @@ namespace BeatSaberModTemplates.ViewModels
 
         public void SetInstallByPath(string path)
         {
-            path = Path.GetFullPath(path);
+            try
+            {
+                path = Path.GetFullPath(path);
+            }
+            catch { }
             if(!string.IsNullOrEmpty(path))
             {
                 var matchingInstall = BeatSaberLocations.Where(i => string.Equals(Path.GetFullPath(i.InstallPath), path, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();

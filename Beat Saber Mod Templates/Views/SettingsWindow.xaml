@@ -14,6 +14,7 @@
         <converters:InstallTypeImageConverter x:Key="InstallTypeImageConverter"/>
         <converters:InstallTypeStringConverter x:Key="InstallTypeStringConverter"/>
         <converters:InstallPathMultivalueConverter x:Key="InstallPathMultivalueConverter"/>
+        <converters:ComparisonConverter x:Key="ComparisonConverter"/>
         <converters:TrimmedTextBlockVisibilityConverter x:Key="TrimToVisConverter"/>
         <CollectionViewSource x:Key="InstallListSource" Source="{Binding BeatSaberLocations}" d:Source="{Binding DesignExample}"/>
         <vm:WindowViewModel x:Key="ViewModel"/>
@@ -129,9 +130,9 @@
                                 <Setter Property="Margin" Value="0,3,0,0"/>
                             </Style>
                         </StackPanel.Resources>
-                        <RadioButton GroupName="ReferenceSource" IsChecked="True">csproj.user file</RadioButton>
-                        <RadioButton GroupName="ReferenceSource">BS Plugin BuildTools</RadioButton>
-                        <RadioButton GroupName="ReferenceSource">Directory Junctions</RadioButton>
+                        <RadioButton GroupName="ReferenceSource" IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.UserFile}}">csproj.user file</RadioButton>
+                        <RadioButton GroupName="ReferenceSource" IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.BuildTools}}">BS Plugin BuildTools</RadioButton>
+                        <RadioButton GroupName="ReferenceSource" IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.DirectoryJunctions}}">Directory Junctions</RadioButton>
                     </StackPanel>
                 </GroupBox>
             </StackPanel>

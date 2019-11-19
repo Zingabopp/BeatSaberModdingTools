@@ -173,6 +173,42 @@ namespace BeatSaberModTemplates.ViewModels
                 }
             }
         }
+
+        public bool Manifest_AuthorEnabledChanged { get; private set; }
+        public bool Manifest_AuthorEnabled
+        {
+            get { return CurrentSettings?.Manifest_AuthorEnabled ?? PreviousSettings.Manifest_AuthorEnabled; }
+            set
+            {
+                if (CurrentSettings?.Manifest_AuthorEnabled == value)
+                    return;
+                CurrentSettings.Manifest_AuthorEnabled = value;
+                NotifyPropertyChanged();
+                if ((CurrentSettings.Manifest_AuthorEnabled == PreviousSettings.Manifest_AuthorEnabled) != Manifest_AuthorEnabledChanged)
+                {
+                    Manifest_AuthorEnabledChanged = !Manifest_AuthorEnabledChanged;
+                    NotifyPropertyChanged(nameof(Manifest_AuthorEnabledChanged));
+                }
+            }
+        }
+
+        public bool Manifest_DonationEnabledChanged { get; private set; }
+        public bool Manifest_DonationEnabled
+        {
+            get { return CurrentSettings?.Manifest_DonationEnabled ?? PreviousSettings.Manifest_DonationEnabled; }
+            set
+            {
+                if (CurrentSettings?.Manifest_DonationEnabled == value)
+                    return;
+                CurrentSettings.Manifest_DonationEnabled = value;
+                NotifyPropertyChanged();
+                if ((CurrentSettings.Manifest_DonationEnabled == PreviousSettings.Manifest_DonationEnabled) != Manifest_DonationEnabledChanged)
+                {
+                    Manifest_DonationEnabledChanged = !Manifest_DonationEnabledChanged;
+                    NotifyPropertyChanged(nameof(Manifest_DonationEnabledChanged));
+                }
+            }
+        }
         #endregion
 
     }

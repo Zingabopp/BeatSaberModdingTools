@@ -29,7 +29,6 @@ namespace BeatSaberModTemplates.Views
             WindowViewModel = new WindowViewModel();
             DataContext = WindowViewModel;
             InitializeComponent();
-            //DialogResult = true;
         }
 
         void ApplyButton_Click(object sender, RoutedEventArgs e)
