@@ -119,6 +119,60 @@ namespace BeatSaberModTemplates.ViewModels
                 }
             }
         }
+
+        public bool BuildReferenceTypeChanged { get; private set; }
+        public BuildReferenceType BuildReferenceType
+        {
+            get { return CurrentSettings?.BuildReferenceType ?? PreviousSettings.BuildReferenceType; }
+            set
+            {
+                if (CurrentSettings?.BuildReferenceType == value)
+                    return;
+                CurrentSettings.BuildReferenceType = value;
+                NotifyPropertyChanged();
+                if ((CurrentSettings.BuildReferenceType == PreviousSettings.BuildReferenceType) != BuildReferenceTypeChanged)
+                {
+                    BuildReferenceTypeChanged = !BuildReferenceTypeChanged;
+                    NotifyPropertyChanged(nameof(BuildReferenceTypeChanged));
+                }
+            }
+        }
+
+        public bool Manifest_AuthorChanged { get; private set; }
+        public string Manifest_Author
+        {
+            get { return CurrentSettings?.Manifest_Author ?? PreviousSettings.Manifest_Author; }
+            set
+            {
+                if (CurrentSettings?.Manifest_Author == value)
+                    return;
+                CurrentSettings.Manifest_Author = value;
+                NotifyPropertyChanged();
+                if ((CurrentSettings.Manifest_Author == PreviousSettings.Manifest_Author) != Manifest_AuthorChanged)
+                {
+                    Manifest_AuthorChanged = !Manifest_AuthorChanged;
+                    NotifyPropertyChanged(nameof(Manifest_AuthorChanged));
+                }
+            }
+        }
+
+        public bool Manifest_DonationChanged { get; private set; }
+        public string Manifest_Donation
+        {
+            get { return CurrentSettings?.Manifest_Donation ?? PreviousSettings.Manifest_Donation; }
+            set
+            {
+                if (CurrentSettings?.Manifest_Donation == value)
+                    return;
+                CurrentSettings.Manifest_Donation = value;
+                NotifyPropertyChanged();
+                if ((CurrentSettings.Manifest_Donation == PreviousSettings.Manifest_Donation) != Manifest_DonationChanged)
+                {
+                    Manifest_DonationChanged = !Manifest_DonationChanged;
+                    NotifyPropertyChanged(nameof(Manifest_DonationChanged));
+                }
+            }
+        }
         #endregion
 
     }

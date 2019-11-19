@@ -20,18 +20,28 @@ namespace BeatSaberModTemplates.Models
 
         public bool CopyToIPAPendingOnBuild { get; }
 
+        public BuildReferenceType BuildReferenceType { get; }
+
+        public string Manifest_Author { get; }
+
+        public string Manifest_Donation { get; }
+
         public ReadOnlySettingsModel()
         {
             ChosenInstallPath = string.Empty;
         }
 
-        public ReadOnlySettingsModel(string chosenPath, bool genUserWithTemp, bool genUserExisting, bool setManDefaults, bool copyToPending)
+        public ReadOnlySettingsModel(string chosenPath, bool genUserWithTemp, bool genUserExisting, bool setManDefaults, bool copyToPending,
+            BuildReferenceType buildReferenceType, string manifest_Author, string manifest_Donation)
         {
             ChosenInstallPath = chosenPath;
             GenerateUserFileWithTemplate = genUserWithTemp;
             GenerateUserFileOnExisting = genUserExisting;
             SetManifestJsonDefaults = setManDefaults;
             CopyToIPAPendingOnBuild = copyToPending;
+            BuildReferenceType = buildReferenceType;
+            Manifest_Author = manifest_Author;
+            Manifest_Donation = manifest_Donation;
         }
 
         public ReadOnlySettingsModel(ISettingsModel settingsModel)
@@ -41,6 +51,9 @@ namespace BeatSaberModTemplates.Models
             GenerateUserFileOnExisting = settingsModel.GenerateUserFileOnExisting;
             SetManifestJsonDefaults = settingsModel.SetManifestJsonDefaults;
             CopyToIPAPendingOnBuild = settingsModel.CopyToIPAPendingOnBuild;
+            BuildReferenceType = settingsModel.BuildReferenceType;
+            Manifest_Author = settingsModel.Manifest_Author;
+            Manifest_Donation = settingsModel.Manifest_Donation;
         }
 
         public bool Equals(ISettingsModel other)
@@ -49,7 +62,10 @@ namespace BeatSaberModTemplates.Models
                 && GenerateUserFileOnExisting == other.GenerateUserFileOnExisting
                 && SetManifestJsonDefaults == other.SetManifestJsonDefaults
                 && CopyToIPAPendingOnBuild == other.CopyToIPAPendingOnBuild
-                && ChosenInstallPath == other.ChosenInstallPath;
+                && BuildReferenceType == other.BuildReferenceType
+                && ChosenInstallPath == other.ChosenInstallPath
+                && Manifest_Author == other.Manifest_Author
+                && Manifest_Donation == other.Manifest_Donation;
         }
 
         object ICloneable.Clone()

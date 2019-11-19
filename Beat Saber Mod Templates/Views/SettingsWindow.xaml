@@ -107,7 +107,7 @@
             </Grid>
         </Grid>
         </GroupBox>
-        <UniformGrid x:Name="SettingsGrid" Columns="2" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,0">
+        <UniformGrid x:Name="SettingsGrid" Columns="2" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,0" DataContext="{Binding SettingsViewModel}">
             <StackPanel>
             <GroupBox Header="Automation" Grid.Column="0" Height="Auto" VerticalAlignment="Top" Margin="3,0,0,0">
                     <StackPanel Orientation="Vertical">
@@ -116,10 +116,10 @@
                                 <Setter Property="Margin" Value="5,7,0,0"/>
                             </Style>
                         </StackPanel.Resources>
-                        <CheckBox Content="Generate csproj.user on template creation."/>
-                        <CheckBox Content="Generate csproj.user on project load." ToolTip="Creates a csproj.user file when a compatible project is opened."/>
-                        <CheckBox x:Name="ChkManifestDefaults" Content="Fill manifest.json defaults." ToolTip="Fills in your set defaults in manifest.json when a project is created with a template."/>
-                        <CheckBox Content="Copy plugin to Beat Saber on Build." ToolTip="Copies the plugin to IPA\Pending."/>
+                        <CheckBox Content="Generate csproj.user on template creation." IsChecked="{Binding GenerateUserFileWithTemplate, Mode=TwoWay}"/>
+                        <CheckBox Content="Generate csproj.user on project load." IsChecked="{Binding GenerateUserFileOnExisting, Mode=TwoWay}" ToolTip="Creates a csproj.user file when a compatible project is opened."/>
+                        <CheckBox x:Name="ChkManifestDefaults" Content="Fill manifest.json defaults." IsChecked="{Binding SetManifestJsonDefaults, Mode=TwoWay}" ToolTip="Fills in your set defaults in manifest.json when a project is created with a template."/>
+                        <CheckBox Content="Copy plugin to Beat Saber on Build." IsChecked="{Binding CopyToIPAPendingOnBuild, Mode=TwoWay}" ToolTip="Copies the plugin to IPA\Pending."/>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Reference Source Type:" Margin="3,0,0,0">
@@ -157,7 +157,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <CheckBox Content="Author:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="1"/>
+                        <TextBox Grid.Column="1" Text="{Binding Manifest_Author, Mode=TwoWay}"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -165,7 +165,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <CheckBox Content="Donation Link:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="1"/>
+                        <TextBox Grid.Column="1" Text="{Binding Manifest_Donation, Mode=TwoWay}"/>
                     </Grid>
                 </StackPanel>
             </GroupBox>

@@ -52,7 +52,6 @@ namespace BeatSaberModTemplates
             await SetBeatSaberDirCommand.InitializeAsync(this);
             await BeatSaberModTemplates.Commands.OpenSettingsWindowCommand.InitializeAsync(this);
             BSMTSettingsManager.Initialize();
-            BSMTSettingsManager.Store(new SettingsModel(BSMTSettingsManager.CurrentSettings) { ChosenInstallPath = "TestTest" });
         }
 
         #endregion

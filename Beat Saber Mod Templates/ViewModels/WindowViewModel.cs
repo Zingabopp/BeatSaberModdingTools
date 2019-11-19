@@ -31,6 +31,24 @@ namespace BeatSaberModTemplates.ViewModels
             AddLocation(new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam));
             AddLocation(new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus));
             AddLocation(new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual));
+            SetInstallByPath(SettingsViewModel.CurrentSettings.ChosenInstallPath);
+        }
+
+        public void SetInstallByPath(string path)
+        {
+            path = Path.GetFullPath(path);
+            if(!string.IsNullOrEmpty(path))
+            {
+                var matchingInstall = BeatSaberLocations.Where(i => string.Equals(Path.GetFullPath(i.InstallPath), path, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                if (matchingInstall != null)
+                    ChosenInstall = matchingInstall;
+                else
+                {
+                    var newInstall = new BeatSaberInstall(path, InstallType.Manual);
+                    BeatSaberLocations.Add(newInstall);
+                    ChosenInstall = newInstall;
+                }
+            }
         }
 
         #region Public Properties
@@ -77,6 +95,7 @@ namespace BeatSaberModTemplates.ViewModels
                 if (_chosenInstall == value || value == null)
                     return;
                 _chosenInstall = value;
+                SettingsViewModel.ChosenInstallPath = _chosenInstall.InstallPath;
                 NotifyPropertyChanged();
             }
         }

@@ -17,5 +17,22 @@ namespace BeatSaberModTemplates.Models
         bool SetManifestJsonDefaults { get; }
 
         bool CopyToIPAPendingOnBuild { get; }
+
+        BuildReferenceType BuildReferenceType { get; }
+
+        string Manifest_Author { get; }
+
+        bool Manifest_AuthorEnabled { get; }
+
+        string Manifest_Donation { get; }
+
+        bool Manifest_DonationEnabled { get; }
+    }
+
+    public enum BuildReferenceType : byte
+    {
+        UserFile = 0,
+        BuildTools = 1,
+        DirectoryJunctions = 2
     }
 }

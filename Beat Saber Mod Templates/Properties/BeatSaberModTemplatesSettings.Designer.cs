@@ -25,7 +25,7 @@ namespace BeatSaberModTemplates.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Test")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ChosenInstallPath {
             get {
                 return ((string)(this["ChosenInstallPath"]));
@@ -80,6 +80,42 @@ namespace BeatSaberModTemplates.Properties {
             }
             set {
                 this["CopyToIPAPendingOnBuild"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte BuildReferenceType {
+            get {
+                return ((byte)(this["BuildReferenceType"]));
+            }
+            set {
+                this["BuildReferenceType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Manifest_Author {
+            get {
+                return ((string)(this["Manifest_Author"]));
+            }
+            set {
+                this["Manifest_Author"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Manifest_Donation {
+            get {
+                return ((string)(this["Manifest_Donation"]));
+            }
+            set {
+                this["Manifest_Donation"] = value;
             }
         }
     }
