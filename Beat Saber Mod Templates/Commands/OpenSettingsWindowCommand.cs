@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using BeatSaberModTemplates.Views;
 using Task = System.Threading.Tasks.Task;
+using Microsoft.VisualStudio.Shell.Settings;
 
 namespace BeatSaberModTemplates.Commands
 {
@@ -100,8 +101,10 @@ namespace BeatSaberModTemplates.Commands
 
             //IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             var settingsDialog = new SettingsWindow();
-            var returnedTrue = settingsDialog.ShowDialog();
-            Console.Write($"DialogResult is {returnedTrue}");
+            
+            var returnedTrue = settingsDialog.ShowDialog() ?? false;
+            if (returnedTrue)
+                BSMTSettingsManager.Store(settingsDialog.ReturnSettings);
         }
     }
 }

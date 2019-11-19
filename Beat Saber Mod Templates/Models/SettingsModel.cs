@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace BeatSaberModTemplates.Models
 {
-    public class SettingsModel : ReadOnlySettingsModel
+    public class SettingsModel : ISettingsModel
     {
 
-        public override string ChosenInstallPath { get; set; }
+        public string ChosenInstallPath { get; set; }
 
         public bool GenerateUserFileWithTemplate { get; set; }
 
@@ -19,5 +19,33 @@ namespace BeatSaberModTemplates.Models
         public bool SetManifestJsonDefaults { get; set; }
 
         public bool CopyToIPAPendingOnBuild { get; set; }
+
+        public SettingsModel() 
+        {
+            ChosenInstallPath = string.Empty;
+        }
+
+        public SettingsModel(ISettingsModel settingsModel)
+        {
+            ChosenInstallPath = settingsModel.ChosenInstallPath;
+            GenerateUserFileWithTemplate = settingsModel.GenerateUserFileWithTemplate;
+            GenerateUserFileOnExisting = settingsModel.GenerateUserFileOnExisting;
+            SetManifestJsonDefaults = settingsModel.SetManifestJsonDefaults;
+            CopyToIPAPendingOnBuild = settingsModel.CopyToIPAPendingOnBuild;
+        }
+
+        object ICloneable.Clone()
+        {
+            return new SettingsModel(this);
+        }
+
+        public bool Equals(ISettingsModel other)
+        {
+            return GenerateUserFileWithTemplate == other.GenerateUserFileWithTemplate
+                && GenerateUserFileOnExisting == other.GenerateUserFileOnExisting
+                && SetManifestJsonDefaults == other.SetManifestJsonDefaults
+                && CopyToIPAPendingOnBuild == other.CopyToIPAPendingOnBuild
+                && ChosenInstallPath == other.ChosenInstallPath;
+        }
     }
 }

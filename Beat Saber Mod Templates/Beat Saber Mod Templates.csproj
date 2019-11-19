@@ -66,6 +66,12 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Beat_Saber_Mod_TemplatesPackage.cs" />
+    <Compile Include="Properties\BeatSaberModTemplatesSettings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>BeatSaberModTemplatesSettings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="BSMTSettingsManager.cs" />
     <Compile Include="Utilities\IExecuteWithObject.cs" />
     <Compile Include="Utilities\IExecuteWithObjectAndResult.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
@@ -87,6 +93,10 @@
     <None Include="GeneralSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>GeneralSettings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Properties\BeatSaberModTemplatesSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>BeatSaberModTemplatesSettings.Designer.cs</LastGenOutput>
     </None>
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>

@@ -4,6 +4,7 @@ using System.Threading;
 using Microsoft.VisualStudio.Shell;
 using BeatSaberModTemplates.Commands;
 using Task = System.Threading.Tasks.Task;
+using BeatSaberModTemplates.Models;
 
 namespace BeatSaberModTemplates
 {
@@ -50,6 +51,8 @@ namespace BeatSaberModTemplates
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await SetBeatSaberDirCommand.InitializeAsync(this);
             await BeatSaberModTemplates.Commands.OpenSettingsWindowCommand.InitializeAsync(this);
+            BSMTSettingsManager.Initialize();
+            BSMTSettingsManager.Store(new SettingsModel(BSMTSettingsManager.CurrentSettings) { ChosenInstallPath = "TestTest" });
         }
 
         #endregion

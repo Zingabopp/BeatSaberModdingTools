@@ -17,9 +17,5 @@ namespace BeatSaberModTemplates.Models
         bool SetManifestJsonDefaults { get; }
 
         bool CopyToIPAPendingOnBuild { get; }
-
-        T Clone<T>() where T : ISettingsModel;
-
-        bool Equals(SettingsModel other)
     }
 }

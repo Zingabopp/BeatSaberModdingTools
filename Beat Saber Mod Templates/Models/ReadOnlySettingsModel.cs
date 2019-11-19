@@ -7,44 +7,54 @@ using System.Threading.Tasks;
 
 namespace BeatSaberModTemplates.Models
 {
-    public class ReadOnlySettingsModel : ICloneable, IEquatable<SettingsModel>
+    public class ReadOnlySettingsModel : ISettingsModel
     {
 
-        public virtual string ChosenInstallPath { get; }
+        public string ChosenInstallPath { get; }
 
-        public bool GenerateUserFileWithTemplate { get; protected set; }
+        public bool GenerateUserFileWithTemplate { get; }
 
-        public bool GenerateUserFileOnExisting { get; protected set; }
+        public bool GenerateUserFileOnExisting { get; }
 
-        public bool SetManifestJsonDefaults { get; protected set; }
+        public bool SetManifestJsonDefaults { get; }
 
-        public bool CopyToIPAPendingOnBuild { get; protected set; }
+        public bool CopyToIPAPendingOnBuild { get; }
 
-        object ICloneable.Clone()
+        public ReadOnlySettingsModel()
         {
-            return Clone();
+            ChosenInstallPath = string.Empty;
         }
 
-        public SettingsModel Clone()
+        public ReadOnlySettingsModel(string chosenPath, bool genUserWithTemp, bool genUserExisting, bool setManDefaults, bool copyToPending)
         {
-            var cloned = new SettingsModel()
-            {
-                ChosenInstallPath = ChosenInstallPath,
-                GenerateUserFileWithTemplate = GenerateUserFileWithTemplate,
-                GenerateUserFileOnExisting = GenerateUserFileOnExisting,
-                SetManifestJsonDefaults = SetManifestJsonDefaults,
-                CopyToIPAPendingOnBuild = CopyToIPAPendingOnBuild
-            };
-            return cloned;
+            ChosenInstallPath = chosenPath;
+            GenerateUserFileWithTemplate = genUserWithTemp;
+            GenerateUserFileOnExisting = genUserExisting;
+            SetManifestJsonDefaults = setManDefaults;
+            CopyToIPAPendingOnBuild = copyToPending;
         }
 
-        public bool Equals(SettingsModel other)
+        public ReadOnlySettingsModel(ISettingsModel settingsModel)
+        {
+            ChosenInstallPath = settingsModel.ChosenInstallPath;
+            GenerateUserFileWithTemplate = settingsModel.GenerateUserFileWithTemplate;
+            GenerateUserFileOnExisting = settingsModel.GenerateUserFileOnExisting;
+            SetManifestJsonDefaults = settingsModel.SetManifestJsonDefaults;
+            CopyToIPAPendingOnBuild = settingsModel.CopyToIPAPendingOnBuild;
+        }
+
+        public bool Equals(ISettingsModel other)
         {
             return GenerateUserFileWithTemplate == other.GenerateUserFileWithTemplate
                 && GenerateUserFileOnExisting == other.GenerateUserFileOnExisting
                 && SetManifestJsonDefaults == other.SetManifestJsonDefaults
                 && CopyToIPAPendingOnBuild == other.CopyToIPAPendingOnBuild
                 && ChosenInstallPath == other.ChosenInstallPath;
+        }
+
+        object ICloneable.Clone()
+        {
+            return new ReadOnlySettingsModel(this);
         }
     }
 }

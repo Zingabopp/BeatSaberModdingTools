@@ -49,9 +49,14 @@ namespace BeatSaberModTemplates.Views
             Close();
         }
 
+        public SettingsModel ReturnSettings
+        {
+            get { return WindowViewModel.SettingsViewModel.CurrentSettings; }
+        }
+
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(e.Source is DataGridRow dataGridRow && dataGridRow.DataContext is BeatSaberInstall install)
+            if (e.Source is DataGridRow dataGridRow && dataGridRow.DataContext is BeatSaberInstall install)
             {
                 WindowViewModel.ChosenInstall = install;
                 e.Handled = true;

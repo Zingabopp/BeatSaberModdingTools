@@ -27,12 +27,15 @@ namespace BeatSaberModTemplates.ViewModels
         {
             var detectedLocations = BeatSaberLocator.GetBeatSaberPathsFromRegistry();
             BeatSaberLocations = new ObservableCollection<BeatSaberInstall>(detectedLocations);
+            SettingsViewModel = new SettingsViewModel();
             AddLocation(new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam));
             AddLocation(new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus));
             AddLocation(new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual));
         }
 
         #region Public Properties
+        public SettingsViewModel SettingsViewModel { get; set; }
+
         private ObservableCollection<BeatSaberInstall> _beatSaberLocations;
         /// <summary>
         /// An <see cref="ObservableCollection{T}"/> of <see cref="BeatSaberInstall"/>.
