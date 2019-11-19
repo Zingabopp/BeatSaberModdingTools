@@ -8,7 +8,7 @@
              xmlns:models="clr-namespace:BeatSaberModTemplates.Models"
              xmlns:converters="clr-namespace:BeatSaberModTemplates.Converters"
              mc:Ignorable="d"
-             Height="425" Width="550" ResizeMode="NoResize" ShowInTaskbar="True" Title="Beat Saber Mod Template Settings" Topmost="True"
+             Height="425" Width="580" ResizeMode="NoResize" ShowInTaskbar="True" Title="Beat Saber Mod Template Settings" Topmost="True"
         d:DataContext="{d:DesignInstance Type=vm:WindowViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <converters:InstallTypeImageConverter x:Key="InstallTypeImageConverter"/>
@@ -18,6 +18,13 @@
         <converters:TrimmedTextBlockVisibilityConverter x:Key="TrimToVisConverter"/>
         <CollectionViewSource x:Key="InstallListSource" Source="{Binding BeatSaberLocations}" d:Source="{Binding DesignExample}"/>
         <vm:WindowViewModel x:Key="ViewModel"/>
+        <Style x:Key="BoldOnChange" TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding}" Value="True">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="PathTextBlock" TargetType="{x:Type TextBlock}">
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             <Setter Property="ToolTip">
@@ -50,74 +57,76 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <GroupBox Header="Beat Saber Locations" Grid.Row="0">
-        <Grid x:Name="LocationListGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
-            </Grid.RowDefinitions>
-            <DataGrid Grid.Row="0" ItemsSource="{Binding Source={StaticResource InstallListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" 
+            <Grid x:Name="LocationListGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <DataGrid Grid.Row="0" ItemsSource="{Binding Source={StaticResource InstallListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" 
                       SelectionMode="Single" IsManipulationEnabled="False" RowHeight="22" CanUserResizeRows="False" CanUserResizeColumns="False"
                       RowHeaderWidth="0">
-                <DataGrid.Resources>
-                    <Style TargetType="DataGridRow">
-                        <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick"/>
-                    </Style>
-                    <Style TargetType="Button">
-                        <Style.Setters>
-                            <Setter Property="Visibility" Value="Hidden"/>
-                        </Style.Setters>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=InstallType, Converter={StaticResource InstallTypeStringConverter}}" Value="Manual">
-                                <Setter Property="IsEnabled" Value="True"/>
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid Margin="3,0,3,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition x:Name="IconColumn" Width="20"/>
-                                        <ColumnDefinition x:Name="PathColumn" Width="*"/>
-                                        <ColumnDefinition x:Name="DeleteColumn" Width="20"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image x:Name="SourceImage" Grid.Column="0" Source="{Binding Path=InstallType, Converter={StaticResource InstallTypeImageConverter}}"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Path=InstallPath}" Style="{StaticResource PathTextBlock}" Margin="10,0,10,0" />
-                                    <Button x:Name="DeleteButton" Grid.Column="2" 
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridRow">
+                            <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick"/>
+                        </Style>
+                        <Style TargetType="Button">
+                            <Style.Setters>
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </Style.Setters>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=InstallType, Converter={StaticResource InstallTypeStringConverter}}" Value="Manual">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="3,0,3,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition x:Name="IconColumn" Width="20"/>
+                                            <ColumnDefinition x:Name="PathColumn" Width="*"/>
+                                            <ColumnDefinition x:Name="DeleteColumn" Width="20"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image x:Name="SourceImage" Grid.Column="0" Source="{Binding Path=InstallType, Converter={StaticResource InstallTypeImageConverter}}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Path=InstallPath}" Style="{StaticResource PathTextBlock}" Margin="10,0,10,0" />
+                                        <Button x:Name="DeleteButton" Grid.Column="2" 
                                             Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.RemoveInstall}"
                                             CommandParameter="{Binding}" Margin="0,1,0,1">
-                                        <TextBlock Text="X" FontSize="15" VerticalAlignment="Center" Margin="0,-2,0,0" Foreground="Red"/>
-                                    </Button>
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-            <Grid x:Name="AddLocationGrid" Grid.Row="1" Margin="0,5,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="100"/>
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="LocationInput" Grid.Column="0" Text="{Binding NewLocationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            <TextBlock Text="X" FontSize="15" VerticalAlignment="Center" Margin="0,-2,0,0" Foreground="Red"/>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Grid x:Name="AddLocationGrid" Grid.Row="1" Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="LocationInput" Grid.Column="0" Text="{Binding NewLocationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                           VerticalContentAlignment="Center" />
-                <Button Grid.Column="1" Margin="5,0,0,0" Command="{Binding AddInstall}" CommandParameter="{Binding Text, ElementName=LocationInput}" IsDefault="{Binding IsFocused, ElementName=LocationInput}" Content="Add Location"/>
+                    <Button Grid.Column="1" Margin="5,0,0,0" Command="{Binding AddInstall}" CommandParameter="{Binding Text, ElementName=LocationInput}" IsDefault="{Binding IsFocused, ElementName=LocationInput}" Content="Add Location"/>
+                </Grid>
             </Grid>
-        </Grid>
         </GroupBox>
         <UniformGrid x:Name="SettingsGrid" Columns="2" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,0" DataContext="{Binding SettingsViewModel}">
             <StackPanel>
-            <GroupBox Header="Automation" Grid.Column="0" Height="Auto" VerticalAlignment="Top" Margin="3,0,0,0">
+                <GroupBox Header="Automation" Grid.Column="0" Height="Auto" VerticalAlignment="Top" Margin="3,0,0,0">
                     <StackPanel Orientation="Vertical">
                         <StackPanel.Resources>
                             <Style TargetType="CheckBox">
                                 <Setter Property="Margin" Value="5,7,0,0"/>
                             </Style>
                         </StackPanel.Resources>
-                        <CheckBox Content="Generate csproj.user on template creation." IsChecked="{Binding GenerateUserFileWithTemplate, Mode=TwoWay}"/>
+                        <CheckBox IsChecked="{Binding GenerateUserFileWithTemplate, Mode=TwoWay}">
+                            <TextBlock Text="Generate csproj.user on template creation." DataContext="{Binding GenerateUserFileWithTemplateChanged}" Style="{StaticResource BoldOnChange}"/>
+                        </CheckBox>
                         <CheckBox Content="Generate csproj.user on project load." IsChecked="{Binding GenerateUserFileOnExisting, Mode=TwoWay}" ToolTip="Creates a csproj.user file when a compatible project is opened."/>
                         <CheckBox x:Name="ChkManifestDefaults" Content="Fill manifest.json defaults." IsChecked="{Binding SetManifestJsonDefaults, Mode=TwoWay}" ToolTip="Fills in your set defaults in manifest.json when a project is created with a template."/>
                         <CheckBox Content="Copy plugin to Beat Saber on Build." IsChecked="{Binding CopyToIPAPendingOnBuild, Mode=TwoWay}" ToolTip="Copies the plugin to IPA\Pending."/>
@@ -128,16 +137,9 @@
                         <Style TargetType="RadioButton">
                             <Setter Property="Margin" Value="0,3,0,0"/>
                         </Style>
-                        <Style TargetType="TextBlock" x:Key="BoldHeader">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding BuildReferenceTypeChanged}" Value="True">
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
                     </GroupBox.Resources>
                     <GroupBox.Header>
-                        <TextBlock Text="Reference Source Type" Style="{StaticResource BoldHeader}"/>
+                        <TextBlock Text="Reference Source Type" DataContext="{Binding BuildReferenceTypeChanged}" Style="{StaticResource  BoldOnChange}"/>
                     </GroupBox.Header>
                     <StackPanel Orientation="Vertical">
                         <RadioButton GroupName="ReferenceSource" 
