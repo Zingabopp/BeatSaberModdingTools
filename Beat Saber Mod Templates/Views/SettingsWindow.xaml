@@ -123,16 +123,29 @@
                         <CheckBox Content="Copy plugin to Beat Saber on Build." IsChecked="{Binding CopyToIPAPendingOnBuild, Mode=TwoWay}" ToolTip="Copies the plugin to IPA\Pending."/>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Header="Reference Source Type:" Margin="3,0,0,0">
+                <GroupBox Margin="3,0,0,0">
+                    <GroupBox.Resources>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="Margin" Value="0,3,0,0"/>
+                        </Style>
+                        <Style TargetType="TextBlock" x:Key="BoldHeader">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BuildReferenceTypeChanged}" Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </GroupBox.Resources>
+                    <GroupBox.Header>
+                        <TextBlock Text="Reference Source Type" Style="{StaticResource BoldHeader}"/>
+                    </GroupBox.Header>
                     <StackPanel Orientation="Vertical">
-                        <StackPanel.Resources>
-                            <Style TargetType="RadioButton">
-                                <Setter Property="Margin" Value="0,3,0,0"/>
-                            </Style>
-                        </StackPanel.Resources>
-                        <RadioButton GroupName="ReferenceSource" IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.UserFile}}">csproj.user file</RadioButton>
-                        <RadioButton GroupName="ReferenceSource" IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.BuildTools}}">BS Plugin BuildTools</RadioButton>
-                        <RadioButton GroupName="ReferenceSource" IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.DirectoryJunctions}}">Directory Junctions</RadioButton>
+                        <RadioButton GroupName="ReferenceSource" 
+                                     IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.UserFile}}">csproj.user file</RadioButton>
+                        <RadioButton GroupName="ReferenceSource" 
+                                     IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.BuildTools}}">BS Plugin BuildTools</RadioButton>
+                        <RadioButton GroupName="ReferenceSource" 
+                                     IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.DirectoryJunctions}}">Directory Junctions</RadioButton>
                     </StackPanel>
                 </GroupBox>
             </StackPanel>

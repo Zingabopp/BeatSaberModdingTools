@@ -40,7 +40,7 @@ namespace BeatSaberModTemplates.ViewModels
                     return;
                 CurrentSettings.ChosenInstallPath = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.ChosenInstallPath == PreviousSettings.ChosenInstallPath) != ChosenInstallPathChanged)
+                if ((CurrentSettings.ChosenInstallPath == PreviousSettings.ChosenInstallPath) == ChosenInstallPathChanged)
                 {
                     ChosenInstallPathChanged = !ChosenInstallPathChanged;
                     NotifyPropertyChanged(nameof(ChosenInstallPathChanged));
@@ -58,7 +58,7 @@ namespace BeatSaberModTemplates.ViewModels
                     return;
                 CurrentSettings.GenerateUserFileWithTemplate = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.GenerateUserFileWithTemplate == PreviousSettings.GenerateUserFileWithTemplate) != GenerateUserFileWithTemplateChanged)
+                if ((CurrentSettings.GenerateUserFileWithTemplate == PreviousSettings.GenerateUserFileWithTemplate) == GenerateUserFileWithTemplateChanged)
                 {
                     GenerateUserFileWithTemplateChanged = !GenerateUserFileWithTemplateChanged;
                     NotifyPropertyChanged(nameof(GenerateUserFileWithTemplateChanged));
@@ -76,7 +76,7 @@ namespace BeatSaberModTemplates.ViewModels
                     return;
                 CurrentSettings.GenerateUserFileOnExisting = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.GenerateUserFileOnExisting == PreviousSettings.GenerateUserFileOnExisting) != GenerateUserFileOnExistingChanged)
+                if ((CurrentSettings.GenerateUserFileOnExisting == PreviousSettings.GenerateUserFileOnExisting) == GenerateUserFileOnExistingChanged)
                 {
                     GenerateUserFileOnExistingChanged = !GenerateUserFileOnExistingChanged;
                     NotifyPropertyChanged(nameof(GenerateUserFileOnExistingChanged));
@@ -94,7 +94,7 @@ namespace BeatSaberModTemplates.ViewModels
                     return;
                 CurrentSettings.SetManifestJsonDefaults = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.SetManifestJsonDefaults == PreviousSettings.SetManifestJsonDefaults) != SetManifestJsonDefaultsChanged)
+                if ((CurrentSettings.SetManifestJsonDefaults == PreviousSettings.SetManifestJsonDefaults) == SetManifestJsonDefaultsChanged)
                 {
                     SetManifestJsonDefaultsChanged = !SetManifestJsonDefaultsChanged;
                     NotifyPropertyChanged(nameof(SetManifestJsonDefaultsChanged));
@@ -112,7 +112,7 @@ namespace BeatSaberModTemplates.ViewModels
                     return;
                 CurrentSettings.CopyToIPAPendingOnBuild = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.CopyToIPAPendingOnBuild == PreviousSettings.CopyToIPAPendingOnBuild) != CopyToIPAPendingOnBuildChanged)
+                if ((CurrentSettings.CopyToIPAPendingOnBuild == PreviousSettings.CopyToIPAPendingOnBuild) == CopyToIPAPendingOnBuildChanged)
                 {
                     CopyToIPAPendingOnBuildChanged = !CopyToIPAPendingOnBuildChanged;
                     NotifyPropertyChanged(nameof(CopyToIPAPendingOnBuildChanged));
@@ -130,7 +130,7 @@ namespace BeatSaberModTemplates.ViewModels
                     return;
                 CurrentSettings.BuildReferenceType = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.BuildReferenceType == PreviousSettings.BuildReferenceType) != BuildReferenceTypeChanged)
+                if ((CurrentSettings.BuildReferenceType == PreviousSettings.BuildReferenceType) == BuildReferenceTypeChanged)
                 {
                     BuildReferenceTypeChanged = !BuildReferenceTypeChanged;
                     NotifyPropertyChanged(nameof(BuildReferenceTypeChanged));
@@ -148,7 +148,7 @@ namespace BeatSaberModTemplates.ViewModels
                     return;
                 CurrentSettings.Manifest_Author = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.Manifest_Author == PreviousSettings.Manifest_Author) != Manifest_AuthorChanged)
+                if ((CurrentSettings.Manifest_Author == PreviousSettings.Manifest_Author) == Manifest_AuthorChanged)
                 {
                     Manifest_AuthorChanged = !Manifest_AuthorChanged;
                     NotifyPropertyChanged(nameof(Manifest_AuthorChanged));
@@ -166,7 +166,7 @@ namespace BeatSaberModTemplates.ViewModels
                     return;
                 CurrentSettings.Manifest_Donation = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.Manifest_Donation == PreviousSettings.Manifest_Donation) != Manifest_DonationChanged)
+                if ((CurrentSettings.Manifest_Donation == PreviousSettings.Manifest_Donation) == Manifest_DonationChanged)
                 {
                     Manifest_DonationChanged = !Manifest_DonationChanged;
                     NotifyPropertyChanged(nameof(Manifest_DonationChanged));
@@ -184,7 +184,7 @@ namespace BeatSaberModTemplates.ViewModels
                     return;
                 CurrentSettings.Manifest_AuthorEnabled = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.Manifest_AuthorEnabled == PreviousSettings.Manifest_AuthorEnabled) != Manifest_AuthorEnabledChanged)
+                if ((CurrentSettings.Manifest_AuthorEnabled == PreviousSettings.Manifest_AuthorEnabled) == Manifest_AuthorEnabledChanged)
                 {
                     Manifest_AuthorEnabledChanged = !Manifest_AuthorEnabledChanged;
                     NotifyPropertyChanged(nameof(Manifest_AuthorEnabledChanged));
@@ -202,7 +202,7 @@ namespace BeatSaberModTemplates.ViewModels
                     return;
                 CurrentSettings.Manifest_DonationEnabled = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.Manifest_DonationEnabled == PreviousSettings.Manifest_DonationEnabled) != Manifest_DonationEnabledChanged)
+                if ((CurrentSettings.Manifest_DonationEnabled == PreviousSettings.Manifest_DonationEnabled) == Manifest_DonationEnabledChanged)
                 {
                     Manifest_DonationEnabledChanged = !Manifest_DonationEnabledChanged;
                     NotifyPropertyChanged(nameof(Manifest_DonationEnabledChanged));
