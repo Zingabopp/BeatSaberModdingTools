@@ -23,11 +23,11 @@ namespace BeatSaberModTemplates.Views
     /// </summary>
     public partial class SettingsWindow : Window
     {
-        SettingsViewModel SettingsViewModel;
+        WindowViewModel WindowViewModel;
         public SettingsWindow()
         {
-            SettingsViewModel = new SettingsViewModel();
-            DataContext = SettingsViewModel;
+            WindowViewModel = new WindowViewModel();
+            DataContext = WindowViewModel;
             InitializeComponent();
             //DialogResult = true;
         }
@@ -53,7 +53,7 @@ namespace BeatSaberModTemplates.Views
         {
             if(e.Source is DataGridRow dataGridRow && dataGridRow.DataContext is BeatSaberInstall install)
             {
-                SettingsViewModel.ChosenInstall = install;
+                WindowViewModel.ChosenInstall = install;
                 e.Handled = true;
             }
         }

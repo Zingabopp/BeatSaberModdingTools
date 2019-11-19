@@ -9,14 +9,14 @@
              xmlns:converters="clr-namespace:BeatSaberModTemplates.Converters"
              mc:Ignorable="d"
              Height="425" Width="550" ResizeMode="NoResize" ShowInTaskbar="True" Title="Beat Saber Mod Template Settings" Topmost="True"
-        d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel, IsDesignTimeCreatable=True}">
+        d:DataContext="{d:DesignInstance Type=vm:WindowViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <converters:InstallTypeImageConverter x:Key="InstallTypeImageConverter"/>
         <converters:InstallTypeStringConverter x:Key="InstallTypeStringConverter"/>
         <converters:InstallPathMultivalueConverter x:Key="InstallPathMultivalueConverter"/>
         <converters:TrimmedTextBlockVisibilityConverter x:Key="TrimToVisConverter"/>
         <CollectionViewSource x:Key="InstallListSource" Source="{Binding BeatSaberLocations}" d:Source="{Binding DesignExample}"/>
-        <vm:SettingsViewModel x:Key="ViewModel"/>
+        <vm:WindowViewModel x:Key="ViewModel"/>
         <Style x:Key="PathTextBlock" TargetType="{x:Type TextBlock}">
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             <Setter Property="ToolTip">
