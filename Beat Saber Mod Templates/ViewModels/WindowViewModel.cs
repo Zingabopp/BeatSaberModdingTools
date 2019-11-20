@@ -53,6 +53,10 @@ namespace BeatSaberModTemplates.ViewModels
                     ChosenInstall = newInstall;
                 }
             }
+            else
+            {
+                ChosenInstall = BeatSaberLocations.FirstOrDefault();
+            }
         }
 
         #region Public Properties

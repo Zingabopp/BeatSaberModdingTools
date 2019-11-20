@@ -25,6 +25,14 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="CheckBox" x:Key="ChkBxOnChanged">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding}" Value="True">
+                    <Setter  Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="PathTextBlock" TargetType="{x:Type TextBlock}">
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             <Setter Property="ToolTip">
@@ -53,10 +61,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="140" />
             <RowDefinition Height="*"/>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Beat Saber Locations" Grid.Row="0">
+        <GroupBox Grid.Row="0">
+            <GroupBox.Header>
+                <TextBlock Text="Beat Saber Locations" DataContext="{Binding SettingsViewModel.ChosenInstallPathChanged}" Style="{StaticResource BoldOnChange}"/>
+            </GroupBox.Header>
             <Grid x:Name="LocationListGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -115,7 +126,7 @@
                 </Grid>
             </Grid>
         </GroupBox>
-        <UniformGrid x:Name="SettingsGrid" Columns="2" Grid.Row="1" HorizontalAlignment="Center" Margin="0,5,0,0" DataContext="{Binding SettingsViewModel}">
+        <UniformGrid x:Name="SettingsGrid" Columns="2" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0,5,0,0" DataContext="{Binding SettingsViewModel}">
             <StackPanel>
                 <GroupBox Header="Automation" Grid.Column="0" Height="Auto" VerticalAlignment="Top" Margin="3,0,0,0">
                     <StackPanel Orientation="Vertical">
@@ -124,12 +135,25 @@
                                 <Setter Property="Margin" Value="5,7,0,0"/>
                             </Style>
                         </StackPanel.Resources>
-                        <CheckBox IsChecked="{Binding GenerateUserFileWithTemplate, Mode=TwoWay}">
+                        <CheckBox IsChecked="{Binding GenerateUserFileWithTemplate, Mode=TwoWay}"
+                                  ToolTip="Creates a csproj.user file on template creation.">
                             <TextBlock Text="Generate csproj.user on template creation." DataContext="{Binding GenerateUserFileWithTemplateChanged}" Style="{StaticResource BoldOnChange}"/>
                         </CheckBox>
-                        <CheckBox Content="Generate csproj.user on project load." IsChecked="{Binding GenerateUserFileOnExisting, Mode=TwoWay}" ToolTip="Creates a csproj.user file when a compatible project is opened."/>
-                        <CheckBox x:Name="ChkManifestDefaults" Content="Fill manifest.json defaults." IsChecked="{Binding SetManifestJsonDefaults, Mode=TwoWay}" ToolTip="Fills in your set defaults in manifest.json when a project is created with a template."/>
-                        <CheckBox Content="Copy plugin to Beat Saber on Build." IsChecked="{Binding CopyToIPAPendingOnBuild, Mode=TwoWay}" ToolTip="Copies the plugin to IPA\Pending."/>
+                        <CheckBox IsChecked="{Binding GenerateUserFileOnExisting, Mode=TwoWay}" 
+                                  ToolTip="Creates a csproj.user file when a compatible project is opened.">
+                            <TextBlock Text="Generate csproj.user on project load." 
+                                       DataContext="{Binding GenerateUserFileOnExistingChanged}" 
+                                       Style="{StaticResource BoldOnChange}"/>
+                        </CheckBox>
+                        <CheckBox x:Name="ChkManifestDefaults" 
+                                  IsChecked="{Binding SetManifestJsonDefaults, Mode=TwoWay}" 
+                                  ToolTip="Fills in your set defaults in manifest.json when a project is created with a template.">
+                            <TextBlock Text="Fill manifest.json defaults." DataContext="{Binding SetManifestJsonDefaultsChanged}" Style="{StaticResource BoldOnChange}"/>
+                        </CheckBox>
+                        <CheckBox IsChecked="{Binding CopyToIPAPendingOnBuild, Mode=TwoWay}" 
+                                  ToolTip="Copies the plugin to IPA\Pending.">
+                            <TextBlock Text="Copy plugin to Beat Saber on Build." DataContext="{Binding CopyToIPAPendingOnBuildChanged}" Style="{StaticResource BoldOnChange}"/>
+                        </CheckBox>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Margin="3,0,0,0">
@@ -172,7 +196,9 @@
                             <ColumnDefinition Width="105"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <CheckBox Content="Author:" Grid.Column="0" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="0" VerticalAlignment="Center" DataContex="{Binding Manifest_AuthorEnabledChanged}">
+                            <TextBlock Text="Author:" DataContext="{Binding Manifest_AuthorChanged}" Style="{StaticResource BoldOnChange}"/>
+                        </CheckBox>
                         <TextBox Grid.Column="1" Text="{Binding Manifest_Author, Mode=TwoWay}"/>
                     </Grid>
                     <Grid>
@@ -180,7 +206,9 @@
                             <ColumnDefinition Width="105"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <CheckBox Content="Donation Link:" Grid.Column="0" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="Donation Link:" DataContext="{Binding Manifest_DonationChanged}" Style="{StaticResource BoldOnChange}"/>
+                        </CheckBox>
                         <TextBox Grid.Column="1" Text="{Binding Manifest_Donation, Mode=TwoWay}"/>
                     </Grid>
                 </StackPanel>
@@ -193,14 +221,13 @@
                 <ColumnDefinition Width="10"/>
             </Grid.ColumnDefinitions>
             <UniformGrid Grid.Column="1" HorizontalAlignment="Right" Rows="1" Columns="2" >
-                <Button Margin="0,10,10,0" MinWidth="70" Click="OkButton_Click">
+                <Button Margin="0,0,10,0" MinWidth="80" Click="OkButton_Click">
                     <TextBlock Text="OK"/>
                 </Button>
-                <Button Margin="0,10,10,0" Click="CancelButton_Click">
+                <Button Margin="0,0,10,0" Click="CancelButton_Click">
                     <TextBlock Text="Cancel"/>
                 </Button>
             </UniformGrid>
         </Grid>
-
     </Grid>
 </Window>
