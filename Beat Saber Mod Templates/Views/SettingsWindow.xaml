@@ -28,8 +28,7 @@
         <Style TargetType="CheckBox" x:Key="ChkBxOnChanged">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding}" Value="True">
-                    <Setter  Property="BorderBrush" Value="Black"/>
-                    <Setter Property="BorderThickness" Value="2"/>
+                    <Setter Property="BorderBrush" Value="Red"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -193,21 +192,25 @@
                     </StackPanel.Resources>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="105"/>
+                            <ColumnDefinition Width="110"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Column="0" VerticalAlignment="Center" DataContex="{Binding Manifest_AuthorEnabledChanged}">
-                            <TextBlock Text="Author:" DataContext="{Binding Manifest_AuthorChanged}" Style="{StaticResource BoldOnChange}"/>
+                        <CheckBox Grid.Column="0" VerticalAlignment="Center"
+                                  IsChecked="{Binding RelativeSource={RelativeSource AncestorType=GroupBox, Mode=FindAncestor}, Path=DataContext.Manifest_AuthorEnabled, Mode=TwoWay}"
+                                  DataContext="{Binding Manifest_AuthorEnabledChanged}" Style="{StaticResource ChkBxOnChanged}">
+                            <TextBlock Text="Author:" DataContext="{Binding RelativeSource={RelativeSource AncestorType=GroupBox, Mode=FindAncestor}, Path=DataContext.Manifest_AuthorChanged}" Style="{StaticResource BoldOnChange}"/>
                         </CheckBox>
                         <TextBox Grid.Column="1" Text="{Binding Manifest_Author, Mode=TwoWay}"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="105"/>
+                            <ColumnDefinition Width="110"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <CheckBox Grid.Column="0" VerticalAlignment="Center">
-                            <TextBlock Text="Donation Link:" DataContext="{Binding Manifest_DonationChanged}" Style="{StaticResource BoldOnChange}"/>
+                        <CheckBox Grid.Column="0" VerticalAlignment="Center" 
+                                  IsChecked="{Binding RelativeSource={RelativeSource AncestorType=GroupBox, Mode=FindAncestor}, Path=DataContext.Manifest_DonationEnabled, Mode=TwoWay}"
+                                  DataContext="{Binding Manifest_DonationEnabledChanged}" Style="{StaticResource ChkBxOnChanged}">
+                            <TextBlock Text="Donation Link:" DataContext="{Binding RelativeSource={RelativeSource AncestorType=GroupBox, Mode=FindAncestor}, Path=DataContext.Manifest_DonationChanged}" Style="{StaticResource BoldOnChange}"/>
                         </CheckBox>
                         <TextBox Grid.Column="1" Text="{Binding Manifest_Donation, Mode=TwoWay}"/>
                     </Grid>
