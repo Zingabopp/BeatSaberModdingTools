@@ -83,5 +83,13 @@ namespace BeatSaberModTemplates.Models
         {
             return new ReadOnlySettingsModel(this);
         }
+
+        public override bool Equals(object other)
+        {
+            if (other is ISettingsModel settings)
+                return Equals(settings);
+            else
+                return false;
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BeatSaberModTemplates.Models
 {
-    public class SettingsModel : ISettingsModel
+    public class SettingsModel : ISettingsModel, IEquatable<ISettingsModel>
     {
 
         public string ChosenInstallPath { get; set; }
@@ -66,6 +66,14 @@ namespace BeatSaberModTemplates.Models
                 && Manifest_Donation == other.Manifest_Donation
                 && Manifest_AuthorEnabled == other.Manifest_AuthorEnabled
                 && Manifest_DonationEnabled == other.Manifest_DonationEnabled;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is ISettingsModel settings)
+                return Equals(settings);
+            else
+                return false;
         }
     }
 }
