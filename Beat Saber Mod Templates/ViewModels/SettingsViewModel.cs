@@ -1,4 +1,5 @@
 ﻿using BeatSaberModTemplates.Models;
+using BeatSaberModTemplates.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,16 @@ namespace BeatSaberModTemplates.ViewModels
         public SettingsViewModel()
         {
             CurrentSettings = new SettingsModel(PreviousSettings);
+            ExecuteOnAppSettingsChange = new WeakAction(() =>
+            {
+                NotifyPropertyChanged(string.Empty);
+            });
+            BSMTSettingsManager.SubscribeExecuteOnChange(ExecuteOnAppSettingsChange);
         }
 
         private ReadOnlySettingsModel PreviousSettings => BSMTSettingsManager.CurrentSettings;
         private SettingsModel _currentSettings;
+        private WeakAction ExecuteOnAppSettingsChange;
 
         public SettingsModel CurrentSettings
         {
@@ -30,7 +37,7 @@ namespace BeatSaberModTemplates.ViewModels
         }
 
         #region Settings Properties
-        public bool ChosenInstallPathChanged { get; private set; }
+        public bool ChosenInstallPathChanged => CurrentSettings.ChosenInstallPath != PreviousSettings.ChosenInstallPath;
         public string ChosenInstallPath
         {
             get { return CurrentSettings?.ChosenInstallPath ?? PreviousSettings.ChosenInstallPath; }
@@ -38,17 +45,15 @@ namespace BeatSaberModTemplates.ViewModels
             {
                 if (CurrentSettings?.ChosenInstallPath == value)
                     return;
+                bool oldChangedVal = ChosenInstallPathChanged;
                 CurrentSettings.ChosenInstallPath = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.ChosenInstallPath == PreviousSettings.ChosenInstallPath) == ChosenInstallPathChanged)
-                {
-                    ChosenInstallPathChanged = !ChosenInstallPathChanged;
+                if (oldChangedVal != ChosenInstallPathChanged)
                     NotifyPropertyChanged(nameof(ChosenInstallPathChanged));
-                }
             }
         }
 
-        public bool GenerateUserFileWithTemplateChanged { get; private set; }
+        public bool GenerateUserFileWithTemplateChanged => CurrentSettings.GenerateUserFileWithTemplate != PreviousSettings.GenerateUserFileWithTemplate;
         public bool GenerateUserFileWithTemplate
         {
             get { return CurrentSettings?.GenerateUserFileWithTemplate ?? PreviousSettings.GenerateUserFileWithTemplate; }
@@ -56,17 +61,15 @@ namespace BeatSaberModTemplates.ViewModels
             {
                 if (CurrentSettings?.GenerateUserFileWithTemplate == value)
                     return;
+                bool oldChangedVal = GenerateUserFileWithTemplateChanged;
                 CurrentSettings.GenerateUserFileWithTemplate = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.GenerateUserFileWithTemplate == PreviousSettings.GenerateUserFileWithTemplate) == GenerateUserFileWithTemplateChanged)
-                {
-                    GenerateUserFileWithTemplateChanged = !GenerateUserFileWithTemplateChanged;
+                if (oldChangedVal != GenerateUserFileWithTemplateChanged)
                     NotifyPropertyChanged(nameof(GenerateUserFileWithTemplateChanged));
-                }
             }
         }
 
-        public bool GenerateUserFileOnExistingChanged { get; private set; }
+        public bool GenerateUserFileOnExistingChanged => CurrentSettings.GenerateUserFileOnExisting != PreviousSettings.GenerateUserFileOnExisting;
         public bool GenerateUserFileOnExisting
         {
             get { return CurrentSettings?.GenerateUserFileOnExisting ?? PreviousSettings.GenerateUserFileOnExisting; }
@@ -74,17 +77,15 @@ namespace BeatSaberModTemplates.ViewModels
             {
                 if (CurrentSettings?.GenerateUserFileOnExisting == value)
                     return;
+                bool oldChangedVal = GenerateUserFileOnExistingChanged;
                 CurrentSettings.GenerateUserFileOnExisting = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.GenerateUserFileOnExisting == PreviousSettings.GenerateUserFileOnExisting) == GenerateUserFileOnExistingChanged)
-                {
-                    GenerateUserFileOnExistingChanged = !GenerateUserFileOnExistingChanged;
+                if (oldChangedVal != GenerateUserFileOnExistingChanged)
                     NotifyPropertyChanged(nameof(GenerateUserFileOnExistingChanged));
-                }
             }
         }
 
-        public bool SetManifestJsonDefaultsChanged { get; private set; }
+        public bool SetManifestJsonDefaultsChanged => CurrentSettings.SetManifestJsonDefaults != PreviousSettings.SetManifestJsonDefaults;
         public bool SetManifestJsonDefaults
         {
             get { return CurrentSettings?.SetManifestJsonDefaults ?? PreviousSettings.SetManifestJsonDefaults; }
@@ -92,17 +93,15 @@ namespace BeatSaberModTemplates.ViewModels
             {
                 if (CurrentSettings?.SetManifestJsonDefaults == value)
                     return;
+                bool oldChangedVal = SetManifestJsonDefaultsChanged;
                 CurrentSettings.SetManifestJsonDefaults = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.SetManifestJsonDefaults == PreviousSettings.SetManifestJsonDefaults) == SetManifestJsonDefaultsChanged)
-                {
-                    SetManifestJsonDefaultsChanged = !SetManifestJsonDefaultsChanged;
+                if (oldChangedVal != SetManifestJsonDefaultsChanged)
                     NotifyPropertyChanged(nameof(SetManifestJsonDefaultsChanged));
-                }
             }
         }
 
-        public bool CopyToIPAPendingOnBuildChanged { get; private set; }
+        public bool CopyToIPAPendingOnBuildChanged => CurrentSettings.CopyToIPAPendingOnBuild != PreviousSettings.CopyToIPAPendingOnBuild;
         public bool CopyToIPAPendingOnBuild
         {
             get { return CurrentSettings?.CopyToIPAPendingOnBuild ?? PreviousSettings.CopyToIPAPendingOnBuild; }
@@ -110,17 +109,15 @@ namespace BeatSaberModTemplates.ViewModels
             {
                 if (CurrentSettings?.CopyToIPAPendingOnBuild == value)
                     return;
+                bool oldChangedVal = CopyToIPAPendingOnBuildChanged;
                 CurrentSettings.CopyToIPAPendingOnBuild = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.CopyToIPAPendingOnBuild == PreviousSettings.CopyToIPAPendingOnBuild) == CopyToIPAPendingOnBuildChanged)
-                {
-                    CopyToIPAPendingOnBuildChanged = !CopyToIPAPendingOnBuildChanged;
+                if (oldChangedVal != CopyToIPAPendingOnBuildChanged)
                     NotifyPropertyChanged(nameof(CopyToIPAPendingOnBuildChanged));
-                }
             }
         }
 
-        public bool BuildReferenceTypeChanged { get; private set; }
+        public bool BuildReferenceTypeChanged => CurrentSettings.BuildReferenceType != PreviousSettings.BuildReferenceType;
         public BuildReferenceType BuildReferenceType
         {
             get { return CurrentSettings?.BuildReferenceType ?? PreviousSettings.BuildReferenceType; }
@@ -128,17 +125,15 @@ namespace BeatSaberModTemplates.ViewModels
             {
                 if (CurrentSettings?.BuildReferenceType == value)
                     return;
+                bool oldChangedVal = BuildReferenceTypeChanged;
                 CurrentSettings.BuildReferenceType = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.BuildReferenceType == PreviousSettings.BuildReferenceType) == BuildReferenceTypeChanged)
-                {
-                    BuildReferenceTypeChanged = !BuildReferenceTypeChanged;
+                if (oldChangedVal != BuildReferenceTypeChanged)
                     NotifyPropertyChanged(nameof(BuildReferenceTypeChanged));
-                }
             }
         }
 
-        public bool Manifest_AuthorChanged { get; private set; }
+        public bool Manifest_AuthorChanged => CurrentSettings.Manifest_Author != PreviousSettings.Manifest_Author;
         public string Manifest_Author
         {
             get { return CurrentSettings?.Manifest_Author ?? PreviousSettings.Manifest_Author; }
@@ -146,17 +141,15 @@ namespace BeatSaberModTemplates.ViewModels
             {
                 if (CurrentSettings?.Manifest_Author == value)
                     return;
+                bool oldChangedVal = Manifest_AuthorChanged;
                 CurrentSettings.Manifest_Author = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.Manifest_Author == PreviousSettings.Manifest_Author) == Manifest_AuthorChanged)
-                {
-                    Manifest_AuthorChanged = !Manifest_AuthorChanged;
+                if (oldChangedVal != Manifest_AuthorChanged)
                     NotifyPropertyChanged(nameof(Manifest_AuthorChanged));
-                }
             }
         }
 
-        public bool Manifest_DonationChanged { get; private set; }
+        public bool Manifest_DonationChanged => CurrentSettings.Manifest_Donation != PreviousSettings.Manifest_Donation;
         public string Manifest_Donation
         {
             get { return CurrentSettings?.Manifest_Donation ?? PreviousSettings.Manifest_Donation; }
@@ -164,17 +157,15 @@ namespace BeatSaberModTemplates.ViewModels
             {
                 if (CurrentSettings?.Manifest_Donation == value)
                     return;
+                bool oldChangedVal = Manifest_DonationChanged;
                 CurrentSettings.Manifest_Donation = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.Manifest_Donation == PreviousSettings.Manifest_Donation) == Manifest_DonationChanged)
-                {
-                    Manifest_DonationChanged = !Manifest_DonationChanged;
+                if (oldChangedVal != Manifest_DonationChanged)
                     NotifyPropertyChanged(nameof(Manifest_DonationChanged));
-                }
             }
         }
 
-        public bool Manifest_AuthorEnabledChanged { get; private set; }
+        public bool Manifest_AuthorEnabledChanged => CurrentSettings.Manifest_AuthorEnabled != PreviousSettings.Manifest_AuthorEnabled;
         public bool Manifest_AuthorEnabled
         {
             get { return CurrentSettings?.Manifest_AuthorEnabled ?? PreviousSettings.Manifest_AuthorEnabled; }
@@ -182,17 +173,15 @@ namespace BeatSaberModTemplates.ViewModels
             {
                 if (CurrentSettings?.Manifest_AuthorEnabled == value)
                     return;
+                bool oldChangedVal = Manifest_AuthorEnabledChanged;
                 CurrentSettings.Manifest_AuthorEnabled = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.Manifest_AuthorEnabled == PreviousSettings.Manifest_AuthorEnabled) == Manifest_AuthorEnabledChanged)
-                {
-                    Manifest_AuthorEnabledChanged = !Manifest_AuthorEnabledChanged;
+                if (oldChangedVal != Manifest_AuthorEnabledChanged)
                     NotifyPropertyChanged(nameof(Manifest_AuthorEnabledChanged));
-                }
             }
         }
 
-        public bool Manifest_DonationEnabledChanged { get; private set; }
+        public bool Manifest_DonationEnabledChanged => CurrentSettings.Manifest_DonationEnabled != PreviousSettings.Manifest_DonationEnabled;
         public bool Manifest_DonationEnabled
         {
             get { return CurrentSettings?.Manifest_DonationEnabled ?? PreviousSettings.Manifest_DonationEnabled; }
@@ -200,13 +189,11 @@ namespace BeatSaberModTemplates.ViewModels
             {
                 if (CurrentSettings?.Manifest_DonationEnabled == value)
                     return;
+                bool oldChangedVal = Manifest_DonationEnabledChanged;
                 CurrentSettings.Manifest_DonationEnabled = value;
                 NotifyPropertyChanged();
-                if ((CurrentSettings.Manifest_DonationEnabled == PreviousSettings.Manifest_DonationEnabled) == Manifest_DonationEnabledChanged)
-                {
-                    Manifest_DonationEnabledChanged = !Manifest_DonationEnabledChanged;
+                if (oldChangedVal != Manifest_DonationEnabledChanged)
                     NotifyPropertyChanged(nameof(Manifest_DonationEnabledChanged));
-                }
             }
         }
         #endregion

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BeatSaberModTemplates.Models;
 using Microsoft.VisualStudio.Shell;
+using BeatSaberModTemplates.Utilities;
 
 namespace BeatSaberModTemplates
 {
@@ -60,6 +61,28 @@ namespace BeatSaberModTemplates
             {
                 CurrentSettings = new ReadOnlySettingsModel();
             }
+            foreach (var subscriber in subscribers)
+            {
+                if (subscriber.IsAlive)
+                    subscriber.Execute();
+                else
+                {
+                    UnsubscribeExecuteOnChange(subscriber);
+                }
+            }
         }
+
+        public static void SubscribeExecuteOnChange(WeakAction action)
+        {
+            if (!subscribers.Contains(action))
+                subscribers.Add(action);
+        }
+
+        public static bool UnsubscribeExecuteOnChange(WeakAction action)
+        {
+            return subscribers.Remove(action);
+        }
+
+        private static List<WeakAction> subscribers = new List<WeakAction>();
     }
 }

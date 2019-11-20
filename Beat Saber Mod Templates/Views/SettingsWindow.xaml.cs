@@ -33,7 +33,8 @@ namespace BeatSaberModTemplates.Views
 
         void ApplyButton_Click(object sender, RoutedEventArgs e)
         {
-
+            BSMTSettingsManager.Store(WindowViewModel.SettingsViewModel.CurrentSettings);
+            BSMTSettingsManager.Reload();
         }
 
         void OkButton_Click(object sender, RoutedEventArgs e)
