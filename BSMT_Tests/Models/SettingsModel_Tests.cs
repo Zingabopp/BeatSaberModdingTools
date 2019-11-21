@@ -125,12 +125,13 @@ namespace BSMT_Tests.Models
         }
 
         [TestMethod]
-        public void EqualsFails_SettingsModel()
+        public void NotEqual_SettingsModel()
         {
             var original = new SettingsModel();
             foreach (var prop in typeof(SettingsModel).GetProperties())
             {
                 var changed = new SettingsModel();
+                Assert.AreEqual(original, changed);
                 if (prop.PropertyType == typeof(string))
                     prop.SetValue(changed, prop.Name);
                 else if (prop.PropertyType == typeof(bool))
@@ -140,6 +141,29 @@ namespace BSMT_Tests.Models
                 else
                     Assert.Fail($"Type {prop.PropertyType} is unhandled for {prop.Name}");
                 Assert.AreNotEqual(original, changed, $"Failed after setting {prop.Name}");
+            }
+        }
+
+        [TestMethod]
+        public void NotEqual_ReadOnlySettingsModel()
+        {
+            var original = new SettingsModel();
+            foreach (var prop in typeof(SettingsModel).GetProperties())
+            {
+                var changed = new SettingsModel();
+                Assert.AreEqual(original, changed);
+                if (prop.PropertyType == typeof(string))
+                    prop.SetValue(changed, prop.Name);
+                else if (prop.PropertyType == typeof(bool))
+                    prop.SetValue(changed, !(bool)prop.GetValue(original));
+                else if (prop.PropertyType == typeof(BuildReferenceType))
+                    prop.SetValue(changed, BuildReferenceType.DirectoryJunctions);
+                else
+                    Assert.Fail($"Type {prop.PropertyType} is unhandled for {prop.Name}");
+                var readOnlyChanged = new ReadOnlySettingsModel(changed);
+                Assert.AreEqual(changed, readOnlyChanged);
+                Assert.AreNotEqual(original, changed, $"Failed after setting {prop.Name}");
+                Assert.AreNotEqual(original, readOnlyChanged, $"Failed after setting {prop.Name}");
             }
         }
     }
