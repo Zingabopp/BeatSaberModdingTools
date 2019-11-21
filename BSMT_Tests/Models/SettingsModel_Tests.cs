@@ -90,7 +90,6 @@ namespace BSMT_Tests.Models
         public void CopyConstructor_SettingsModel_IndividualTests()
         {
             var original = new SettingsModel();
-            var strType = typeof(string);
             foreach (var prop in typeof(SettingsModel).GetProperties())
             {
                 if (prop.PropertyType == typeof(string))
@@ -110,7 +109,6 @@ namespace BSMT_Tests.Models
         public void CopyConstructor_ReadOnlySettingsModel_IndividualTests()
         {
             var original = new SettingsModel();
-            var strType = typeof(string);
             foreach (var prop in typeof(SettingsModel).GetProperties())
             {
                 if (prop.PropertyType == typeof(string))
@@ -123,6 +121,25 @@ namespace BSMT_Tests.Models
                     Assert.Fail($"Type {prop.PropertyType} is unhandled for {prop.Name}");
                 var copy = new ReadOnlySettingsModel(original);
                 Assert.AreEqual(original, copy, $"Failed after setting {prop.Name}");
+            }
+        }
+
+        [TestMethod]
+        public void EqualsFails_SettingsModel()
+        {
+            var original = new SettingsModel();
+            foreach (var prop in typeof(SettingsModel).GetProperties())
+            {
+                var changed = new SettingsModel();
+                if (prop.PropertyType == typeof(string))
+                    prop.SetValue(changed, prop.Name);
+                else if (prop.PropertyType == typeof(bool))
+                    prop.SetValue(changed, !(bool)prop.GetValue(original));
+                else if (prop.PropertyType == typeof(BuildReferenceType))
+                    prop.SetValue(changed, BuildReferenceType.DirectoryJunctions);
+                else
+                    Assert.Fail($"Type {prop.PropertyType} is unhandled for {prop.Name}");
+                Assert.AreNotEqual(original, changed, $"Failed after setting {prop.Name}");
             }
         }
     }
