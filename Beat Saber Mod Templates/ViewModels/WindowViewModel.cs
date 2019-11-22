@@ -208,8 +208,6 @@ namespace BeatSaberModTemplates.ViewModels
             return true;
         }
 
-
-
         private TimeSpan _notifyLocationTimerInterval = new TimeSpan(0, 0, 0, 0, 500);
 
         private DispatcherTimer _notifyLocationTimer;
@@ -249,6 +247,7 @@ namespace BeatSaberModTemplates.ViewModels
             NewLocationIsValid = CanAddLocation(NewLocationInput);
             return result;
         }
+
         public bool CanAddLocation(string pathStr)
         {
             if (string.IsNullOrEmpty(pathStr))

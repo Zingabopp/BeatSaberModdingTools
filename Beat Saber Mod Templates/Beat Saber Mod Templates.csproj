@@ -75,12 +75,14 @@
     <Compile Include="BSMTSettingsManager.cs" />
     <Compile Include="Utilities\IExecuteWithObject.cs" />
     <Compile Include="Utilities\IExecuteWithObjectAndResult.cs" />
+    <Compile Include="Utilities\Paths.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\RelayCommandGeneric.cs" />
     <Compile Include="Utilities\WeakAction.cs" />
     <Compile Include="Utilities\WeakActionGeneric.cs" />
     <Compile Include="Utilities\WeakFunc.cs" />
     <Compile Include="Utilities\WeakFuncGeneric.cs" />
+    <Compile Include="Utilities\XmlGenerator.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\WindowViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
