@@ -54,12 +54,30 @@ namespace BSMT_Tests.Experimental
             var doc = XDocument.Load(existingPath);
             var nameSpace = doc.Root.GetDefaultNamespace();
             var project = doc.Element("Project");
-            var propGroup = project.Element("PropertyGroup");
+            var propGroup = FindFirstElement(doc, "PropertyGroup");
             propGroup.Add(new XElement("ReferencePaths", "test;test;test"));
             Assert.IsNotNull(project);
             Assert.IsNotNull(propGroup);
             doc.Save(existingPath + ".xml");
-            
+        }
+
+        public static XElement FindFirstElement(XContainer node, string localName)
+        {
+            var nodeElements = node?.Elements();
+            if (nodeElements == null && nodeElements.Count() == 0)
+                return null;
+            foreach (var element in nodeElements)
+            {
+                if (element.Name.LocalName == localName)
+                    return element;
+            }
+            foreach (var element in nodeElements)
+            {
+                var foundElement = FindFirstElement(element, localName);
+                if (foundElement != null)
+                    return foundElement;
+            }
+            return null;
         }
 
     }
