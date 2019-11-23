@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static BeatSaberModTemplates.Utilities.Paths;
+using System.Xml.XPath;
 
 namespace BSMT_Tests.Experimental
 {
@@ -14,7 +15,7 @@ namespace BSMT_Tests.Experimental
     {
         public const string BeatSaberDir = @"H:\SteamApps\SteamApps\common\Beat Saber";
         [TestMethod]
-        public void TestMethod1()
+        public void WriteAndRead()
         {
             var referencePaths = new string[]{ Path_Managed, Path_Libs, Path_Plugins }.Select(p => Path.Combine(BeatSaberDir, p)).ToList();
             XNamespace xmlns = "http://schemas.microsoft.com/developer/msbuild/2003";
@@ -44,5 +45,22 @@ namespace BSMT_Tests.Experimental
             var paths = refPaths.First().Value;
             thing2.Save(@"Output.xml", SaveOptions.OmitDuplicateNamespaces);
         }
+
+        [TestMethod]
+        public void AppendExisting()
+        {
+            var existingPath = @"Output\ExistingUserFile\BeatSaberDir.csproj.user";
+            Assert.IsTrue(File.Exists(existingPath));
+            var doc = XDocument.Load(existingPath);
+            var nameSpace = doc.Root.GetDefaultNamespace();
+            var project = doc.Element("Project");
+            var propGroup = project.Element("PropertyGroup");
+            propGroup.Add(new XElement("ReferencePaths", "test;test;test"));
+            Assert.IsNotNull(project);
+            Assert.IsNotNull(propGroup);
+            doc.Save(existingPath + ".xml");
+            
+        }
+
     }
 }
