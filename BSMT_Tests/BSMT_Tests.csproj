@@ -57,12 +57,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Beat Saber Mod Templates\Beat Saber Mod Templates.csproj">
+    <ProjectReference Include="..\BeatSaberModdingTools\BeatSaberModdingTools.csproj">
       <Project>{ff7c6fc3-ab29-449e-ba85-08e4653f9aaa}</Project>
-      <Name>Beat Saber Mod Templates</Name>
+      <Name>BeatSaberModdingTools</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Data\BeatSaberDir.csproj.user">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

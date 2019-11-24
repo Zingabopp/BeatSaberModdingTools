@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BeatSaberModTemplates.ViewModels;
+using BeatSaberModdingTools.ViewModels;
 using System.Linq;
-using BeatSaberModTemplates.Models;
+using BeatSaberModdingTools.Models;
 using System.Collections.Generic;
 
 namespace BSMT_Tests.ViewModels.SettingsViewModel_Tests

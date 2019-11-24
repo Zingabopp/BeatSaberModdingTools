@@ -5,7 +5,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static BeatSaberModTemplates.Utilities.Paths;
+using static BeatSaberModdingTools.Utilities.Paths;
 using System.Xml.XPath;
 
 namespace BSMT_Tests.Experimental

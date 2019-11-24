@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using BeatSaberModTemplates.Models;
+using BeatSaberModdingTools.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BSMT_Tests.Models
