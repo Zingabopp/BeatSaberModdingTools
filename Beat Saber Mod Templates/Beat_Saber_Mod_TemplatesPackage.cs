@@ -52,6 +52,7 @@ namespace BeatSaberModTemplates
             await SetBeatSaberDirCommand.InitializeAsync(this);
             await BeatSaberModTemplates.Commands.OpenSettingsWindowCommand.InitializeAsync(this);
             BSMTSettingsManager.Initialize();
+            await BeatSaberModTemplates.Commands.AddProjectReferencePaths.InitializeAsync(this);
         }
 
         #endregion

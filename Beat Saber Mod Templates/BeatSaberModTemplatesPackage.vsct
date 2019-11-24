@@ -44,13 +44,16 @@
          group as the part of a menu contained between two lines. The parent of a group
          must be a menu. -->
     <Groups>
-      <Group guid="guidBeatSaberModTemplatesPackageCmdSet" id="ExtensionsMenuGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_TOOL_MAINMENU" />
+      <Group guid="guidBeatSaberModTemplatesPackageCmdSet" id="ExtensionsMenuGroup" priority="0x0100">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE" />
       </Group>
       <Group guid="guidBeatSaberModTemplatesPackageCmdSet" id="MyMenuGroup" priority="0x0600">
         <Parent guid="guidBeatSaberModTemplatesPackageCmdSet" id="TopLevelMenu" />
       </Group>
       
+      <Group guid="guidBeatSaberModTemplatesPackageCmdSet1" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+      </Group>
     </Groups>
 
     <!--Buttons section. -->
@@ -78,6 +81,20 @@
           <ButtonText>OpenSettingsWindow</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidBeatSaberModTemplatesPackageCmdSet1" id="cmdidAddProjectReferencePaths" priority="0x0100" type="Button">
+        <Parent guid="guidBeatSaberModTemplatesPackageCmdSet" id="MyMenuGroup" />
+        <Icon guid="guidImages" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Add Reference Paths</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidBeatSaberModTemplatesPackageCmdSet1" id="cmdidAddProjectReferencePaths" priority="0x0100" type="Button">
+        <Parent guid="guidBeatSaberModTemplatesPackageCmdSet1" id="MyMenuGroup" />
+        <Icon guid="guidImages2" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Invoke AddProjectReferencePaths</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -89,6 +106,7 @@
             must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
       <Bitmap guid="guidImages1" href="Resources\SetBeatSaberDirCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
       <Bitmap guid="guidImages" href="Commands\Resources\OpenSettingsWindowCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages2" href="Commands\Resources\AddProjectReferencePaths.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
     </Bitmaps>
   </Commands>
 
@@ -115,6 +133,20 @@
     </GuidSymbol>
   
     <GuidSymbol value="{b9f6d358-1c18-4a0c-b5f6-c97f6edee317}" name="guidImages">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{6c42fa8b-593c-40e4-ac49-122f9210b5e6}" name="guidBeatSaberModTemplatesPackageCmdSet1">
+      <IDSymbol value="4128" name="MyMenuGroup" />
+      <IDSymbol value="256" name="cmdidAddProjectReferencePaths" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{65efc777-6b7b-4196-b986-b142026e94dc}" name="guidImages2">
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
       <IDSymbol name="bmpPicSearch" value="3" />

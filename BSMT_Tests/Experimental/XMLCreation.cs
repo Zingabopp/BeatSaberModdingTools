@@ -17,7 +17,7 @@ namespace BSMT_Tests.Experimental
         [TestMethod]
         public void WriteAndRead()
         {
-            var referencePaths = new string[]{ Path_Managed, Path_Libs, Path_Plugins }.Select(p => Path.Combine(BeatSaberDir, p)).ToList();
+            var referencePaths = new string[] { Path_Managed, Path_Libs, Path_Plugins }.Select(p => Path.Combine(BeatSaberDir, p)).ToList();
             XNamespace xmlns = "http://schemas.microsoft.com/developer/msbuild/2003";
             var thing2 = new XDocument(
                 new XDeclaration("1.0", "utf-8", ""),
@@ -35,12 +35,12 @@ namespace BSMT_Tests.Experimental
                           select p;
             Assert.IsNotNull(project);
             var propGroup = from p in thing2.Descendants()
-                          where p.Name.LocalName == "PropertyGroup"
-                          select p;
+                            where p.Name.LocalName == "PropertyGroup"
+                            select p;
             Assert.IsNotNull(propGroup);
             var refPaths = from p in thing2.Descendants()
-                            where p.Name.LocalName == "ReferencePath"
-                            select p;
+                           where p.Name.LocalName == "ReferencePath"
+                           select p;
             Assert.IsNotNull(refPaths);
             var paths = refPaths.First().Value;
             thing2.Save(@"Output.xml", SaveOptions.OmitDuplicateNamespaces);
@@ -54,11 +54,30 @@ namespace BSMT_Tests.Experimental
             var doc = XDocument.Load(existingPath);
             var nameSpace = doc.Root.GetDefaultNamespace();
             var project = doc.Element("Project");
-            var propGroup = FindFirstElement(doc, "PropertyGroup");
-            propGroup.Add(new XElement("ReferencePaths", "test;test;test"));
-            Assert.IsNotNull(project);
-            Assert.IsNotNull(propGroup);
-            doc.Save(existingPath + ".xml");
+            if (TryGetFirstElement(doc, "PropertyGroup", out var propGroup))
+            {
+                propGroup = FindFirstElement(doc, "PropertyGroup");
+                if (!TryGetFirstElement(propGroup, "ReferencePaths", out _))
+                    propGroup.Add(new XElement("ReferencePaths", "test;test;test"));
+                else
+                    Assert.Fail("Shouldn't have found ReferencePaths");
+                Assert.IsNotNull(project);
+                Assert.IsNotNull(propGroup);
+                if (!TryGetFirstElement(propGroup, "ReferencePaths", out _))
+                    Assert.Fail("Should have found ReferencePaths");
+                doc.Save(existingPath + ".xml");
+            }
+            else
+                Assert.Fail($"PropertyGroup not found in {existingPath}");
+
+        }
+
+        public static bool TryGetFirstElement(XContainer node, string localName, out XElement element)
+        {
+            element = FindFirstElement(node, localName);
+            if (element != null)
+                return true;
+            return false;
         }
 
         public static XElement FindFirstElement(XContainer node, string localName)
