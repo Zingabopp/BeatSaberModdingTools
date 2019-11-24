@@ -58,7 +58,7 @@ namespace BeatSaberModdingTools.Commands
             bool commandVisibleAndEnabled = false;
             if (menuCommand != null)
             {
-                if (Directory.Exists(BSMTSettingsManager.CurrentSettings.ChosenInstallPath))
+                if (Directory.Exists(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath))
                     commandVisibleAndEnabled = true;
                 menuCommand.Enabled = commandVisibleAndEnabled;
                 menuCommand.Visible = commandVisibleAndEnabled;
@@ -116,7 +116,7 @@ namespace BeatSaberModdingTools.Commands
             if (dte.SelectedItems.Count != 1) return;
             var selectedList = new List<string>();
             var selectedItem = dte.SelectedItems.Item(1);
-            selectedList.Add($"---{BSMTSettingsManager.CurrentSettings.ChosenInstallPath}---\n");
+            selectedList.Add($"---{BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath}---\n");
             foreach(EnvDTE.Property item in selectedItem.Project.Properties)
             {
                 selectedList.Add(item.Name);

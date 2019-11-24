@@ -11,23 +11,29 @@ using BeatSaberModdingTools.Utilities;
 
 namespace BeatSaberModdingTools
 {
-    public static class BSMTSettingsManager
+    public class BSMTSettingsManager : IBSMTSettingsManager
     {
-        static Properties.BeatSaberModdingToolsSettings Settings => Properties.BeatSaberModdingToolsSettings.Default;
-        public static ReadOnlySettingsModel CurrentSettings { get; private set; }
+        private Properties.BeatSaberModdingToolsSettings Settings => Properties.BeatSaberModdingToolsSettings.Default;
+        public ReadOnlySettingsModel CurrentSettings { get; private set; }
 
-        static BSMTSettingsManager()
+        public bool IsDestroyed { get; protected set; }
+
+        public static IBSMTSettingsManager Instance { get; private set; }
+
+        public static void SetManager(IBSMTSettingsManager manager)
         {
-            UpdateCurrentSettings();
+            if (Instance != null)
+                Instance.Destroy();
+            Instance = manager;
         }
-
-        public static void Initialize()
+        public void Destroy() { IsDestroyed = true; }
+        public void Initialize()
         {
             if (CurrentSettings == null)
                 UpdateCurrentSettings();
         }
 
-        public static void Store(ISettingsModel newSettings)
+        public void Store(ISettingsModel newSettings)
         {
             CurrentSettings = new ReadOnlySettingsModel(newSettings);
             Settings.ChosenInstallPath = CurrentSettings.ChosenInstallPath;
@@ -43,13 +49,13 @@ namespace BeatSaberModdingTools
             Settings.Save();
         }
 
-        public static void Reload()
+        public void Reload()
         {
             Settings.Reload();
             UpdateCurrentSettings();
         }
 
-        public static void UpdateCurrentSettings()
+        public void UpdateCurrentSettings()
         {
             try
             {
@@ -84,5 +90,17 @@ namespace BeatSaberModdingTools
         }
 
         private static List<WeakAction> subscribers = new List<WeakAction>();
+    }
+
+    public interface IBSMTSettingsManager
+    {
+        ReadOnlySettingsModel CurrentSettings { get; }
+        bool IsDestroyed { get; }
+        void Destroy();
+        void Initialize();
+        void Store(ISettingsModel settings);
+        void Reload();
+        void UpdateCurrentSettings();
+
     }
 }

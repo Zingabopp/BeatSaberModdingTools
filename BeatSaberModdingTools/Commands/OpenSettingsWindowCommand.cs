@@ -104,7 +104,7 @@ namespace BeatSaberModdingTools.Commands
             
             var returnedTrue = settingsDialog.ShowDialog() ?? false;
             if (returnedTrue)
-                BSMTSettingsManager.Store(settingsDialog.ReturnSettings);
+                BSMTSettingsManager.Instance.Store(settingsDialog.ReturnSettings);
         }
     }
 }
