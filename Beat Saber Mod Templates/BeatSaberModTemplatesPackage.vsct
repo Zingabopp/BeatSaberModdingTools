@@ -84,6 +84,7 @@
       <Button guid="guidBeatSaberModTemplatesPackageCmdSet1" id="cmdidAddProjectReferencePaths" priority="0x0100" type="Button">
         <Parent guid="guidBeatSaberModTemplatesPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
+        <CommandFlag>DefaultDisabled</CommandFlag>
         <Strings>
           <ButtonText>Add Reference Paths</ButtonText>
         </Strings>

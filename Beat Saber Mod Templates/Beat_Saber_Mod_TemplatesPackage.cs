@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.Shell;
 using BeatSaberModTemplates.Commands;
 using Task = System.Threading.Tasks.Task;
 using BeatSaberModTemplates.Models;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace BeatSaberModTemplates
 {
@@ -28,6 +29,8 @@ namespace BeatSaberModTemplates
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [Guid(BeatSaberModTemplatesPackage.PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class BeatSaberModTemplatesPackage : AsyncPackage
     {
         /// <summary>
@@ -48,11 +51,11 @@ namespace BeatSaberModTemplates
         {
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
-            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            BSMTSettingsManager.Initialize();
+            await this.JoinableTaskFactory.SwitchToMainThreadAsync(false, cancellationToken);
+            await BeatSaberModTemplates.Commands.AddProjectReferencePaths.InitializeAsync(this);
             await SetBeatSaberDirCommand.InitializeAsync(this);
             await BeatSaberModTemplates.Commands.OpenSettingsWindowCommand.InitializeAsync(this);
-            BSMTSettingsManager.Initialize();
-            await BeatSaberModTemplates.Commands.AddProjectReferencePaths.InitializeAsync(this);
         }
 
         #endregion
