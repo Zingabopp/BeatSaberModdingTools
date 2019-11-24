@@ -58,10 +58,12 @@ namespace BeatSaberModdingTools
             // Do any initialization that requires the UI thread after switching to the UI thread.
             BSMTSettingsManager.Initialize();
  
+
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(false, cancellationToken);
             await BeatSaberModdingTools.Commands.AddProjectReferencePaths.InitializeAsync(this);
             await SetBeatSaberDirCommand.InitializeAsync(this);
             await BeatSaberModdingTools.Commands.OpenSettingsWindowCommand.InitializeAsync(this);
+            await BeatSaberModdingTools.Menus.ProjectContextSubmenu.InitializeAsync(this);
         }
 
         #endregion

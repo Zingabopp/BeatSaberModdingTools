@@ -16,8 +16,8 @@
     <ProjectGuid>{FF7C6FC3-AB29-449E-BA85-08E4653F9AAA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BeatSaberModTemplates</RootNamespace>
-    <AssemblyName>BeatSaberModTemplates</AssemblyName>
+    <RootNamespace>BeatSaberModdingTools</RootNamespace>
+    <AssemblyName>BeatSaberModdingTools</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <UseCodebase>true</UseCodebase>
@@ -57,9 +57,13 @@
     <Compile Include="Converters\InstallTypeStringConverter.cs" />
     <Compile Include="Converters\TrimmedTextBlockVisibilityConverter.cs" />
     <Compile Include="Commands\SetBeatSaberDirCommand.cs" />
+    <Compile Include="EnvironmentMonitor.cs" />
+    <Compile Include="Menus\ProjectContextSubmenu.cs" />
     <Compile Include="Models\BeatSaberInstall.cs" />
     <Compile Include="Models\ISettingsModel.cs" />
+    <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Models\ReadOnlySettingsModel.cs" />
+    <Compile Include="Models\ReferenceModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BeatSaberModdingToolsPackage.cs" />
@@ -78,7 +82,8 @@
     <Compile Include="Utilities\WeakActionGeneric.cs" />
     <Compile Include="Utilities\WeakFunc.cs" />
     <Compile Include="Utilities\WeakFuncGeneric.cs" />
-    <Compile Include="Utilities\XmlGenerator.cs" />
+    <Compile Include="Utilities\XmlExtensions.cs" />
+    <Compile Include="Utilities\XmlFunctions.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\WindowViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

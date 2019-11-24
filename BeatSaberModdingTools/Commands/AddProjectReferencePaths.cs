@@ -55,9 +55,15 @@ namespace BeatSaberModdingTools.Commands
         private void MenuItem_BeforeQueryStatus(object sender, EventArgs e)
         {
             OleMenuCommand menuCommand = sender as OleMenuCommand;
-
+            bool commandVisibleAndEnabled = false;
             if (menuCommand != null)
-                menuCommand.Enabled = Directory.Exists(BSMTSettingsManager.CurrentSettings.ChosenInstallPath);
+            {
+                if (Directory.Exists(BSMTSettingsManager.CurrentSettings.ChosenInstallPath))
+                    commandVisibleAndEnabled = true;
+                menuCommand.Enabled = commandVisibleAndEnabled;
+                menuCommand.Visible = commandVisibleAndEnabled;
+            }
+
         }
 
         /// <summary>

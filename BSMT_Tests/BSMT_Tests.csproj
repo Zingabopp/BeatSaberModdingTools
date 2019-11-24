@@ -42,6 +42,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Experimental\XmlReading.cs" />
     <Compile Include="Experimental\XMLCreation.cs" />
     <Compile Include="Models\SettingsModel_Tests.cs" />
     <Compile Include="UnitTest1.cs" />
@@ -63,7 +64,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\BeatSaberDirWithAttributes.csproj.user">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\BeatSaberDir.csproj.user">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\BSMLPractice.csproj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\ReferencePaths.csproj.user">
