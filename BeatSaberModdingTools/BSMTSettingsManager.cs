@@ -19,12 +19,16 @@ namespace BeatSaberModdingTools
         public bool IsDestroyed { get; protected set; }
 
         public static IBSMTSettingsManager Instance { get; private set; }
-
+        public static void UseDefaultManager()
+        {
+            SetManager(new BSMTSettingsManager());
+        }
         public static void SetManager(IBSMTSettingsManager manager)
         {
             if (Instance != null)
                 Instance.Destroy();
             Instance = manager;
+            manager.Initialize();
         }
         public void Destroy() { IsDestroyed = true; }
         public void Initialize()
