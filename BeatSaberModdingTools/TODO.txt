@@ -2,3 +2,4 @@
 -Auto-complete for the Add Location text box?
 -Redirect template build copy action to IPA\Pending\Plugins instead of the Plugins folder.
 -Add window for adding Beat Saber references.
+-Project converter (convert references)

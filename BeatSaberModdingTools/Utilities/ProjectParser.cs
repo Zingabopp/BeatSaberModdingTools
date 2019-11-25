@@ -19,7 +19,7 @@ namespace BeatSaberModdingTools.Utilities
         {
             FilePath = filePath;
         }
-        public bool TryParseProjectFile(out ProjectModel project)
+        public bool TryParseProjectFile(out ParseResults project)
         {
             project = null;
             if (string.IsNullOrEmpty(FilePath)) return false;
@@ -34,8 +34,8 @@ namespace BeatSaberModdingTools.Utilities
                 // <ItemGroup><EmbeddedResource Include=Manifest
                 // <PropGroup><PostBuildEvent>
                 // --- Location to Store ---
-                // Definitions prop group: to insert BeatSaberDir
-                // References item group: to work with future reference add/remover 
+                // Definitions prop group: to insert BeatSaberDir if it doesn't exist (Has <ProjectGuid>, <RootNamespace>, <AssemblyName>
+                // References item group: to work with future reference add/remover (First ItemGroup with <Reference>?)
                 //    (or figure out how to do it through VS.)
                 // PostBuildEvent? Probably better to do it in the csproj.user.
             }
@@ -46,5 +46,16 @@ namespace BeatSaberModdingTools.Utilities
 
             return true;
         }
+    }
+
+    public class ParseResults
+    {
+        public XElement MainPropertyGroupElement { get; set; }
+        public XElement ReferencesGroupElement { get; set; }
+        public XElement PostBuildEventElement { get; set; }
+        public string BeatSaberDir { get; set; }
+        public string ManifestFilePath { get; set; }
+        public List<ReferenceModel> References { get; set; }
+        public string PostBuildEvent { get; set; }
     }
 }
