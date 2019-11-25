@@ -85,6 +85,7 @@
     <Compile Include="Utilities\WeakFuncGeneric.cs" />
     <Compile Include="Utilities\XmlExtensions.cs" />
     <Compile Include="Utilities\XmlFunctions.cs" />
+    <Compile Include="Utilities\XmlNames.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\WindowViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

@@ -15,6 +15,31 @@ namespace BSMT_Tests.Experimental
     public class XmlReading
     {
         [TestMethod]
+        public void ProjectParser()
+        {
+            var existingPath = @"Data\BSMLPractice.csproj";
+            ProjectParser parser = new ProjectParser(existingPath);
+            if (parser.TryParseProjectFile(out var results))
+            {
+                Assert.IsFalse(string.IsNullOrEmpty(results.BeatSaberDir));
+                Assert.IsFalse(string.IsNullOrEmpty(results.ManifestFilePath));
+                Assert.IsFalse(string.IsNullOrEmpty(results.PostBuildEvent));
+                Assert.IsNotNull(results.Document);
+                Assert.IsNotNull(results.MainPropertyGroupElement);
+                Assert.IsNotNull(results.PostBuildEventElement);
+                Assert.IsTrue(results.Targets.Count > 0);
+                Assert.IsTrue(results.BuildTasks.Count > 0);
+                Assert.IsTrue(results.References.Count > 0);
+                Assert.IsTrue(results.References.TrueForAll(r => r.ParentGroup != null));
+                Assert.IsTrue(results.References.Where(r => r.Name == "SongCore").Count() == 1);
+                Console.WriteLine(results.MainPropertyGroupElement.ToString());
+            }
+            else
+                Assert.Fail();
+        }
+
+
+        [TestMethod]
         public void ReadAll()
         {
             var existingPath = @"Data\BSMLPractice.csproj";

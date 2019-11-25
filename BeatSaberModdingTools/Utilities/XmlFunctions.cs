@@ -52,7 +52,7 @@ namespace BeatSaberModdingTools.Utilities
                         {
                             if (!string.IsNullOrEmpty(hintPath) || !externalOnly)
                             {
-                                referenceList.Add(new ReferenceModel(refName, hintPath));
+                                referenceList.Add(new ReferenceModel(refName, n.Parent, hintPath));
                             }
                         }
                     }
@@ -61,6 +61,9 @@ namespace BeatSaberModdingTools.Utilities
 
             return referenceList;
         }
+
+
+
     }
 
 

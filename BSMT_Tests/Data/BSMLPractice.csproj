@@ -357,6 +357,7 @@
   </UsingTask>
   <PropertyGroup>
     <PostBuildEvent>
+      copy /Y "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)Output\$(TargetName).vsix
     </PostBuildEvent>
   </PropertyGroup>
 </Project>
