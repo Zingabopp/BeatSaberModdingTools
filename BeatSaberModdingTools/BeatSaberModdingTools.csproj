@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BeatSaberLocator.cs" />
+    <Compile Include="Utilities\BeatSaberLocator.cs" />
     <Compile Include="Commands\AddProjectReferencePaths.cs" />
     <Compile Include="Commands\OpenSettingsWindowCommand.cs" />
     <Compile Include="Converters\ComparisonConverter.cs" />
@@ -76,6 +76,7 @@
     <Compile Include="Utilities\IExecuteWithObject.cs" />
     <Compile Include="Utilities\IExecuteWithObjectAndResult.cs" />
     <Compile Include="Utilities\Paths.cs" />
+    <Compile Include="Utilities\ProjectParser.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\RelayCommandGeneric.cs" />
     <Compile Include="Utilities\WeakAction.cs" />
