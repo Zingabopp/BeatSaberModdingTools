@@ -12,7 +12,6 @@ namespace BeatSaberModdingTools.Models
         public string Name { get; set; }
         public string HintPath { get; set; }
         public XElement ParentGroup { get; set; }
-        public bool InProject { get; set; }
         public string Version { get; set; }
         public string RelativeDirectory { get; set; }
         public ReferenceModel(string name)

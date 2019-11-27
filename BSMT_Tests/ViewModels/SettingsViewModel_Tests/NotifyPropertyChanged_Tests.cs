@@ -43,7 +43,7 @@ namespace BSMT_Tests.ViewModels.SettingsViewModel_Tests
             }
             vm.PropertyChanged += handler;
             int propertyCount = 0;
-            foreach (var prop in typeof(SettingsViewModel).GetProperties().Where(i => i.CanWrite))
+            foreach (var prop in typeof(SettingsViewModel).GetProperties().Where(i => i.CanWrite).ToList())
             {
                 if (!typeof(ISettingsModel).IsAssignableFrom(prop.PropertyType))
                 {
@@ -86,7 +86,7 @@ namespace BSMT_Tests.ViewModels.SettingsViewModel_Tests
                 Assert.Fail($"{e.PropertyName} wasn't changed but triggered a notify event.");
             }
             vm.PropertyChanged += handler;
-            foreach (var prop in typeof(SettingsViewModel).GetProperties().Where(i => i.CanWrite))
+            foreach (var prop in typeof(SettingsViewModel).GetProperties().Where(i => i.CanWrite).ToList())
             {
                 prop.SetValue(vm, prop.GetValue(vm));
             }

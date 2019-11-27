@@ -52,7 +52,12 @@ namespace BeatSaberModdingTools.Utilities
                         {
                             if (!string.IsNullOrEmpty(hintPath) || !externalOnly)
                             {
-                                referenceList.Add(new ReferenceModel(refName, n.Parent, hintPath));
+                                var refItem = new ReferenceModel(refName, n.Parent, hintPath);
+                                if (hintPath.Contains($"$(BeatSaberDir"))
+                                    refItem.RelativeDirectory = hintPath.Replace("$(BeatSaberDir)", string.Empty)
+                                        .Replace(refItem.Name + ".dll", string.Empty)
+                                        .Trim(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                                referenceList.Add(refItem);
                             }
                         }
                     }

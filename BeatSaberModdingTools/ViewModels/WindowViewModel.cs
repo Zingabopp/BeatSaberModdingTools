@@ -140,6 +140,7 @@ namespace BeatSaberModdingTools.ViewModels
             }
         }
 
+        #endregion
         #region Commands
 
         private RelayCommand<string> _addInstall;
@@ -191,7 +192,6 @@ namespace BeatSaberModdingTools.ViewModels
                 return _removeInstall;
             }
         }
-        #endregion
         #endregion
 
         private bool PathDidChange(string oldPath, string newPath)

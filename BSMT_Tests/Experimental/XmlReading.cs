@@ -90,10 +90,11 @@ namespace BSMT_Tests.Experimental
             }
             foreach (var item in list)
             {
-                var check = otherList.Where(r => r.Name == item.Name);
-                Assert.AreEqual(1, check.Count(), $"{item.Name} has {check.Count()} matches");
+                var check = otherList.Where(r => r.Name == item.Name).Single();
+                if (item.HintPath.Contains("$(BeatSaberDir)"))
+                    Assert.AreEqual(check.RelativeDirectory, item.RelativeDirectory);
             }
-            
+
         }
     }
 }
