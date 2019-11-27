@@ -9,12 +9,19 @@ namespace BeatSaberModdingTools.Models
 {
     public class ReferenceModel
     {
-        public string Name { get; private set; }
-        public string HintPath { get; private set; }
-        public XElement ParentGroup { get; private set; }
-        public ReferenceModel(string name, XElement parentGroup, string hintPath = "")
+        public string Name { get; set; }
+        public string HintPath { get; set; }
+        public XElement ParentGroup { get; set; }
+        public bool InProject { get; set; }
+        public string Version { get; set; }
+        public string RelativeDirectory { get; set; }
+        public ReferenceModel(string name)
         {
             Name = name;
+        }
+        public ReferenceModel(string name, XElement parentGroup, string hintPath = "")
+            : this(name)
+        {
             ParentGroup = parentGroup;
             HintPath = hintPath;
         }

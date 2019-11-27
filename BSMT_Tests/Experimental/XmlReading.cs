@@ -82,6 +82,18 @@ namespace BSMT_Tests.Experimental
                 }
                 Console.WriteLine(item.ToString(30));
             }
+
+            var otherList = BeatSaberTools.GetAvailableReferences(@"H:\SteamApps\SteamApps\common\Beat Saber");
+            foreach (var item in otherList)
+            {
+                Console.WriteLine(item.ToString(30));
+            }
+            foreach (var item in list)
+            {
+                var check = otherList.Where(r => r.Name == item.Name);
+                Assert.AreEqual(1, check.Count(), $"{item.Name} has {check.Count()} matches");
+            }
+            
         }
     }
 }

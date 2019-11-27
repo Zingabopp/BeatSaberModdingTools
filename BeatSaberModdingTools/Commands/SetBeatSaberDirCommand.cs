@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using BeatSaberModdingTools.Models;
+using BeatSaberModdingTools.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -90,7 +91,7 @@ namespace BeatSaberModdingTools.Commands
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            var bsInstalls = BeatSaberLocator.GetBeatSaberPathsFromRegistry();
+            var bsInstalls = BeatSaberTools.GetBeatSaberPathsFromRegistry();
             string title = "SetBeatSaberDirCommand";
             string message = string.Empty;
             if(bsInstalls.Length > 0)

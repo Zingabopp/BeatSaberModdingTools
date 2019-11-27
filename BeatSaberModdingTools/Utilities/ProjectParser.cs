@@ -57,6 +57,7 @@ namespace BeatSaberModdingTools.Utilities
                             {
                                 element.TryFindFirstChild("HintPath", out XElement hintPathElement);
                                 ReferenceModel reference = new ReferenceModel(includeVal, element.Parent, hintPathElement?.Value);
+                                reference.InProject = true;
                                 results.References.Add(reference);
                             }
                             return false;

@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Utilities\BeatSaberLocator.cs" />
+    <Compile Include="Utilities\BeatSaberTools.cs" />
     <Compile Include="Commands\AddProjectReferencePaths.cs" />
     <Compile Include="Commands\OpenSettingsWindowCommand.cs" />
     <Compile Include="Converters\ComparisonConverter.cs" />
@@ -86,9 +86,13 @@
     <Compile Include="Utilities\XmlExtensions.cs" />
     <Compile Include="Utilities\XmlFunctions.cs" />
     <Compile Include="Utilities\XmlNames.cs" />
+    <Compile Include="ViewModels\ReferenceWindowViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\WindowViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\ReferencesDialog.xaml.cs">
+      <DependentUpon>ReferencesDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -182,6 +186,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\ReferencesDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

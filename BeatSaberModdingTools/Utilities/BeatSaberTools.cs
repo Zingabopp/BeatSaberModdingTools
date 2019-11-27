@@ -6,10 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BeatSaberModdingTools.Utilities.Paths;
 
-namespace BeatSaberModdingTools
+namespace BeatSaberModdingTools.Utilities
 {
-    public static class BeatSaberLocator
+    public static class BeatSaberTools
     {
         // Using Path.Combine makes it safe for regions that don't use '\' as a directory separator?
         private static readonly string STEAM_REG_KEY = Path.Combine("SOFTWARE", "Microsoft", "Windows", "CurrentVersion", "Uninstall", "Steam App 620980");
@@ -57,6 +58,44 @@ namespace BeatSaberModdingTools
                 return files.Count() > 0;
             }
             return false;
+        }
+
+        public static List<ReferenceModel> GetAvailableReferences(string beatSaberDir)
+        {
+            var retList = new List<ReferenceModel>();
+            if (string.IsNullOrEmpty(beatSaberDir) || !Directory.Exists(beatSaberDir)) return retList;
+            var libraryPaths = new string[] { Path_Managed, Path_Libs, Path_Plugins };
+            foreach (var path in libraryPaths)
+            {
+                try
+                {
+                    var fullPath = new DirectoryInfo(Path.Combine(beatSaberDir, path));
+                    if (fullPath.Exists)
+                    {
+                        foreach (var item in fullPath.GetFiles("*.dll"))
+                        {
+                            var refItem = CreateReferenceFromFile(item.FullName);
+                            refItem.RelativeDirectory = path;
+                            retList.Add(refItem);
+                        }
+                    }
+                }
+                catch { }
+            }
+
+            return retList;
+        }
+
+        public static ReferenceModel CreateReferenceFromFile(string fileName)
+        {
+            var assembly = System.Reflection.Assembly.ReflectionOnlyLoadFrom(fileName);
+            var assemblyName = assembly.GetName();
+            var refItem = new ReferenceModel(Path.GetFileNameWithoutExtension(fileName))
+            {
+                Version = assemblyName.Version.ToString(),
+                HintPath = fileName
+            };
+            return refItem;
         }
     }
 }

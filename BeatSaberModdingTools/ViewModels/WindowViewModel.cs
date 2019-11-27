@@ -20,7 +20,7 @@ namespace BeatSaberModdingTools.ViewModels
 
         public WindowViewModel()
         {
-            var detectedLocations = BeatSaberLocator.GetBeatSaberPathsFromRegistry();
+            var detectedLocations = BeatSaberTools.GetBeatSaberPathsFromRegistry();
             BeatSaberLocations = new ObservableCollection<BeatSaberInstall>(detectedLocations);
             SettingsViewModel = new SettingsViewModel();
             AddLocation(new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam));
