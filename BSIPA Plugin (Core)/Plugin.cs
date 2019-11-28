@@ -14,33 +14,41 @@ namespace $safeprojectname$
     public class Plugin : IBeatSaberPlugin
     {
         internal static string Name => "$projectname$";
-        internal static Ref<PluginConfig> config;
-        internal static IConfigProvider configProvider;
 
-        public void Init(IPALogger logger, [Config.Prefer("json")] IConfigProvider cfgProvider)
-        {
-            Logger.log = logger;
-            Logger.log.Debug("Logger initialied.");
+    public void Init(IPALogger logger)
+    {
+        Logger.log = logger;
+        Logger.log.Debug("Logger initialied.");
+    }
 
-            configProvider = cfgProvider;
+    #region BSIPA Config
+        // Uncomment to use BSIPA's config
+        //internal static Ref<PluginConfig> config;
+        //internal static IConfigProvider configProvider;
+        //public void Init(IPALogger logger, [Config.Prefer("json")] IConfigProvider cfgProvider)
+        //{
+        //    Logger.log = logger;
+        //    Logger.log.Debug("Logger initialied.");
 
-            config = configProvider.MakeLink<PluginConfig>((p, v) =>
-            {
-                // Build new config file if it doesn't exist or RegenerateConfig is true
-                if (v.Value == null || v.Value.RegenerateConfig)
-                {
-                    Logger.log.Debug("Regenerating PluginConfig");
-                    p.Store(v.Value = new PluginConfig()
-                    {
-                        // Set your default settings here.
-                        RegenerateConfig = false
-                    });
-                }
-                config = v;
-            });
-        }
+        //    configProvider = cfgProvider;
 
-        public void OnApplicationStart()
+        //    config = configProvider.MakeLink<PluginConfig>((p, v) =>
+        //    {
+        //        // Build new config file if it doesn't exist or RegenerateConfig is true
+        //        if (v.Value == null || v.Value.RegenerateConfig)
+        //        {
+        //            Logger.log.Debug("Regenerating PluginConfig");
+        //            p.Store(v.Value = new PluginConfig()
+        //            {
+        //                // Set your default settings here.
+        //                RegenerateConfig = false
+        //            });
+        //        }
+        //        config = v;
+        //    });
+        //}
+    #endregion
+    public void OnApplicationStart()
         {
             Logger.log.Debug("OnApplicationStart");
 

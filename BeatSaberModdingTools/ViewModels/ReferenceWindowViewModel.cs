@@ -17,6 +17,12 @@ namespace BeatSaberModdingTools.ViewModels
         public ReferenceWindowViewModel()
         {
             AvailableReferences = new ObservableCollection<ReferenceItemViewModel>();
+            BeatSaberDir = @"C:\TestBeatSaberDir";
+            //Refresh.Execute(null);
+        }
+        public ReferenceWindowViewModel(string beatSaberDir)
+        {
+            AvailableReferences = new ObservableCollection<ReferenceItemViewModel>();
             BeatSaberDir = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
             Refresh.Execute(null);
         }

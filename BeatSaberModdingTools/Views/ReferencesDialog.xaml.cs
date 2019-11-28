@@ -12,17 +12,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using BeatSaberModdingTools.ViewModels;
 namespace BeatSaberModdingTools.Views
 {
     /// <summary>
     /// Interaction logic for ReferencesDialog.xaml
     /// </summary>
-    public partial class ReferencesDialog : UserControl
+    public partial class ReferencesDialog : Window
     {
+        public ReferenceWindowViewModel ViewModel { get; set; }
         public ReferencesDialog()
         {
+            ViewModel = new ReferenceWindowViewModel();
             InitializeComponent();
+            DataContext = ViewModel;
         }
     }
 }
