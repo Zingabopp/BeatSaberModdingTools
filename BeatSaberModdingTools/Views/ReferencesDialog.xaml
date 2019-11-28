@@ -5,10 +5,37 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BeatSaberModdingTools.Views"
              xmlns:vm="clr-namespace:BeatSaberModdingTools.ViewModels"
+             xmlns:models="clr-namespace:BeatSaberModdingTools.Models"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance Type=vm:ReferenceWindowViewModel, IsDesignTimeCreatable=True}"
-             Height="425" Width="580" ShowInTaskbar="True" Title="Beat Saber Mod Template Settings" Topmost="True">
+             d:DesignHeight="450" d:DesignWidth="800" 
+             d:DataContext="{d:DesignInstance Type=vm:ReferenceWindowViewModel, IsDesignTimeCreatable=True}"
+             Height="425" Width="800" ShowInTaskbar="True" Title="Beat Saber Reference Manager" Topmost="True">
+    <Window.Resources>
+        <CollectionViewSource x:Key="ReferenceListSource" Source="{Binding AvailableReferences}"/>
+        <vm:ReferenceWindowViewModel x:Key="ViewModel"/>
+    </Window.Resources>
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding BeatSaberDir}"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid Grid.Column="1" ItemsSource="{Binding Source={StaticResource ReferenceListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" 
+                      SelectionMode="Single" IsManipulationEnabled="False" RowHeight="22" CanUserResizeRows="False" CanUserResizeColumns="False"
+                      RowHeaderWidth="0">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn MinWidth="30" Width="30" CanUserResize="False"
+                                            Header="" Binding="{Binding IsInProject, Mode=TwoWay}" />
+                    <DataGridTextColumn MinWidth="50" Width="200" Header="Name" Binding="{Binding Name}" />
+                    <DataGridTextColumn Width="*" Header="Path" Binding="{Binding RelativeDirectory}" />
+                    <DataGridTextColumn Width="60" Header="Version" Binding="{Binding Version}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </Window>

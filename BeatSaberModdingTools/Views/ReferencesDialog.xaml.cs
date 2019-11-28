@@ -20,12 +20,12 @@ namespace BeatSaberModdingTools.Views
     /// </summary>
     public partial class ReferencesDialog : Window
     {
-        public ReferenceWindowViewModel ViewModel { get; set; }
-        public ReferencesDialog()
+        public ReferenceWindowViewModel ViewModel;
+        public ReferencesDialog(string projectFilePath)
         {
-            ViewModel = new ReferenceWindowViewModel();
-            InitializeComponent();
+            ViewModel = new ReferenceWindowViewModel(projectFilePath, BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath);
             DataContext = ViewModel;
+            InitializeComponent();
         }
     }
 }

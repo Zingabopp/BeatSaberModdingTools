@@ -1,25 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using BeatSaberModdingTools.Views;
+using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using BeatSaberModdingTools.Views;
 using Task = System.Threading.Tasks.Task;
-using Microsoft.VisualStudio.Shell.Settings;
 
 namespace BeatSaberModdingTools.Commands
 {
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class OpenSettingsWindowCommand
+    internal sealed class AddProjectReference
     {
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 0x0104;
+        public const int CommandId = 0x0103;
 
         /// <summary>
         /// Command menu group (command set GUID).
@@ -32,12 +34,12 @@ namespace BeatSaberModdingTools.Commands
         private readonly AsyncPackage package;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpenSettingsWindowCommand"/> class.
+        /// Initializes a new instance of the <see cref="AddProjectReference"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
-        private OpenSettingsWindowCommand(AsyncPackage package, OleMenuCommandService commandService)
+        private AddProjectReference(AsyncPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
@@ -50,7 +52,7 @@ namespace BeatSaberModdingTools.Commands
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static OpenSettingsWindowCommand Instance
+        public static AddProjectReference Instance
         {
             get;
             private set;
@@ -73,38 +75,34 @@ namespace BeatSaberModdingTools.Commands
         /// <param name="package">Owner package, not null.</param>
         public static async Task InitializeAsync(AsyncPackage package)
         {
-            // Switch to the main thread - the call to AddCommand in OpenSettingsWindowCommand's constructor requires
+            // Switch to the main thread - the call to AddCommand in AddProjectReference's constructor requires
             // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
-            Instance = new OpenSettingsWindowCommand(package, commandService);
+            Instance = new AddProjectReference(package, commandService);
         }
 
         /// <summary>
-        /// Shows the tool window when the menu item is clicked.
+        /// This function is the callback used to execute the command when the menu item is clicked.
+        /// See the constructor to see how the menu item is associated with this function using
+        /// OleMenuCommandService service and MenuCommand class.
         /// </summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event args.</param>
-        private void Execute(object sender, EventArgs e)
+        /// <param name="sender">Event sender.</param>
+        /// <param name="e">Event args.</param>
+        private async void Execute(object sender, EventArgs e)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            DTE2 dte = (await package.GetServiceAsync(typeof(SDTE)).ConfigureAwait(false)) as DTE2;
+            await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            if (dte.SelectedItems.Count != 1) return;
+            SelectedItem selectedItem = dte.SelectedItems.Item(1);
+            string projectFilePath = selectedItem.Project.FullName;
+            var settingsDialog = new ReferencesDialog(projectFilePath);
 
-            // Get the instance number 0 of this tool window. This window is single instance so this instance
-            // is actually the only one.
-            // The last flag is set to true so that if the tool window does not exists it will be created.
-            //var window = this.package.FindToolWindow(typeof(OpenSettingsWindow), 0, true);
-            //if ((null == window) || (null == window.Frame))
-            //{
-            //    throw new NotSupportedException("Cannot create tool window");
-            //}
-
-            //IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
-            var settingsDialog = new SettingsWindow();
-            
             var returnedTrue = settingsDialog.ShowDialog() ?? false;
-            if (returnedTrue)
-                BSMTSettingsManager.Instance.Store(settingsDialog.ReturnSettings);
+            //if (returnedTrue)
+            //    BSMTSettingsManager.Instance.Store(settingsDialog.ReturnSettings);
         }
     }
 }

@@ -53,9 +53,9 @@
         <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="TopLevelMenu" />
       </Group>
       
-      <Group guid="guidBeatSaberModdingToolsPackageCmdSet1" id="MyMenuGroup" priority="0x0600">
+      <!--<Group guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
-      </Group>
+      </Group> -->
     </Groups>
 
     <!--Buttons section. -->
@@ -80,10 +80,10 @@
         <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
-          <ButtonText>OpenSettingsWindow</ButtonText>
+          <ButtonText>Open Settings Window</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidBeatSaberModdingToolsPackageCmdSet1" id="cmdidAddProjectReferencePaths" priority="0x0100" type="Button">
+      <Button guid="guidBeatSaberModdingToolsPackageCmdSet" id="cmdidAddProjectReferencePaths" priority="0x0100" type="Button">
         <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <CommandFlag>DefaultDisabled</CommandFlag>
@@ -93,11 +93,11 @@
           <ButtonText>Add Reference Paths</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidBeatSaberModdingToolsPackageCmdSet1" id="cmdidAddProjectReferencePaths" priority="0x0100" type="Button">
-        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet1" id="MyMenuGroup" />
-        <Icon guid="guidImages2" id="bmpPic1" />
+      <Button guid="guidBeatSaberModdingToolsPackageCmdSet" id="cmdidAddProjectReference" priority="0x0100" type="Button">
+        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" />
+        <Icon guid="guidImages3" id="bmpPic1" />
         <Strings>
-          <ButtonText>Invoke AddProjectReferencePaths</ButtonText>
+          <ButtonText>Add Reference...</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -112,6 +112,7 @@
       <Bitmap guid="guidImages1" href="Resources\SetBeatSaberDirCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
       <Bitmap guid="guidImages" href="Commands\Resources\OpenSettingsWindowCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
       <Bitmap guid="guidImages2" href="Commands\Resources\AddProjectReferencePaths.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages3" href="Commands\Resources\AddProjectReference.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
     </Bitmaps>
   </Commands>
 
@@ -125,7 +126,9 @@
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="ExtensionsMenuGroup" value="0x1022" />
       <IDSymbol name="cmdidSetBeatSaberDirCommand" value="0x0101" />
-      <IDSymbol value="256" name="cmdidOpenSettingsWindowCommand" />
+      <IDSymbol name="cmdidAddProjectReferencePaths" value="0x0102" />
+      <IDSymbol name="cmdidAddProjectReference" value="0x0103" />
+      <IDSymbol name="cmdidOpenSettingsWindowCommand" value="0x0104" />
     </GuidSymbol>
 
     <GuidSymbol value="{3caebdb6-8ff9-43b2-be29-f9d02e8bfc7f}" name="guidImages1">
@@ -146,12 +149,16 @@
       <IDSymbol name="bmpPicStrikethrough" value="6" />
     </GuidSymbol>
   
-    <GuidSymbol value="{6c42fa8b-593c-40e4-ac49-122f9210b5e6}" name="guidBeatSaberModdingToolsPackageCmdSet1">
-      <IDSymbol value="4128" name="MyMenuGroup" />
-      <IDSymbol value="256" name="cmdidAddProjectReferencePaths" />
+    <GuidSymbol value="{65efc777-6b7b-4196-b986-b142026e94dc}" name="guidImages2">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
     </GuidSymbol>
   
-    <GuidSymbol value="{65efc777-6b7b-4196-b986-b142026e94dc}" name="guidImages2">
+    <GuidSymbol value="{3ed98438-44fd-4e2f-b72b-364f4903729c}" name="guidImages3">
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
       <IDSymbol name="bmpPicSearch" value="3" />

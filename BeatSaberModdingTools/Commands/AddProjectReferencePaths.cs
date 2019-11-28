@@ -23,12 +23,12 @@ namespace BeatSaberModdingTools.Commands
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 256;
+        public const int CommandId = 0x0102;
 
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public static readonly Guid CommandSet = new Guid("6c42fa8b-593c-40e4-ac49-122f9210b5e6");
+        public static readonly Guid CommandSet = new Guid("6a1cb889-cf43-4fe1-9eb7-9370d0d8d1d4");
 
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -116,6 +116,7 @@ namespace BeatSaberModdingTools.Commands
             if (dte.SelectedItems.Count != 1) return;
             var selectedList = new List<string>();
             var selectedItem = dte.SelectedItems.Item(1);
+            selectedList.Add(selectedItem.Project.FullName);
             selectedList.Add($"---{BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath}---\n");
             foreach(EnvDTE.Property item in selectedItem.Project.Properties)
             {

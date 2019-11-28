@@ -20,6 +20,8 @@ namespace BeatSaberModdingTools.ViewModels
 
         public WindowViewModel()
         {
+            if (BSMTSettingsManager.Instance == null)
+                BSMTSettingsManager.UseDefaultManager();
             var detectedLocations = BeatSaberTools.GetBeatSaberPathsFromRegistry();
             BeatSaberLocations = new ObservableCollection<BeatSaberInstall>(detectedLocations);
             SettingsViewModel = new SettingsViewModel();

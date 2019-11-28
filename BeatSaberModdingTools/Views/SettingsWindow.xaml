@@ -9,7 +9,7 @@
              xmlns:converters="clr-namespace:BeatSaberModdingTools.Converters"
              mc:Ignorable="d"
              Height="425" Width="580" ResizeMode="NoResize" ShowInTaskbar="True" Title="Beat Saber Mod Template Settings" Topmost="True"
-        d:DataContext="{d:DesignInstance Type=vm:WindowViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=vm:WindowViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <converters:InstallTypeImageConverter x:Key="InstallTypeImageConverter"/>
         <converters:InstallTypeStringConverter x:Key="InstallTypeStringConverter"/>

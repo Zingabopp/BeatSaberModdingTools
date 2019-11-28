@@ -63,6 +63,7 @@ namespace BeatSaberModdingTools
             await SetBeatSaberDirCommand.InitializeAsync(this);
             await BeatSaberModdingTools.Commands.OpenSettingsWindowCommand.InitializeAsync(this);
             await BeatSaberModdingTools.Menus.ProjectContextSubmenu.InitializeAsync(this);
+            await BeatSaberModdingTools.Commands.AddProjectReference.InitializeAsync(this);
         }
 
         #endregion
