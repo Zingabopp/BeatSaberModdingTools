@@ -21,11 +21,25 @@ namespace BeatSaberModdingTools.Views
     public partial class ReferencesDialog : Window
     {
         public ReferenceWindowViewModel ViewModel;
+        public CollectionViewSource ReferencesView;
         public ReferencesDialog(string projectFilePath)
         {
             ViewModel = new ReferenceWindowViewModel(projectFilePath, BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath);
             DataContext = ViewModel;
             InitializeComponent();
+            ReferencesView = (CollectionViewSource)FindResource("ReferenceListSource");
+            ViewModel.ReferenceView = ReferencesView.View;
+            ViewModel.ReferenceView.Filter = ViewModel.Filter;
+
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var listBox = (ListBox)sender;
+            if(listBox.SelectedItem is ReferenceFilter filter)
+            {
+               
+            }
         }
     }
 }

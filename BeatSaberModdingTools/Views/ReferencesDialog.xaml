@@ -12,6 +12,7 @@
              Height="425" Width="800" ShowInTaskbar="True" Title="Beat Saber Reference Manager" Topmost="True">
     <Window.Resources>
         <CollectionViewSource x:Key="ReferenceListSource" Source="{Binding AvailableReferences}"/>
+        <CollectionViewSource x:Key="Filters" Source="{Binding Filters}"/>
         <vm:ReferenceWindowViewModel x:Key="ViewModel"/>
     </Window.Resources>
     <Grid>
@@ -25,6 +26,7 @@
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <ListBox Grid.Column="0" ItemsSource="{Binding Source={StaticResource Filters}}" SelectedItem="{Binding SelectedFilter, Mode=TwoWay}"/>
             <DataGrid Grid.Column="1" ItemsSource="{Binding Source={StaticResource ReferenceListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" 
                       SelectionMode="Single" IsManipulationEnabled="False" RowHeight="22" CanUserResizeRows="False" CanUserResizeColumns="False"
                       RowHeaderWidth="0">

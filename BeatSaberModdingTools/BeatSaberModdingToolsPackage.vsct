@@ -34,7 +34,7 @@
       <Menu guid="guidBeatSaberModdingToolsPackageCmdSet" id="TopLevelMenu" priority="0x700" type="Menu">
         <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="ExtensionsMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
-        <CommandFlag>DefaultInvisible</CommandFlag>
+        <!--<CommandFlag>DefaultInvisible</CommandFlag>-->
         <Strings>
           <ButtonText>BSMT</ButtonText>
           <CommandName>Beat Saber Modding Tools</CommandName>
@@ -86,7 +86,7 @@
       <Button guid="guidBeatSaberModdingToolsPackageCmdSet" id="cmdidAddProjectReferencePaths" priority="0x0100" type="Button">
         <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
-        <CommandFlag>DefaultDisabled</CommandFlag>
+        <!--<CommandFlag>DefaultDisabled</CommandFlag>-->
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>AllowVisibilityChangeOnToolBar</CommandFlag>
         <Strings>

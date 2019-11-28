@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,7 @@ namespace BeatSaberModdingTools.Utilities
                     if (!string.IsNullOrEmpty(path))
                     {
                         path = Path.Combine(path, "Software", "hyperbolic-magnetism-beat-saber");
-                        if(IsBeatSaberDirectory(path))
+                        if (IsBeatSaberDirectory(path))
                             installList.Add(new BeatSaberInstall(path, InstallType.Oculus));
                     }
                 }
@@ -74,9 +75,14 @@ namespace BeatSaberModdingTools.Utilities
                     {
                         foreach (var item in fullPath.GetFiles("*.dll"))
                         {
-                            var refItem = CreateReferenceFromFile(item.FullName);
-                            refItem.RelativeDirectory = path;
+                            ReferenceModel refItem = null;
+                            refItem = CreateReferenceFromFile(item.FullName);
+
                             retList.Add(refItem);
+                            if (refItem != null)
+                            {
+                                refItem.RelativeDirectory = path;
+                            }
                         }
                     }
                 }
@@ -88,13 +94,15 @@ namespace BeatSaberModdingTools.Utilities
 
         public static ReferenceModel CreateReferenceFromFile(string fileName)
         {
-            var assembly = System.Reflection.Assembly.ReflectionOnlyLoadFrom(fileName);
-            var assemblyName = assembly.GetName();
+            //var assembly = System.Reflection.Assembly.ReflectionOnlyLoadFrom(fileName);
+            //var assemblyName = assembly.GetName();
+            string version = FileVersionInfo.GetVersionInfo(fileName).FileVersion;
             var refItem = new ReferenceModel(Path.GetFileNameWithoutExtension(fileName))
             {
-                Version = assemblyName.Version.ToString(),
+                Version = version,
                 HintPath = fileName
             };
+
             return refItem;
         }
     }

@@ -41,7 +41,7 @@ namespace BeatSaberModdingTools.ViewModels
 
         public string Name => Reference?.Name;
         public string Version => Reference?.Version;
-        public string RelativeDirectory => Reference?.HintPath;
+        public string RelativeDirectory => Reference?.RelativeDirectory;
 
         public bool StartedInProject { get; }
 

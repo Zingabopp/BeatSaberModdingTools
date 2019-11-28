@@ -110,14 +110,12 @@ namespace BeatSaberModdingTools.Commands
             var removedRefs = changedRefs.Where(r => !r.IsInProject).ToList();
             foreach (var item in removedRefs)
             {
-                var reference = csProj.References.Find(item.Name);
+                var reference = csProj.References.Find(item.HintPath);
                 reference.Remove();
             }
             var addedRefs = changedRefs.Where(r => r.IsInProject).ToList();
             foreach (var item in addedRefs)
             {
-                var reference = csProj.References.Find(item.Name);
-                if (reference == null)
                     csProj.References.Add(item.HintPath);
             }
             //if (returnedTrue)

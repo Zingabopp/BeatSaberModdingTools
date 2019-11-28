@@ -12,12 +12,51 @@ namespace BeatSaberModdingTools.ViewModels
 {
     public class ReferenceWindowViewModel : ViewModelBase
     {
-
+        public ICollectionView ReferenceView;
         public ObservableCollection<ReferenceItemViewModel> DesignExample => new ObservableCollection<ReferenceItemViewModel>()
         {
             new ReferenceItemViewModel(new ReferenceModel("TestInProject", null, @"C:\BeatSaber\Beat Saber_Data\Managed\TestInProject.dll"){  RelativeDirectory="Beat Saber_Data\\Managed", Version="1.1.1.0"}, false),
             new ReferenceItemViewModel()
         };
+
+        public ObservableCollection<ReferenceFilter> Filters { get; } = new ObservableCollection<ReferenceFilter>()
+        {
+            new ReferenceFilter("<all>", string.Empty, string.Empty),
+            new ReferenceFilter("UnityEngine", Paths.Path_Managed, "UnityEngine"),
+            new ReferenceFilter("System", Paths.Path_Managed, "System"),
+            new ReferenceFilter("Libs", Paths.Path_Libs, string.Empty),
+            new ReferenceFilter("Plugins", Paths.Path_Plugins, string.Empty)
+        };
+
+        private ReferenceFilter _selectedFilter;
+        public ReferenceFilter SelectedFilter
+        {
+            get { return _selectedFilter; }
+            set
+            {
+                if (_selectedFilter?.Name == value.Name) return;
+                _selectedFilter = value;
+                NotifyPropertyChanged();
+                ReferenceView?.Refresh();
+            }
+        }
+
+        public bool Filter(object item)
+        {
+            bool shown = true;
+            if (item is ReferenceItemViewModel target)
+            {
+
+                if (!string.IsNullOrEmpty(SelectedFilter.Prefix) && !target.Name.StartsWith(SelectedFilter.Prefix))
+                    shown = false;
+                if (shown && !string.IsNullOrEmpty(SelectedFilter.RelativeDir) && target.RelativeDirectory != SelectedFilter.RelativeDir)
+                    shown = false;
+                return shown;
+            }
+            else
+                shown = false;
+            return shown;
+        }
 
         public ObservableCollection<ReferenceItemViewModel> AvailableReferences { get; }
         public string ProjectFilePath { get; private set; }
@@ -26,6 +65,7 @@ namespace BeatSaberModdingTools.ViewModels
         {
             AvailableReferences = DesignExample;
             BeatSaberDir = @"C:\TestBeatSaberDir";
+            SelectedFilter = Filters.First();
             //Refresh.Execute(null);
         }
         public ReferenceWindowViewModel(string projectFilePath, string beatSaberDir)
@@ -33,6 +73,7 @@ namespace BeatSaberModdingTools.ViewModels
             AvailableReferences = new ObservableCollection<ReferenceItemViewModel>();
             ProjectFilePath = projectFilePath;
             BeatSaberDir = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
+            SelectedFilter = Filters.First();
             Refresh.Execute(null);
         }
 
@@ -72,5 +113,25 @@ namespace BeatSaberModdingTools.ViewModels
         }
 
         #endregion
+    }
+
+    public class ReferenceFilter
+    {
+        public string Name { get; }
+        public string RelativeDir { get; }
+        public string Prefix { get; }
+        public ReferenceFilter(string name, string relativeDir, string prefix)
+        {
+            Name = name;
+            RelativeDir = relativeDir;
+            Prefix = prefix;
+        }
+
+        public Func<ReferenceItemViewModel, bool> IsMatch { get; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
