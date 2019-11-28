@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BeatSaberModdingTools.Views;
@@ -9,6 +10,7 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using VSLangProj;
 using Task = System.Threading.Tasks.Task;
 
 namespace BeatSaberModdingTools.Commands
@@ -97,10 +99,27 @@ namespace BeatSaberModdingTools.Commands
             await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             if (dte.SelectedItems.Count != 1) return;
             SelectedItem selectedItem = dte.SelectedItems.Item(1);
+            var csProj = (VSProject)selectedItem.Project.Object;
+            //csProj.References.Add("path");
+            //csProj.References.Item(1).Remove();
             string projectFilePath = selectedItem.Project.FullName;
             var settingsDialog = new ReferencesDialog(projectFilePath);
 
             var returnedTrue = settingsDialog.ShowDialog() ?? false;
+            var changedRefs = settingsDialog.ViewModel.AvailableReferences.Where(r => r.StartedInProject != r.IsInProject).ToList();
+            var removedRefs = changedRefs.Where(r => !r.IsInProject).ToList();
+            foreach (var item in removedRefs)
+            {
+                var reference = csProj.References.Find(item.Name);
+                reference.Remove();
+            }
+            var addedRefs = changedRefs.Where(r => r.IsInProject).ToList();
+            foreach (var item in addedRefs)
+            {
+                var reference = csProj.References.Find(item.Name);
+                if (reference == null)
+                    csProj.References.Add(item.HintPath);
+            }
             //if (returnedTrue)
             //    BSMTSettingsManager.Instance.Store(settingsDialog.ReturnSettings);
         }

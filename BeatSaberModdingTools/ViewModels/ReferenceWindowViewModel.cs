@@ -15,9 +15,10 @@ namespace BeatSaberModdingTools.ViewModels
 
         public ObservableCollection<ReferenceItemViewModel> DesignExample => new ObservableCollection<ReferenceItemViewModel>()
         {
-            new ReferenceItemViewModel(new ReferenceModel("TestInProject", null, @"C:\BeatSaber\Beat Saber_Data\Managed\TestInProject.dll"){  RelativeDirectory="Beat Saber_Data\\Managed", Version="1.1.1.0"}),
+            new ReferenceItemViewModel(new ReferenceModel("TestInProject", null, @"C:\BeatSaber\Beat Saber_Data\Managed\TestInProject.dll"){  RelativeDirectory="Beat Saber_Data\\Managed", Version="1.1.1.0"}, false),
             new ReferenceItemViewModel()
         };
+
         public ObservableCollection<ReferenceItemViewModel> AvailableReferences { get; }
         public string ProjectFilePath { get; private set; }
         public string BeatSaberDir { get; private set; }
@@ -43,13 +44,17 @@ namespace BeatSaberModdingTools.ViewModels
             foreach (var item in refItems)
             {
                 var projRefCount = projRefs.Where(r => r.Name == item.Name).Count();
-                var refVM = new ReferenceItemViewModel(item);
+
+                ReferenceItemViewModel refVM = null;
                 if (projRefCount > 0)
                 {
+                    refVM = new ReferenceItemViewModel(item, true);
                     refVM.IsInProject = true;
                     if (projRefCount > 1)
                         refVM.WarningStr = $"Project contains more than one reference to {item.Name}";
                 }
+                else
+                    refVM = new ReferenceItemViewModel(item, false);
                 AvailableReferences.Add(refVM);
             }
         }

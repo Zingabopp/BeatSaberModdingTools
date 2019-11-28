@@ -30,7 +30,7 @@
                       RowHeaderWidth="0">
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn MinWidth="30" Width="30" CanUserResize="False"
-                                            Header="" Binding="{Binding IsInProject, Mode=TwoWay}" />
+                                            Header="" Binding="{Binding IsInProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <DataGridTextColumn MinWidth="50" Width="200" Header="Name" Binding="{Binding Name}" />
                     <DataGridTextColumn Width="*" Header="Path" Binding="{Binding RelativeDirectory}" />
                     <DataGridTextColumn Width="60" Header="Version" Binding="{Binding Version}" />

@@ -32,14 +32,18 @@ namespace BeatSaberModdingTools.ViewModels
             };
         }
 
-        public ReferenceItemViewModel(ReferenceModel model)
+        public ReferenceItemViewModel(ReferenceModel model, bool isInProject)
         {
             Reference = model;
+            StartedInProject = isInProject;
+            IsInProject = isInProject;
         }
 
         public string Name => Reference?.Name;
         public string Version => Reference?.Version;
         public string RelativeDirectory => Reference?.HintPath;
+
+        public bool StartedInProject { get; }
 
         private bool _isInProject;
         public bool IsInProject
