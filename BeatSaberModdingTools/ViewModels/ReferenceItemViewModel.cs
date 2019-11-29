@@ -10,6 +10,7 @@ namespace BeatSaberModdingTools.ViewModels
     public class ReferenceItemViewModel : ViewModelBase
     {
         private ReferenceModel _reference;
+        private ReferenceWindowViewModel Parent;
         public ReferenceModel Reference
         {
             get { return _reference; }
@@ -32,8 +33,9 @@ namespace BeatSaberModdingTools.ViewModels
             };
         }
 
-        public ReferenceItemViewModel(ReferenceModel model, bool isInProject)
+        public ReferenceItemViewModel(ReferenceWindowViewModel parent, ReferenceModel model, bool isInProject)
         {
+            Parent = parent;
             Reference = model;
             StartedInProject = isInProject;
             IsInProject = isInProject;
@@ -43,7 +45,7 @@ namespace BeatSaberModdingTools.ViewModels
         public string Version => Reference?.Version;
         public string RelativeDirectory => Reference?.RelativeDirectory;
 
-        public bool StartedInProject { get; }
+        public bool StartedInProject { get; set; }
 
         private bool _isInProject;
         public bool IsInProject
@@ -54,6 +56,7 @@ namespace BeatSaberModdingTools.ViewModels
                 if (_isInProject == value) return;
                 _isInProject = value;
                 NotifyPropertyChanged();
+                Parent?.CheckChangedReferences();
             }
         }
 

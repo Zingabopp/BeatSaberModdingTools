@@ -15,10 +15,11 @@
         <CollectionViewSource x:Key="Filters" Source="{Binding Filters}"/>
         <vm:ReferenceWindowViewModel x:Key="ViewModel"/>
     </Window.Resources>
-    <Grid>
+    <Grid Margin="3,3,3,3">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="{Binding BeatSaberDir}"/>
         <Grid Grid.Row="1">
@@ -44,6 +45,23 @@
                     <DataGridTextColumn Width="60" Header="Version" Binding="{Binding Version}" />
                 </DataGrid.Columns>
             </DataGrid>
+        </Grid>
+        <Grid Grid.Row="2" x:Name="OkCancelButtons" Margin="0,10,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <UniformGrid Grid.Column="0" HorizontalAlignment="Right" Rows="1" Columns="3" >
+                <Button Margin="0,0,10,0" MinWidth="80" Click="OkButton_Click">
+                    <TextBlock Text="OK"/>
+                </Button>
+                <Button Margin="0,0,10,0" Click="CancelButton_Click">
+                    <TextBlock Text="Cancel"/>
+                </Button>
+                <Button Margin="0,0,10,0" Command="{Binding ApplyChanges}">
+                    <TextBlock Text="Apply"/>
+                </Button>
+            </UniformGrid>
         </Grid>
     </Grid>
 </Window>

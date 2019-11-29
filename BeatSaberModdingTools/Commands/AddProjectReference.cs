@@ -105,34 +105,9 @@ namespace BeatSaberModdingTools.Commands
             //csProj.References.Add("path");
             //csProj.References.Item(1).Remove();
             string projectFilePath = selectedItem.Project.FullName;
-            var settingsDialog = new ReferencesDialog(projectFilePath);
+            var settingsDialog = new ReferencesDialog(csProj);
 
             var returnedTrue = settingsDialog.ShowDialog() ?? false;
-            var changedRefs = settingsDialog.ViewModel.AvailableReferences.Where(r => r.StartedInProject != r.IsInProject).ToList();
-            var removedRefs = changedRefs.Where(r => !r.IsInProject).ToList();
-            foreach (var item in removedRefs)
-            {
-                var reference = csProj.References.Find(item.Name);
-                reference.Remove();
-            }
-            var addedRefs = changedRefs.Where(r => r.IsInProject).ToList();
-            foreach (var item in addedRefs)
-            {
-                var refPath = item.HintPath.Replace(settingsDialog.ViewModel.BeatSaberDir, "$(BeatSaberDir)");
-                var reference = csProj.References.Add(item.HintPath);
-                reference.CopyLocal = false;
-                
-            }
-            var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(csProj.Project.FullName).First();
-            foreach (var item in addedRefs)
-            {
-                var needsHint = buildProject.Items.Where(obj => obj.ItemType == "Reference" && obj.EvaluatedInclude == item.Name).First();
-                needsHint.SetMetadataValue("HintPath", $"$(BeatSaberDir)\\{item.RelativeDirectory}\\{item.Name}.dll");
-            }
-            csProj.Project.Save();
-
-            //if (returnedTrue)
-            //    BSMTSettingsManager.Instance.Store(settingsDialog.ReturnSettings);
         }
     }
 }

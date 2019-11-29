@@ -126,7 +126,7 @@
                 </Grid>
             </Grid>
         </GroupBox>
-        <UniformGrid x:Name="SettingsGrid" Columns="2" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0,5,0,0" DataContext="{Binding SettingsViewModel}">
+        <UniformGrid Grid.Row="1"  x:Name="SettingsGrid" Columns="2" HorizontalAlignment="Stretch" Margin="0,5,0,0" DataContext="{Binding SettingsViewModel}">
             <StackPanel>
                 <GroupBox Header="Automation" Grid.Column="0" Height="Auto" VerticalAlignment="Top" Margin="3,0,0,0">
                     <StackPanel Orientation="Vertical">
