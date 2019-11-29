@@ -31,10 +31,16 @@
                       SelectionMode="Single" IsManipulationEnabled="False" RowHeight="22" CanUserResizeRows="False" CanUserResizeColumns="False"
                       RowHeaderWidth="0">
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn MinWidth="30" Width="30" CanUserResize="False"
-                                            Header="" Binding="{Binding IsInProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <DataGridTemplateColumn MinWidth="30" Width="30" CanUserResize="False" Header="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsInProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn MinWidth="50" Width="200" Header="Name" Binding="{Binding Name}" />
-                    <DataGridTextColumn Width="*" Header="Path" Binding="{Binding RelativeDirectory}" />
+                    <DataGridTextColumn Width="*" Header="Relative Path" Binding="{Binding RelativeDirectory}" />
                     <DataGridTextColumn Width="60" Header="Version" Binding="{Binding Version}" />
                 </DataGrid.Columns>
             </DataGrid>

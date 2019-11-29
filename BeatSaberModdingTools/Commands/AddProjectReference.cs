@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using BeatSaberModdingTools.Views;
 using EnvDTE;
 using EnvDTE80;
+using Microsoft.Build;
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using VSLangProj;
@@ -110,14 +112,25 @@ namespace BeatSaberModdingTools.Commands
             var removedRefs = changedRefs.Where(r => !r.IsInProject).ToList();
             foreach (var item in removedRefs)
             {
-                var reference = csProj.References.Find(item.HintPath);
+                var reference = csProj.References.Find(item.Name);
                 reference.Remove();
             }
             var addedRefs = changedRefs.Where(r => r.IsInProject).ToList();
             foreach (var item in addedRefs)
             {
-                    csProj.References.Add(item.HintPath);
+                var refPath = item.HintPath.Replace(settingsDialog.ViewModel.BeatSaberDir, "$(BeatSaberDir)");
+                var reference = csProj.References.Add(item.HintPath);
+                reference.CopyLocal = false;
+                
             }
+            var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(csProj.Project.FullName).First();
+            foreach (var item in addedRefs)
+            {
+                var needsHint = buildProject.Items.Where(obj => obj.ItemType == "Reference" && obj.EvaluatedInclude == item.Name).First();
+                needsHint.SetMetadataValue("HintPath", $"$(BeatSaberDir)\\{item.RelativeDirectory}\\{item.Name}.dll");
+            }
+            csProj.Project.Save();
+
             //if (returnedTrue)
             //    BSMTSettingsManager.Instance.Store(settingsDialog.ReturnSettings);
         }
