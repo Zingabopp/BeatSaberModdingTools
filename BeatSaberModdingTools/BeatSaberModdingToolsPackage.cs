@@ -8,6 +8,8 @@ using BeatSaberModdingTools.Models;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Events;
+using System.ComponentModel.Design;
+using Microsoft.VisualStudio.OLE.Interop;
 
 namespace BeatSaberModdingTools
 {
@@ -59,6 +61,12 @@ namespace BeatSaberModdingTools
             BSMTSettingsManager.SetManager(new BSMTSettingsManager());
 
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(false, cancellationToken);
+            var serviceContainer = (IServiceContainer)this; // this - is your Package/AsyncPakage
+            var commandTargetType = typeof(IOleCommandTarget);
+            IOleCommandTarget originalTarget = (IOleCommandTarget)serviceContainer.GetService(commandTargetType);
+            var commandsFilter = new CommandFilter(originalTarget);
+            serviceContainer.RemoveService(commandTargetType);
+            serviceContainer.AddService(commandTargetType, commandsFilter);
             await BeatSaberModdingTools.Commands.AddProjectReferencePaths.InitializeAsync(this);
             await SetBeatSaberDirCommand.InitializeAsync(this);
             await BeatSaberModdingTools.Commands.OpenSettingsWindowCommand.InitializeAsync(this);

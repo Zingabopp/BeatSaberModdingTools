@@ -27,22 +27,12 @@ namespace BeatSaberModdingTools.Views
         public ReferencesDialog(VSProject project)
         {
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
-            ViewModel = new ReferenceWindowViewModel(project.Project.FullName, project, BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath);
+            ViewModel = new ReferenceWindowViewModel(project.Project.FullName, project.Project.Name, project, BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath);
             DataContext = ViewModel;
             InitializeComponent();
             ReferencesView = (CollectionViewSource)FindResource("ReferenceListSource");
             ViewModel.ReferenceView = ReferencesView.View;
             ViewModel.ReferenceView.Filter = ViewModel.Filter;
-
-        }
-
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var listBox = (ListBox)sender;
-            if(listBox.SelectedItem is ReferenceFilter filter)
-            {
-               
-            }
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

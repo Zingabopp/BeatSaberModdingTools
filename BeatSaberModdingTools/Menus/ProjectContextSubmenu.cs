@@ -21,7 +21,7 @@ namespace BeatSaberModdingTools.Menus
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public const int CommandId = 0x1021;
+        public const int CommandId = 0x1024;
 
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -64,6 +64,7 @@ namespace BeatSaberModdingTools.Menus
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new OleMenuCommand(null, menuCommandID, true);
+            menuItem.Visible = false;
             menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
             commandService.AddCommand(menuItem);
         }
@@ -73,8 +74,8 @@ namespace BeatSaberModdingTools.Menus
             bool commandVisibleAndEnabled = true;
             if (menuCommand != null)
             {
-                menuCommand.Enabled = commandVisibleAndEnabled;
-                menuCommand.Visible = commandVisibleAndEnabled;
+                //menuCommand.Enabled = commandVisibleAndEnabled;
+                //menuCommand.Visible = commandVisibleAndEnabled;
             }
 
         }

@@ -46,8 +46,15 @@
          group as the part of a menu contained between two lines. The parent of a group
          must be a menu. -->
     <Groups>
-      <Group guid="guidBeatSaberModdingToolsPackageCmdSet" id="ExtensionsMenuGroup" priority="0x0100">
+      <Group guid="guidBeatSaberModdingToolsPackageCmdSet" id="ExtensionsMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_TOOL_MAINMENU" />
+      </Group>
+      <Group guid="guidBeatSaberModdingToolsPackageCmdSet" id="ProjectsMenuGroup" priority="0x0100">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE" />
+      </Group>
+      <Group guid="guidBeatSaberModdingToolsPackageCmdSet" id="ReferencesMenuGroup" priority="0x0100">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_REFERENCEROOT" />
+        <GroupFlag>Dynamic</GroupFlag>
       </Group>
       <Group guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" priority="0x0600">
         <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="TopLevelMenu" />
@@ -70,14 +77,14 @@
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
       <Button guid="guidBeatSaberModdingToolsPackageCmdSet" id="cmdidSetBeatSaberDirCommand" priority="0x0100" type="Button">
-        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" />
+        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="ProjectsMenuGroup" />
         <Icon guid="guidImages1" id="bmpPic1" />
         <Strings>
           <ButtonText>Set Beat Saber Directory...</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidBeatSaberModdingToolsPackageCmdSet" id="cmdidOpenSettingsWindowCommand" priority="0x0100" type="Button">
-        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" />
+        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="ExtensionsMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
           <ButtonText>Open Settings Window</ButtonText>
@@ -94,10 +101,12 @@
         </Strings>
       </Button>
       <Button guid="guidBeatSaberModdingToolsPackageCmdSet" id="cmdidAddProjectReference" priority="0x0100" type="Button">
-        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" />
+        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="ReferencesMenuGroup" />
         <Icon guid="guidImages3" id="bmpPic1" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>Add Reference...</ButtonText>
+          <ButtonText>Add Beat Saber Reference...</ButtonText>
         </Strings>
       </Button>
     </Buttons>
@@ -125,6 +134,8 @@
       <IDSymbol name="TopLevelMenu" value="0x1021" />
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="ExtensionsMenuGroup" value="0x1022" />
+      <IDSymbol name="ProjectsMenuGroup" value="0x1023" />
+      <IDSymbol name="ReferencesMenuGroup" value="0x1024" />
       <IDSymbol name="cmdidSetBeatSaberDirCommand" value="0x0101" />
       <IDSymbol name="cmdidAddProjectReferencePaths" value="0x0102" />
       <IDSymbol name="cmdidAddProjectReference" value="0x0103" />

@@ -100,14 +100,23 @@ namespace BeatSaberModdingTools.Commands
             DTE2 dte = (await package.GetServiceAsync(typeof(SDTE)).ConfigureAwait(false)) as DTE2;
             await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             if (dte.SelectedItems.Count != 1) return;
-            SelectedItem selectedItem = dte.SelectedItems.Item(1);
-            var csProj = (VSProject)selectedItem.Project.Object;
+            Array activeProjects = (Array)dte.ActiveSolutionProjects;
+            if(activeProjects.Length == 1)
+            {
+                var proj = (EnvDTE.Project)activeProjects.GetValue(0);
+                var csProj = (VSProject)proj.Object;
+                var settingsDialog = new ReferencesDialog(csProj);
+                var returnedTrue = settingsDialog.ShowDialog() ?? false;
+            }
+            //var proj = dte.Solution.Projects.
+            //var csProj = (VSProject);
+
+            //var csProj = (VSProject)selectedItem.Project.Object;
             //csProj.References.Add("path");
             //csProj.References.Item(1).Remove();
-            string projectFilePath = selectedItem.Project.FullName;
-            var settingsDialog = new ReferencesDialog(csProj);
+            //string projectFilePath = selectedItem.Project.FullName;
 
-            var returnedTrue = settingsDialog.ShowDialog() ?? false;
+            //
         }
     }
 }

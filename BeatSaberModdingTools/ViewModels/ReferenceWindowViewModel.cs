@@ -16,6 +16,17 @@ namespace BeatSaberModdingTools.ViewModels
     {
         public ICollectionView ReferenceView;
         private VSProject _project;
+        private string _projectName { get; }
+        private string _windowTitle;
+        public string WindowTitle
+        {
+            get 
+            {
+                if (_windowTitle == null)
+                    _windowTitle = $"{_projectName} - Beat Saber Reference Manager";
+                return _windowTitle; 
+            }
+        }
         public ObservableCollection<ReferenceItemViewModel> DesignExample => new ObservableCollection<ReferenceItemViewModel>()
         {
             new ReferenceItemViewModel(this, new ReferenceModel( "TestInProject", null, @"C:\BeatSaber\Beat Saber_Data\Managed\TestInProject.dll"){  RelativeDirectory="Beat Saber_Data\\Managed", Version="1.1.1.0"}, false),
@@ -68,16 +79,18 @@ namespace BeatSaberModdingTools.ViewModels
         public ReferenceWindowViewModel()
         {
             AvailableReferences = DesignExample;
+            _projectName = "DesignerTest";
             BeatSaberDir = @"C:\TestBeatSaberDir";
             SelectedFilter = Filters.First();
             //Refresh.Execute(null);
         }
-        public ReferenceWindowViewModel(string projectFilePath, VSProject project, string beatSaberDir)
+        public ReferenceWindowViewModel(string projectFilePath, string projectName, VSProject project, string beatSaberDir)
         {
             AvailableReferences = new ObservableCollection<ReferenceItemViewModel>();
             ProjectFilePath = projectFilePath;
             BeatSaberDir = beatSaberDir;
             _project = project;
+            _projectName = projectName;
             SelectedFilter = Filters.First();
             Refresh.Execute(null);
         }
@@ -134,10 +147,17 @@ namespace BeatSaberModdingTools.ViewModels
             foreach (var item in addedRefs)
             {
                 var refPath = item.HintPath.Replace(BeatSaberDir, "$(BeatSaberDir)");
-                var reference = _project.References.Add(item.HintPath);
-                reference.CopyLocal = false;
-
-                item.StartedInProject = true;
+                if (_project.References.Find(item.Name) == null)
+                {
+                    var reference = _project.References.Add(item.HintPath);
+                    reference.CopyLocal = false;
+                    item.StartedInProject = true;
+                }
+                else
+                {
+                    item.StartedInProject = false;
+                    item.IsInProject = false;                    
+                }
             }
             var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).First();
             foreach (var item in addedRefs)

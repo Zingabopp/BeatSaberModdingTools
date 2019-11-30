@@ -60,8 +60,8 @@ namespace BeatSaberModdingTools.Commands
             {
                 if (Directory.Exists(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath))
                     commandVisibleAndEnabled = true;
-                menuCommand.Enabled = commandVisibleAndEnabled;
-                menuCommand.Visible = commandVisibleAndEnabled;
+                //menuCommand.Enabled = commandVisibleAndEnabled;
+                //menuCommand.Visible = commandVisibleAndEnabled;
             }
 
         }
