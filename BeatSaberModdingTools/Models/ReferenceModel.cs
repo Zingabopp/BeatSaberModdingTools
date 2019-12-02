@@ -10,13 +10,18 @@ namespace BeatSaberModdingTools.Models
     public class ReferenceModel
     {
         public string Name { get; set; }
+        public string FullInclude { get; set; }
         public string HintPath { get; set; }
         public XElement ParentGroup { get; set; }
         public string Version { get; set; }
         public string RelativeDirectory { get; set; }
         public ReferenceModel(string name)
         {
-            Name = name;
+            FullInclude = name;
+            if (name.Contains(","))
+                Name = name.Substring(0, name.IndexOf(",")).Trim();
+            else
+                Name = name;
         }
         public ReferenceModel(string name, XElement parentGroup, string hintPath = "")
             : this(name)

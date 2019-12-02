@@ -10,6 +10,7 @@ namespace BeatSaberModdingTools.Models
     {
         public Guid ProjectGuid { get; private set; }
         public string ProjectName { get; private set; }
+        public string ProjectFullInclude { get; private set; }
         public string ProjectPath { get; private set; }
         public bool IsBSIPAProject { get; private set; }
         public ProjectOptions ProjectOptions { get; private set; }

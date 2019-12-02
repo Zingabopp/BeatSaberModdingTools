@@ -12,6 +12,9 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
+using static BeatSaberModdingTools.Utilities.EnvUtils;
+using Microsoft.Build.Evaluation;
+using static BeatSaberModdingTools.Utilities.Paths;
 
 namespace BeatSaberModdingTools.Commands
 {
@@ -48,23 +51,9 @@ namespace BeatSaberModdingTools.Commands
             var menuCommandID = new CommandID(CommandSet, CommandId);
             //var menuItem = new MenuCommand(this.Execute, menuCommandID);
             var menuItem = new OleMenuCommand(Execute, menuCommandID, true);
-            menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
             commandService.AddCommand(menuItem);
         }
 
-        private void MenuItem_BeforeQueryStatus(object sender, EventArgs e)
-        {
-            OleMenuCommand menuCommand = sender as OleMenuCommand;
-            bool commandVisibleAndEnabled = false;
-            if (menuCommand != null)
-            {
-                if (Directory.Exists(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath))
-                    commandVisibleAndEnabled = true;
-                //menuCommand.Enabled = commandVisibleAndEnabled;
-                //menuCommand.Visible = commandVisibleAndEnabled;
-            }
-
-        }
 
         /// <summary>
         /// Gets the instance of the command.
@@ -111,29 +100,34 @@ namespace BeatSaberModdingTools.Commands
         private async void Execute(object sender, EventArgs e)
         {
             await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            DTE2 dte = (await package.GetServiceAsync(typeof(SDTE)).ConfigureAwait(false)) as DTE2;
-            await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            if (dte.SelectedItems.Count != 1) return;
-            var selectedList = new List<string>();
-            var selectedItem = dte.SelectedItems.Item(1);
-            selectedList.Add(selectedItem.Project.FullName);
-            selectedList.Add($"---{BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath}---\n");
-            foreach(EnvDTE.Property item in selectedItem.Project.Properties)
+            string message;
+            OLEMSGICON icon = OLEMSGICON.OLEMSGICON_CRITICAL;
+            if (TryGetSelectedProject(package, out var projectModel, out var project))
             {
-                selectedList.Add(item.Name);
+                var userProj = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectModel.ProjectPath + ".user").FirstOrDefault();
+                if (userProj != null)
+                {
+                    var beatSaberDir = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
+                    var referencePaths = new string[] { Path_Managed, Path_Libs, Path_Plugins }.Select(p => Path.Combine(beatSaberDir, p)).ToList();
+                    string value = string.Join(";", referencePaths);
+                    userProj.SetProperty("ReferencePath", value);
+                    userProj.Save();
+                    project.MarkDirty();
+                    message = "Added reference paths for:\n" + string.Join("\n", referencePaths);
+                }
+                else
+                    message = "Unable to retrieve user specific project.";
             }
-            string message = string.Format(CultureInfo.CurrentCulture, "SelectedItems: {0}", string.Join(", ", selectedList));
-            string title = "AddProjectReferencePaths";
+            else
+                message = "Unable to retrieve project information.";
             // OK = 1, Cancel = 2, Abort = 3, Retry = 4, Ignore = 5, Yes = 6, No = 7 depending on what button is pressed.
             int result = VsShellUtilities.ShowMessageBox(
                 this.package,
                 message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
+                "Add Project Reference Paths",
+                icon,
+                OLEMSGBUTTON.OLEMSGBUTTON_OK,
                 OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-            //dte.ExecuteCommand("Project.UnloadProject");
-            //dte.ExecuteCommand("Project.ReloadProject");
         }
     }
 }

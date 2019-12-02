@@ -40,7 +40,8 @@ namespace BeatSaberModdingTools.ViewModels
             new ReferenceFilter("Unity", Paths.Path_Managed, "Unity."),
             new ReferenceFilter("UnityEngine", Paths.Path_Managed, "UnityEngine."),
             new ReferenceFilter("Libs", Paths.Path_Libs, string.Empty),
-            new ReferenceFilter("Plugins", Paths.Path_Plugins, string.Empty)
+            new ReferenceFilter("Plugins", Paths.Path_Plugins, string.Empty),
+            new ReferenceFilter("IPA", Paths.Path_Managed, "IPA.")
         };
 
         private ReferenceFilter _selectedFilter;
@@ -146,7 +147,7 @@ namespace BeatSaberModdingTools.ViewModels
             var addedRefs = changedRefs.Where(r => r.IsInProject).ToList();
             foreach (var item in addedRefs)
             {
-                var refPath = item.HintPath.Replace(BeatSaberDir, "$(BeatSaberDir)");
+                //var refPath = item.HintPath.Replace(BeatSaberDir, "$(BeatSaberDir)");
                 if (_project.References.Find(item.Name) == null)
                 {
                     var reference = _project.References.Add(item.HintPath);
@@ -155,18 +156,28 @@ namespace BeatSaberModdingTools.ViewModels
                 }
                 else
                 {
-                    item.StartedInProject = false;
-                    item.IsInProject = false;                    
+                    item.StartedInProject = true;
+                    item.IsInProject = true;                    
                 }
             }
             var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).First();
             foreach (var item in addedRefs)
             {
-                var needsHint = buildProject.Items.Where(obj => obj.ItemType == "Reference" && obj.EvaluatedInclude == item.Name).First();
-                needsHint.SetMetadataValue("HintPath", $"$(BeatSaberDir)\\{item.RelativeDirectory}\\{item.Name}.dll");
-                needsHint.SetMetadataValue("Private", "False");
+                var newRef = buildProject.Items.Where(obj => obj.ItemType == "Reference" && GetSimpleReferenceName(obj.EvaluatedInclude) == item.Name).First();
+                if (newRef != null)
+                {
+                    newRef.SetMetadataValue("HintPath", $"$(BeatSaberDir)\\{item.RelativeDirectory}\\{item.Name}.dll");
+                    newRef.SetMetadataValue("Private", "False");
+                }
             }
             CheckChangedReferences();
+        }
+        private string GetSimpleReferenceName(string fullInclude)
+        {
+            if (fullInclude.Contains(","))
+                return fullInclude.Substring(0, fullInclude.IndexOf(",")).Trim();
+            else
+                return fullInclude;
         }
 
         private bool _referencesChanged;
