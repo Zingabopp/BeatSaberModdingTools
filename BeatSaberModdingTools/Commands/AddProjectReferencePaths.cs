@@ -101,6 +101,7 @@ namespace BeatSaberModdingTools.Commands
         {
             await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             string message;
+            string title = "Error adding reference paths:";
             OLEMSGICON icon = OLEMSGICON.OLEMSGICON_CRITICAL;
             if (TryGetSelectedProject(package, out var projectModel, out var project))
             {
@@ -113,7 +114,9 @@ namespace BeatSaberModdingTools.Commands
                     userProj.SetProperty("ReferencePath", value);
                     userProj.Save();
                     project.MarkDirty();
-                    message = "Added reference paths for:\n" + string.Join("\n", referencePaths);
+                    title = "Added reference paths to:";
+                    message = string.Join("\n\n", referencePaths);
+                    icon = OLEMSGICON.OLEMSGICON_INFO;
                 }
                 else
                     message = "Unable to retrieve user specific project.";
@@ -124,7 +127,7 @@ namespace BeatSaberModdingTools.Commands
             int result = VsShellUtilities.ShowMessageBox(
                 this.package,
                 message,
-                "Add Project Reference Paths",
+                title,
                 icon,
                 OLEMSGBUTTON.OLEMSGBUTTON_OK,
                 OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
