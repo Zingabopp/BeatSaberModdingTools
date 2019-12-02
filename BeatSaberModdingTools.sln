@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaberModdingTools", "Be
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSMT_Tests", "BSMT_Tests\BSMT_Tests.csproj", "{BC3DE8B2-EC66-47CD-A1F9-E04AA2788B08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoBehaviourTemplate", "MonoBehaviourTemplate\MonoBehaviourTemplate.csproj", "{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{BC3DE8B2-EC66-47CD-A1F9-E04AA2788B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC3DE8B2-EC66-47CD-A1F9-E04AA2788B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC3DE8B2-EC66-47CD-A1F9-E04AA2788B08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

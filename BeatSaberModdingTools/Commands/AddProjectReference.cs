@@ -30,7 +30,7 @@ namespace BeatSaberModdingTools.Commands
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public static readonly Guid CommandSet = new Guid("6a1cb889-cf43-4fe1-9eb7-9370d0d8d1d4");
+        public static readonly Guid CommandSet = new Guid("6a1cb889-cf43-4fe1-9eb7-9370d0d8d1d6");
 
         /// <summary>
         /// VS Package that provides this command, not null.

@@ -11,17 +11,19 @@ namespace BeatSaberModdingTools.Models
         public Guid ProjectGuid { get; private set; }
         public string ProjectName { get; private set; }
         public string ProjectPath { get; private set; }
+        public bool IsBSIPAProject { get; private set; }
         public ProjectOptions ProjectOptions { get; private set; }
         public ProjectOptions UserFileOptions { get; private set; }
         public ProjectCapabilities SupportedCapabilities { get; private set; }
 
-        public ProjectModel(Guid projectGuid, string projectName, string projectPath,
+        public ProjectModel(Guid projectGuid, string projectName, string projectPath, bool isBsipaProject,
             ProjectOptions projectOptions = ProjectOptions.None, ProjectOptions userFileOptions = ProjectOptions.None,
             ProjectCapabilities supportedCapabilities = ProjectCapabilities.None)
         {
             ProjectGuid = projectGuid;
             ProjectName = projectName;
             ProjectPath = projectPath;
+            IsBSIPAProject = isBsipaProject;
             ProjectOptions = projectOptions;
             UserFileOptions = userFileOptions;
             SupportedCapabilities = supportedCapabilities;

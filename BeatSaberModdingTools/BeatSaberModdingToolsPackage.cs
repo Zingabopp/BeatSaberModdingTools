@@ -64,9 +64,10 @@ namespace BeatSaberModdingTools
             var serviceContainer = (IServiceContainer)this; // this - is your Package/AsyncPakage
             var commandTargetType = typeof(IOleCommandTarget);
             IOleCommandTarget originalTarget = (IOleCommandTarget)serviceContainer.GetService(commandTargetType);
-            var commandsFilter = new CommandFilter(originalTarget);
+            var commandsFilter = new CommandFilter(originalTarget, this);
             serviceContainer.RemoveService(commandTargetType);
             serviceContainer.AddService(commandTargetType, commandsFilter);
+            await BeatSaberModdingTools.EnvironmentMonitor.InitializeAsync(this);
             await BeatSaberModdingTools.Commands.AddProjectReferencePaths.InitializeAsync(this);
             await SetBeatSaberDirCommand.InitializeAsync(this);
             await BeatSaberModdingTools.Commands.OpenSettingsWindowCommand.InitializeAsync(this);

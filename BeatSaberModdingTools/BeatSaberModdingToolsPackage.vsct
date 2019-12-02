@@ -31,10 +31,17 @@
     group; your package should define its own command set in order to avoid collisions
     with command ids defined by other packages. -->
     <Menus>
-      <Menu guid="guidBeatSaberModdingToolsPackageCmdSet" id="TopLevelMenu" priority="0x700" type="Menu">
-        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="ExtensionsMenuGroup" />
+      <Menu guid="guidExtensionsMenuCmdSet" id="ExtensionsSubMenu" priority="0x700" type="Menu">
+        <Parent guid="guidExtensionsMenuCmdSet" id="ExtensionsMenuGroup" />
+        <Strings>
+          <ButtonText>BSMT</ButtonText>
+          <CommandName>Beat Saber Modding Tools</CommandName>
+        </Strings>
+      </Menu>
+      <Menu guid="guidProjectContextCmdSet" id="ProjectsSubmenu" priority="0x700" type="Menu">
+        <Parent guid="guidProjectContextCmdSet" id="ProjectsMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
-        <!--<CommandFlag>DefaultInvisible</CommandFlag>-->
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>BSMT</ButtonText>
           <CommandName>Beat Saber Modding Tools</CommandName>
@@ -46,18 +53,21 @@
          group as the part of a menu contained between two lines. The parent of a group
          must be a menu. -->
     <Groups>
-      <Group guid="guidBeatSaberModdingToolsPackageCmdSet" id="ExtensionsMenuGroup" priority="0x0600">
+      <Group guid="guidExtensionsMenuCmdSet" id="ExtensionsMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_TOOL_MAINMENU" />
       </Group>
-      <Group guid="guidBeatSaberModdingToolsPackageCmdSet" id="ProjectsMenuGroup" priority="0x0100">
+      <Group guid="guidProjectContextCmdSet" id="ProjectsMenuGroup" priority="0x0100">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE" />
       </Group>
-      <Group guid="guidBeatSaberModdingToolsPackageCmdSet" id="ReferencesMenuGroup" priority="0x0100">
+      <Group guid="guidReferencesContextCmdSet" id="ReferencesMenuGroup" priority="0x0100">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_REFERENCEROOT" />
         <GroupFlag>Dynamic</GroupFlag>
       </Group>
-      <Group guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="TopLevelMenu" />
+      <Group guid="guidExtensionsMenuCmdSet" id="ExtSubMenuGroup" priority="0x0600">
+        <Parent guid="guidExtensionsMenuCmdSet" id="ExtensionsSubMenu" />
+      </Group>
+      <Group guid="guidProjectContextCmdSet" id="ProjectsSubMenuGroup" priority="0x0600">
+        <Parent guid="guidProjectContextCmdSet" id="ProjectsSubmenu" />
       </Group>
       
       <!--<Group guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" priority="0x0600">
@@ -76,22 +86,22 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidBeatSaberModdingToolsPackageCmdSet" id="cmdidSetBeatSaberDirCommand" priority="0x0100" type="Button">
-        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="ProjectsMenuGroup" />
+      <Button guid="guidProjectContextCmdSet" id="cmdidSetBeatSaberDirCommand" priority="0x0100" type="Button">
+        <Parent guid="guidProjectContextCmdSet" id="ProjectsSubMenuGroup" />
         <Icon guid="guidImages1" id="bmpPic1" />
         <Strings>
           <ButtonText>Set Beat Saber Directory...</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidBeatSaberModdingToolsPackageCmdSet" id="cmdidOpenSettingsWindowCommand" priority="0x0100" type="Button">
-        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="ExtensionsMenuGroup" />
+      <Button guid="guidExtensionsMenuCmdSet" id="cmdidOpenSettingsWindowCommand" priority="0x0100" type="Button">
+        <Parent guid="guidExtensionsMenuCmdSet" id="ExtSubMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
-          <ButtonText>Open Settings Window</ButtonText>
+          <ButtonText>Settings...</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidBeatSaberModdingToolsPackageCmdSet" id="cmdidAddProjectReferencePaths" priority="0x0100" type="Button">
-        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="MyMenuGroup" />
+      <Button guid="guidProjectContextCmdSet" id="cmdidAddProjectReferencePaths" priority="0x0100" type="Button">
+        <Parent guid="guidProjectContextCmdSet" id="ProjectsSubMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <!--<CommandFlag>DefaultDisabled</CommandFlag>-->
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -100,8 +110,8 @@
           <ButtonText>Add Reference Paths</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidBeatSaberModdingToolsPackageCmdSet" id="cmdidAddProjectReference" priority="0x0100" type="Button">
-        <Parent guid="guidBeatSaberModdingToolsPackageCmdSet" id="ReferencesMenuGroup" />
+      <Button guid="guidReferencesContextCmdSet" id="cmdidAddProjectReference" priority="0x0100" type="Button">
+        <Parent guid="guidReferencesContextCmdSet" id="ReferencesMenuGroup" />
         <Icon guid="guidImages3" id="bmpPic1" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -130,16 +140,24 @@
     <GuidSymbol name="guidBeatSaberModdingToolsPackage" value="{ce163df3-bae3-4fe0-882b-da2bde0f5d8e}" />
 
     <!-- This is the guid used to group the menu commands together -->
-    <GuidSymbol name="guidBeatSaberModdingToolsPackageCmdSet" value="{6a1cb889-cf43-4fe1-9eb7-9370d0d8d1d4}">
-      <IDSymbol name="TopLevelMenu" value="0x1021" />
-      <IDSymbol name="MyMenuGroup" value="0x1020" />
+    <GuidSymbol name="guidExtensionsMenuCmdSet" value="{6a1cb889-cf43-4fe1-9eb7-9370d0d8d1d4}">
+      <IDSymbol name="ExtensionsSubMenu" value="0x1021" />
+      <IDSymbol name="ExtSubMenuGroup" value="0x1020" />
       <IDSymbol name="ExtensionsMenuGroup" value="0x1022" />
+      <IDSymbol name="cmdidOpenSettingsWindowCommand" value="0x0104" />
+    </GuidSymbol>
+
+    <GuidSymbol name="guidProjectContextCmdSet" value="{6a1cb889-cf43-4fe1-9eb7-9370d0d8d1d5}">
+      <IDSymbol name="ProjectsSubMenuGroup" value="0x1020" />
+      <IDSymbol name="ProjectsSubmenu" value="0x1021" />
       <IDSymbol name="ProjectsMenuGroup" value="0x1023" />
-      <IDSymbol name="ReferencesMenuGroup" value="0x1024" />
       <IDSymbol name="cmdidSetBeatSaberDirCommand" value="0x0101" />
       <IDSymbol name="cmdidAddProjectReferencePaths" value="0x0102" />
+    </GuidSymbol>
+
+    <GuidSymbol name="guidReferencesContextCmdSet" value="{6a1cb889-cf43-4fe1-9eb7-9370d0d8d1d6}">
+      <IDSymbol name="ReferencesMenuGroup" value="0x1024" />
       <IDSymbol name="cmdidAddProjectReference" value="0x0103" />
-      <IDSymbol name="cmdidOpenSettingsWindowCommand" value="0x0104" />
     </GuidSymbol>
 
     <GuidSymbol value="{3caebdb6-8ff9-43b2-be29-f9d02e8bfc7f}" name="guidImages1">

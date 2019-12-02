@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="CommandFilter.cs" />
     <Compile Include="Commands\AddProjectReference.cs" />
+    <Compile Include="Commands\CommandSetGuids.cs" />
+    <Compile Include="Menus\ReferenceContextSubmenu.cs" />
     <Compile Include="Utilities\BeatSaberTools.cs" />
     <Compile Include="Commands\AddProjectReferencePaths.cs" />
     <Compile Include="Commands\OpenSettingsWindowCommand.cs" />
@@ -161,6 +163,14 @@
           <VSIXSubPath>ProjectTemplates</VSIXSubPath>
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+        </ProjectReference>
+        <ProjectReference Include="..\MonoBehaviourTemplate\MonoBehaviourTemplate.csproj">
+          <Project>{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}</Project>
+          <Name>MonoBehaviourTemplate</Name>
+          <VSIXSubPath>ItemTemplates\Unity</VSIXSubPath>
+          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+          <TemplateType>Item</TemplateType>
         </ProjectReference>
       </ItemGroup>
     </When>

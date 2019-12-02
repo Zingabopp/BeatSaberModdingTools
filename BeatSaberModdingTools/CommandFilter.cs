@@ -1,40 +1,95 @@
 ﻿using BeatSaberModdingTools.Commands;
+using BeatSaberModdingTools.Menus;
+using BeatSaberModdingTools.Models;
+using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.Design;
 
 namespace BeatSaberModdingTools
 {
     // From https://stackoverflow.com/a/57166903
     public class CommandFilter : IOleCommandTarget
     {
-        public CommandFilter(IOleCommandTarget nextTarget)
+        private AsyncPackage package;
+        public CommandFilter(IOleCommandTarget nextTarget, AsyncPackage asyncPackage)
         {
             NextTarget = nextTarget;
+            package = asyncPackage;
         }
-        bool visible = false;
+        
         public IOleCommandTarget NextTarget { get; set; }
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var cmdId = prgCmds[0].cmdID;
-            if (pguidCmdGroup.Equals(AddProjectReference.CommandSet) && cmdId == AddProjectReference.CommandId)
+            if (pguidCmdGroup.Equals(CommandSetGuids.ReferencesContextCmdSet))
             {
-                CommandStatus status = 0;
-                status |= CommandStatus.Supported;
-                status |= CommandStatus.Enabled;
-                if (visible)
-                    status &= ~CommandStatus.Invisible;
-                else
-                    status |= CommandStatus.Invisible;
-                visible = !visible;
-                prgCmds[0].cmdf = (uint)GetVsStatus(status);
+                if (cmdId == AddProjectReference.CommandId)
+                {
+                    bool visible = false;
+                    ProjectModel proj = null;
+                    CommandStatus status = 0;
+                    if (TryGetSelectedProject(out proj) && proj.IsBSIPAProject)
+                    {
+                        status |= CommandStatus.Supported;
+                        status |= CommandStatus.Enabled;
+                        visible = true;
+                    }
+                    if (visible)
+                        status &= ~CommandStatus.Invisible;
+                    else
+                        status |= CommandStatus.Invisible;
+                    prgCmds[0].cmdf = (uint)GetVsStatus(status);
+                }
             }
+            if (pguidCmdGroup.Equals(CommandSetGuids.ProjectContextCmdSet))
+            {
+                if (cmdId == ProjectContextSubmenu.CommandId)
+                {
+                    bool visible = false;
+                    ProjectModel proj = null;
+                    CommandStatus status = 0;
+                    if (TryGetSelectedProject(out proj) && proj.IsBSIPAProject)
+                    {
+                        status |= CommandStatus.Supported;
+                        status |= CommandStatus.Enabled;
+                        visible = true;
+                    }
+                    if (visible)
+                        status &= ~CommandStatus.Invisible;
+                    else
+                        status |= CommandStatus.Invisible;
+                    prgCmds[0].cmdf = (uint)GetVsStatus(status);
+                }
+            }
+
+
             return VSConstants.S_OK;
+        }
+
+        private WeakReference<DTE2> _dte = new WeakReference<DTE2>(null);
+
+        public bool TryGetSelectedProject(out ProjectModel projectModel)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            projectModel = null;
+            DTE2 dte = null;
+            if (!_dte.TryGetTarget(out dte))
+            {
+                var serviceContainer = (IServiceContainer)package;
+                dte = serviceContainer.GetService(typeof(SDTE)) as DTE2;
+                _dte.SetTarget(dte);
+            }
+            if (dte.SelectedItems.Count != 1) return false;
+            Array activeProjects = (Array)dte.ActiveSolutionProjects;
+            if (activeProjects.Length != 1) return false;
+            var proj = (EnvDTE.Project)activeProjects.GetValue(0);
+            return EnvironmentMonitor.Instance.Projects.TryGetValue(proj.FullName, out projectModel);
         }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)

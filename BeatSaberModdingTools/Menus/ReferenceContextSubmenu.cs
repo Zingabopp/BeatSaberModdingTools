@@ -11,17 +11,17 @@ using Task = System.Threading.Tasks.Task;
 
 namespace BeatSaberModdingTools.Menus
 {
-    public class ProjectContextSubmenu
+    public class ReferenceContextSubmenu
     {
         /// <summary>
         /// Command ID.
         /// </summary>
-        public static readonly Guid CommandSet = new Guid("6a1cb889-cf43-4fe1-9eb7-9370d0d8d1d5");  // get the GUID from the .vsct file
+        public static readonly Guid CommandSet = new Guid("6a1cb889-cf43-4fe1-9eb7-9370d0d8d1d6");  // get the GUID from the .vsct file
 
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public const int CommandId = 0x1021;
+        public const int CommandId = 0x1023;
 
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -31,7 +31,7 @@ namespace BeatSaberModdingTools.Menus
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static ProjectContextSubmenu Instance
+        public static ReferenceContextSubmenu Instance
         {
             get;
             private set;
@@ -48,7 +48,7 @@ namespace BeatSaberModdingTools.Menus
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
-            Instance = new ProjectContextSubmenu(package, commandService);
+            Instance = new ReferenceContextSubmenu(package, commandService);
 
         }
 
@@ -58,7 +58,7 @@ namespace BeatSaberModdingTools.Menus
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
-        private ProjectContextSubmenu(AsyncPackage package, OleMenuCommandService commandService)
+        private ReferenceContextSubmenu(AsyncPackage package, OleMenuCommandService commandService)
         {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));

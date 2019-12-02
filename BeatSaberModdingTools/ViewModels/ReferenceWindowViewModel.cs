@@ -164,6 +164,7 @@ namespace BeatSaberModdingTools.ViewModels
             {
                 var needsHint = buildProject.Items.Where(obj => obj.ItemType == "Reference" && obj.EvaluatedInclude == item.Name).First();
                 needsHint.SetMetadataValue("HintPath", $"$(BeatSaberDir)\\{item.RelativeDirectory}\\{item.Name}.dll");
+                needsHint.SetMetadataValue("Private", "False");
             }
             CheckChangedReferences();
         }
