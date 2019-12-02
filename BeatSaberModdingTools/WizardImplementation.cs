@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TemplateWizard;
 using System.Windows.Forms;
 using EnvDTE;
 
-namespace BeatSaberModTemplates
+namespace BeatSaberModdingTools
 {
     public class WizardImplementation : IWizard
     {

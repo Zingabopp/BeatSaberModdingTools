@@ -2,9 +2,16 @@
 using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.VisualStudio.Shell;
+using BeatSaberModdingTools.Commands;
 using Task = System.Threading.Tasks.Task;
+using BeatSaberModdingTools.Models;
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell.Events;
+using System.ComponentModel.Design;
+using Microsoft.VisualStudio.OLE.Interop;
 
-namespace BeatSaberModTemplates
+namespace BeatSaberModdingTools
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -24,11 +31,16 @@ namespace BeatSaberModTemplates
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [Guid(BeatSaberModTemplatesPackage.PackageGuidString)]
-    public sealed class BeatSaberModTemplatesPackage : AsyncPackage
+    [Guid(BeatSaberModdingToolsPackage.PackageGuidString)]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
+    [InstalledProductRegistration("Beat Saber Modding Tools", "Provides tools and templates for creating Beat Saber mods and Visual Studio commands for managing references.", "1.0")]
+    [ProvideAutoLoad(UIContextGuids80.NoSolution, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionOpening_string, PackageAutoLoadFlags.BackgroundLoad)]
+    public sealed class BeatSaberModdingToolsPackage : AsyncPackage
     {
         /// <summary>
-        /// Beat_Saber_Mod_TemplatesPackage GUID string.
+        /// BeatSaberModdingToolsPackage GUID string.
         /// </summary>
         public const string PackageGuidString = "ce163df3-bae3-4fe0-882b-da2bde0f5d8e";
 
@@ -43,9 +55,24 @@ namespace BeatSaberModTemplates
         /// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
-            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            BSMTSettingsManager.SetManager(new BSMTSettingsManager());
+
+            await this.JoinableTaskFactory.SwitchToMainThreadAsync(false, cancellationToken);
+            var serviceContainer = (IServiceContainer)this; // this - is your Package/AsyncPakage
+            var commandTargetType = typeof(IOleCommandTarget);
+            IOleCommandTarget originalTarget = (IOleCommandTarget)serviceContainer.GetService(commandTargetType);
+            var commandsFilter = new CommandFilter(originalTarget, this);
+            serviceContainer.RemoveService(commandTargetType);
+            serviceContainer.AddService(commandTargetType, commandsFilter);
+            await BeatSaberModdingTools.EnvironmentMonitor.InitializeAsync(this);
+            await BeatSaberModdingTools.Commands.AddProjectReferencePaths.InitializeAsync(this);
+            await SetBeatSaberDirCommand.InitializeAsync(this);
+            await BeatSaberModdingTools.Commands.OpenSettingsWindowCommand.InitializeAsync(this);
+            await BeatSaberModdingTools.Menus.ProjectContextSubmenu.InitializeAsync(this);
+            await BeatSaberModdingTools.Commands.AddProjectReference.InitializeAsync(this);
         }
 
         #endregion

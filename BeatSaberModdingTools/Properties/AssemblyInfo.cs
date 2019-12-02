@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BeatSaberModTemplates")]
-[assembly: AssemblyDescription("An installer for several Beat Saber mod templates.")]
+[assembly: AssemblyTitle("Beat Saber Modding Tools")]
+[assembly: AssemblyDescription("A set of tools and templates to make Beat Saber mod creation easier.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BeatSaberModTemplates")]
+[assembly: AssemblyProduct("Beat Saber Modding Tools")]
 [assembly: AssemblyCopyright("Zingabopp 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

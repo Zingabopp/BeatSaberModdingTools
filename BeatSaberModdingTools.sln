@@ -9,7 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSIPA Plugin (Core)", "BSIP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSIPA Plugin (Disableable)", "BSIPA Plugin (Disableable)\BSIPA Plugin (Disableable).csproj", "{F87FD4E5-9CC9-4E02-B5BF-E8E65665375F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Beat Saber Mod Templates", "Beat Saber Mod Templates\Beat Saber Mod Templates.csproj", "{FF7C6FC3-AB29-449E-BA85-08E4653F9AAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaberModdingTools", "BeatSaberModdingTools\BeatSaberModdingTools.csproj", "{FF7C6FC3-AB29-449E-BA85-08E4653F9AAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSMT_Tests", "BSMT_Tests\BSMT_Tests.csproj", "{BC3DE8B2-EC66-47CD-A1F9-E04AA2788B08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoBehaviourTemplate", "MonoBehaviourTemplate\MonoBehaviourTemplate.csproj", "{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{FF7C6FC3-AB29-449E-BA85-08E4653F9AAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF7C6FC3-AB29-449E-BA85-08E4653F9AAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF7C6FC3-AB29-449E-BA85-08E4653F9AAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC3DE8B2-EC66-47CD-A1F9-E04AA2788B08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC3DE8B2-EC66-47CD-A1F9-E04AA2788B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC3DE8B2-EC66-47CD-A1F9-E04AA2788B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC3DE8B2-EC66-47CD-A1F9-E04AA2788B08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

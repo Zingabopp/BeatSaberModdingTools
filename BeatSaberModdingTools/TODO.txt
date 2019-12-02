@@ -1,0 +1,3 @@
+﻿-Auto-complete for the Add Location text box?
+-Redirect template build copy action to IPA\Pending\Plugins instead of the Plugins folder.
+-Project converter (convert references)

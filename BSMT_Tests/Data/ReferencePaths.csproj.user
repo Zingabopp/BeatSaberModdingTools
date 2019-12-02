@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <BeatSaberDir>C:\TestBeatSaberDir\Beat Saber_Data\Managed;C:\TestBeatSaberDir\Plugins;C:\TestBeatSaberDir\Libs</BeatSaberDir>
+  </PropertyGroup>
+</Project>

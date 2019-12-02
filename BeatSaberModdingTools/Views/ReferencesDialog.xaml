@@ -1,0 +1,67 @@
+﻿<Window x:Class="BeatSaberModdingTools.Views.ReferencesDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BeatSaberModdingTools.Views"
+             xmlns:vm="clr-namespace:BeatSaberModdingTools.ViewModels"
+             xmlns:models="clr-namespace:BeatSaberModdingTools.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" 
+             d:DataContext="{d:DesignInstance Type=vm:ReferenceWindowViewModel, IsDesignTimeCreatable=True}"
+             Height="425" Width="800" ShowInTaskbar="True" Title="{Binding WindowTitle}" Topmost="True">
+    <Window.Resources>
+        <CollectionViewSource x:Key="ReferenceListSource" Source="{Binding AvailableReferences}"/>
+        <CollectionViewSource x:Key="Filters" Source="{Binding Filters}"/>
+        <vm:ReferenceWindowViewModel x:Key="ViewModel"/>
+    </Window.Resources>
+    <Grid Margin="3,3,3,3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding BeatSaberDir}"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ListBox Grid.Column="0" ItemsSource="{Binding Source={StaticResource Filters}}" SelectedItem="{Binding SelectedFilter, Mode=TwoWay}"/>
+            <DataGrid Grid.Column="1" ItemsSource="{Binding Source={StaticResource ReferenceListSource}}" AutoGenerateColumns="False" CanUserAddRows="False" 
+                      SelectionMode="Single" IsManipulationEnabled="False" RowHeight="22" CanUserResizeRows="False" CanUserResizeColumns="False"
+                      RowHeaderWidth="0">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn MinWidth="30" Width="30" CanUserResize="False" Header="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsInProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn MinWidth="50" Width="200" Header="Name" Binding="{Binding Name}" />
+                    <DataGridTextColumn Width="*" Header="Relative Path" Binding="{Binding RelativeDirectory}" />
+                    <DataGridTextColumn Width="60" Header="Version" Binding="{Binding Version}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Grid Grid.Row="2" x:Name="OkCancelButtons" Margin="0,10,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <UniformGrid Grid.Column="0" HorizontalAlignment="Right" Rows="1" Columns="3" >
+                <Button Margin="0,0,10,0" MinWidth="80" Click="OkButton_Click">
+                    <TextBlock Text="OK"/>
+                </Button>
+                <Button Margin="0,0,10,0" Click="CancelButton_Click">
+                    <TextBlock Text="Cancel"/>
+                </Button>
+                <Button Margin="0,0,10,0" Command="{Binding ApplyChanges}">
+                    <TextBlock Text="Apply"/>
+                </Button>
+            </UniformGrid>
+        </Grid>
+    </Grid>
+</Window>

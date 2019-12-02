@@ -11,10 +11,10 @@
     <CreateNewFolder>true</CreateNewFolder>
     <DefaultName>BSPlugin</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
-	<LanguageTag>csharp</LanguageTag>
-	<PlatformTag>windows</PlatformTag>
-	<ProjectTypeTag>library</ProjectTypeTag>
-	<ProjectTypeTag>games</ProjectTypeTag>
+	  <LanguageTag>csharp</LanguageTag>
+	  <PlatformTag>windows</PlatformTag>
+	  <ProjectTypeTag>library</ProjectTypeTag>
+	  <ProjectTypeTag>games</ProjectTypeTag>
   </TemplateData>
   <TemplateContent>
     <Project File="ProjectTemplate.csproj" ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj">

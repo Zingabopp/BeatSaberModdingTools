@@ -1,23 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>$guid1$</ProjectGuid>
+    <ProjectGuid>{E4025071-7F74-42F6-A67F-044FD5E55760}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>$safeprojectname$</RootNamespace>
-    <AssemblyName>$safeprojectname$</AssemblyName>
-    <TargetFrameworkVersion>v$targetframeworkversion$</TargetFrameworkVersion>
+    <RootNamespace>BSMLPractice</RootNamespace>
+    <AssemblyName>BSMLPractice</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <PathMap>$(SolutionDir)=C:\</PathMap>
-    <DebugType>portable</DebugType>
     <BeatSaberDir>$(ProjectDir)References</BeatSaberDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -33,10 +32,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BSML">
+      <HintPath>References\Plugins\BSML.dll</HintPath>
+    </Reference>
+    <Reference Include="SongCore">
+      <HintPath>References\Plugins\SongCore.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Assembly-CSharp">
@@ -48,7 +54,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="0Harmony.1.2.0.1">
-      <HintPath>References\Libs\0Harmony.1.2.0.1.dll</HintPath>
+      <HintPath>$(BeatSaberDir)\Libs\0Harmony.1.2.0.1.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
@@ -79,14 +85,29 @@
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.VRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="BeatSaberCustomUI">
+      <HintPath>$(BeatSaberDir)\Plugins\BeatSaberCustomUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HarmonyPatches\LevelListTableCellOverride.cs" />
+    <Compile Include="Notify\INotifiableHost.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="PluginConfig.cs" />
-    <Compile Include="$safeprojectname$.cs" />
+    <Compile Include="ExampleMonobehaviour.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionUtilExample.cs" />
+    <Compile Include="UI\BSMLPractice_SettingsUI.cs" />
+    <Compile Include="UI\ExampleFlowCoordinator.cs" />
+    <Compile Include="UI\HotReloadableViewController.cs" />
+    <Compile Include="UI\ModButton.cs" />
+    <Compile Include="Views\BSMLNames.cs" />
+    <Compile Include="Views\BSMLSettingsView.bsml.cs" />
+    <Compile Include="Views\ExampleViewRight.bsml.cs" />
+    <Compile Include="Views\ExampleViewLeft.bsml.cs" />
+    <Compile Include="Views\ExampleViewCenter.bsml.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
@@ -94,13 +115,31 @@
   <ItemGroup>
     <None Include="CreateJunctions.bat" />
     <None Include=".gitignore" />
+    <EmbeddedResource Include="Views\BSMLSettingsView.bsml" />
+    <EmbeddedResource Include="Views\ExampleViewLeft.bsml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ExampleViewRight.bsml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ExampleViewCenter.bsml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--Build Targets-->
   <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(NCrunch)' != '1'">
-    <Message Text="Copying $(OutputPath)$(AssemblyName).dll to Plugins folder" Importance="high" />
+    <Message Text="Copying $(OutputPath)$(AssemblyName).dll to Plugins folder: $(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).dll" Importance="high" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).dll" />
+  </Target>
+  <Target Name="CopyPDBToPlugins" AfterTargets="CopyToPlugins" Condition="'$(NCrunch)' != '1'">
+    <Message Text="Copying $(OutputPath)$(AssemblyName).pdb to Plugins folder : $(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).pdb" Importance="high" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).pdb" />
   </Target>
   <Target Name="ZipRelease" AfterTargets="Build" Condition="'$(NCrunch' != '1' AND '$(Configuration)' == 'Release'">
     <Message Text="Zipping plugin for release." Importance="high" />
@@ -313,11 +352,12 @@
                 Log.LogErrorFromException(ex);
                 return true;
             }
-      ]]>
-      </Code>
+      ]]></Code>
     </Task>
   </UsingTask>
   <PropertyGroup>
-    <PostBuildEvent></PostBuildEvent>
+    <PostBuildEvent>
+      copy /Y "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)Output\$(TargetName).vsix
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
