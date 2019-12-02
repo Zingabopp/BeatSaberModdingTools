@@ -15,20 +15,20 @@ namespace $safeprojectname$
     {
         internal static string Name => "$projectname$";
 
-    public void Init(IPALogger logger)
-    {
-        Logger.log = logger;
-        Logger.log.Debug("Logger initialied.");
-    }
+        public void Init(IPALogger logger)
+        {
+            Logger.log = logger;
+            Logger.log.Debug("Logger initialised.");
+        }
 
-    #region BSIPA Config
+        #region BSIPA Config
         // Uncomment to use BSIPA's config
         //internal static Ref<PluginConfig> config;
         //internal static IConfigProvider configProvider;
         //public void Init(IPALogger logger, [Config.Prefer("json")] IConfigProvider cfgProvider)
         //{
         //    Logger.log = logger;
-        //    Logger.log.Debug("Logger initialied.");
+        //    Logger.log.Debug("Logger initialised.");
 
         //    configProvider = cfgProvider;
 
@@ -47,8 +47,8 @@ namespace $safeprojectname$
         //        config = v;
         //    });
         //}
-    #endregion
-    public void OnApplicationStart()
+        #endregion
+        public void OnApplicationStart()
         {
             Logger.log.Debug("OnApplicationStart");
 
