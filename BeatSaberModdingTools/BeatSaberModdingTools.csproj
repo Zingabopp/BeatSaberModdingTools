@@ -192,7 +192,6 @@
     <EmbeddedResource Include="Icons\Steam.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="Resources\SetBeatSaberDirCommand.png" />
     <VSCTCompile Include="BeatSaberModdingToolsPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
