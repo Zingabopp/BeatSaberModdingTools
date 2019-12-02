@@ -116,7 +116,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>Add Beat Saber Reference...</ButtonText>
+          <ButtonText>Beat Saber Reference Manager...</ButtonText>
         </Strings>
       </Button>
     </Buttons>
