@@ -131,7 +131,7 @@
         </GroupBox>
         <UniformGrid Grid.Row="1"  x:Name="SettingsGrid" Columns="2" HorizontalAlignment="Stretch" Margin="0,5,0,0" DataContext="{Binding SettingsViewModel}">
             <StackPanel>
-                <GroupBox Header="Automation" Grid.Column="0" Height="Auto" VerticalAlignment="Top" Margin="3,0,0,0">
+                <GroupBox Header="Automation" IsEnabled="False" Grid.Column="0" Height="Auto" VerticalAlignment="Top" Margin="3,0,0,0">
                     <StackPanel Orientation="Vertical">
                         <StackPanel.Resources>
                             <Style TargetType="CheckBox">
@@ -159,7 +159,7 @@
                         </CheckBox>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Margin="3,0,0,0">
+                <GroupBox IsEnabled="False" Margin="3,0,0,0">
                     <GroupBox.Resources>
                         <Style TargetType="RadioButton">
                             <Setter Property="Margin" Value="0,3,0,0"/>
