@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -60,6 +61,19 @@ namespace BeatSaberModdingTools.Views
             {
                 WindowViewModel.ChosenInstall = install;
                 e.Handled = true;
+            }
+        }
+
+        private void btnBrowse_Click(object sender, RoutedEventArgs e)
+        {
+            using (FolderBrowserDialog folderBrowser = new FolderBrowserDialog())
+            {
+                folderBrowser.RootFolder = Environment.SpecialFolder.MyComputer;
+                folderBrowser.ShowNewFolderButton = false;
+                folderBrowser.Description = "Select your Beat Saber game folder.";
+                folderBrowser.ShowDialog();
+                if (!string.IsNullOrEmpty(folderBrowser.SelectedPath))
+                    WindowViewModel.NewLocationInput = folderBrowser.SelectedPath;
             }
         }
     }

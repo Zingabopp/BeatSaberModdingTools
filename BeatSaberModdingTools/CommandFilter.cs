@@ -2,6 +2,7 @@
 using BeatSaberModdingTools.Menus;
 using BeatSaberModdingTools.Models;
 using EnvDTE80;
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.ProjectSystem;
@@ -9,6 +10,8 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Design;
+using System.Linq;
+using static BeatSaberModdingTools.Utilities.EnvUtils;
 
 namespace BeatSaberModdingTools
 {
@@ -21,7 +24,7 @@ namespace BeatSaberModdingTools
             NextTarget = nextTarget;
             package = asyncPackage;
         }
-        
+
         public IOleCommandTarget NextTarget { get; set; }
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
@@ -32,9 +35,8 @@ namespace BeatSaberModdingTools
                 if (cmdId == AddProjectReference.CommandId)
                 {
                     bool visible = false;
-                    ProjectModel proj = null;
                     CommandStatus status = 0;
-                    if (TryGetSelectedProject(out proj) && proj.IsBSIPAProject)
+                    if (TryGetSelectedProject(package, out ProjectModel proj) && proj.IsBSIPAProject)
                     {
                         status |= CommandStatus.Supported;
                         status |= CommandStatus.Enabled;
@@ -47,17 +49,53 @@ namespace BeatSaberModdingTools
                     prgCmds[0].cmdf = (uint)GetVsStatus(status);
                 }
             }
-            if (pguidCmdGroup.Equals(CommandSetGuids.ProjectContextCmdSet))
+            else if (pguidCmdGroup.Equals(CommandSetGuids.ProjectContextCmdSet))
             {
                 if (cmdId == ProjectContextSubmenu.CommandId)
                 {
                     bool visible = false;
-                    ProjectModel proj = null;
                     CommandStatus status = 0;
-                    if (TryGetSelectedProject(out proj) && proj.IsBSIPAProject)
+                    if (TryGetSelectedProject(package, out ProjectModel proj) && proj.IsBSIPAProject)
                     {
                         status |= CommandStatus.Supported;
                         status |= CommandStatus.Enabled;
+                        visible = true;
+                    }
+                    if (visible)
+                        status &= ~CommandStatus.Invisible;
+                    else
+                        status |= CommandStatus.Invisible;
+                    prgCmds[0].cmdf = (uint)GetVsStatus(status);
+                }
+                else if (cmdId == SetBeatSaberDirCommand.CommandId)
+                {
+                    bool visible = false;
+                    CommandStatus status = 0;
+                    if (TryGetSelectedProject(package, out ProjectModel projectModel, out var project) && projectModel.IsBSIPAProject)
+                    {
+                        status |= CommandStatus.Supported;
+                        var prop = project.GetProperty("BeatSaberDir")?.UnevaluatedValue;
+                        if (!string.IsNullOrEmpty(prop) && prop != BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
+                            status |= CommandStatus.Enabled;
+                        visible = true;
+                    }
+                    if (visible)
+                        status &= ~CommandStatus.Invisible;
+                    else
+                        status |= CommandStatus.Invisible;
+                    prgCmds[0].cmdf = (uint)GetVsStatus(status);
+                }
+                else if (cmdId == AddProjectReferencePaths.CommandId)
+                {
+                    bool visible = false;
+                    CommandStatus status = 0;
+                    if (TryGetSelectedProject(package, out ProjectModel projectModel, out var project) 
+                        && projectModel.IsBSIPAProject && projectModel.SupportedCapabilities == Models.ProjectCapabilities.None)
+                    {
+                        status |= CommandStatus.Supported;
+                        var prop = project.GetProperty("BeatSaberDir")?.UnevaluatedValue;
+                        if (string.IsNullOrEmpty(prop) || prop != BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
+                            status |= CommandStatus.Enabled;
                         visible = true;
                     }
                     if (visible)
@@ -72,29 +110,10 @@ namespace BeatSaberModdingTools
             return VSConstants.S_OK;
         }
 
-        private WeakReference<DTE2> _dte = new WeakReference<DTE2>(null);
-
-        public bool TryGetSelectedProject(out ProjectModel projectModel)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            projectModel = null;
-            DTE2 dte = null;
-            if (!_dte.TryGetTarget(out dte))
-            {
-                var serviceContainer = (IServiceContainer)package;
-                dte = serviceContainer.GetService(typeof(SDTE)) as DTE2;
-                _dte.SetTarget(dte);
-            }
-            if (dte.SelectedItems.Count != 1) return false;
-            Array activeProjects = (Array)dte.ActiveSolutionProjects;
-            if (activeProjects.Length != 1) return false;
-            var proj = (EnvDTE.Project)activeProjects.GetValue(0);
-            return EnvironmentMonitor.Instance.Projects.TryGetValue(proj.FullName, out projectModel);
-        }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
-            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+            ThreadHelper.ThrowIfNotOnUIThread();
             return NextTarget.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
         }
 

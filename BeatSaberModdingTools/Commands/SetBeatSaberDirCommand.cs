@@ -8,6 +8,9 @@ using BeatSaberModdingTools.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
+using static BeatSaberModdingTools.Utilities.EnvUtils;
+using Microsoft.Build.Evaluation;
+using System.Linq;
 
 namespace BeatSaberModdingTools.Commands
 {
@@ -91,24 +94,42 @@ namespace BeatSaberModdingTools.Commands
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            var bsInstalls = BeatSaberTools.GetBeatSaberPathsFromRegistry();
-            string title = "SetBeatSaberDirCommand";
-            string message = string.Empty;
-            if(bsInstalls.Length > 0)
+            string title = "Set BeatSaberDir";
+            OLEMSGICON icon = OLEMSGICON.OLEMSGICON_CRITICAL;
+            string message;
+            if (TryGetSelectedProject(package, out var projectModel))
             {
-                message = string.Join<BeatSaberInstall>("\n", bsInstalls);
+                if (projectModel.IsBSIPAProject)
+                {
+                    if (projectModel.SupportedCapabilities.HasFlag(ProjectCapabilities.BeatSaberDir))
+                    {
+                        var user = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectModel.ProjectPath + ".user").FirstOrDefault();
+                        if (user != null)
+                        {
+                            var prop = user.SetProperty("BeatSaberDir", BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath);
+                            user.Save();
+                            message = $"Setting BeatSaberDir in {projectModel.ProjectName} to \n{prop.EvaluatedValue}";
+                            icon = OLEMSGICON.OLEMSGICON_INFO;
+                            
+                        }
+                        else
+                            message = "Unable to find .user project (this shouldn't happen).";
+                    }
+                    else
+                        message = $"Project {projectModel.ProjectName} doesn't support the BeatSaberDir property";
+                }
+                else
+                    message = $"Project {projectModel.ProjectName} does not appear to be a BSIPA project.";
             }
             else
-            {
-                message = "No Beat Saber installs found.";
-            }
-            
+                message = "Unable to get project information.";
+
             // Show a message box to prove we were here
             VsShellUtilities.ShowMessageBox(
                 this.package,
                 message,
                 title,
-                OLEMSGICON.OLEMSGICON_INFO,
+                icon,
                 OLEMSGBUTTON.OLEMSGBUTTON_OK,
                 OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
         }

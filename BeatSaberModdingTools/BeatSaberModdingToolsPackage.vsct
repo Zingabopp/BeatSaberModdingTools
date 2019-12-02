@@ -88,7 +88,7 @@
           If you do not want an image next to your command, remove the Icon node /> -->
       <Button guid="guidProjectContextCmdSet" id="cmdidSetBeatSaberDirCommand" priority="0x0100" type="Button">
         <Parent guid="guidProjectContextCmdSet" id="ProjectsSubMenuGroup" />
-        <Icon guid="guidImages1" id="bmpPic1" />
+        <Icon guid="SetBeatSaberDirCommandImg" id="bmpPic1" />
         <Strings>
           <ButtonText>Set Beat Saber Directory...</ButtonText>
         </Strings>
@@ -105,7 +105,7 @@
         <Icon guid="guidImages" id="bmpPic1" />
         <!--<CommandFlag>DefaultDisabled</CommandFlag>-->
         <CommandFlag>DynamicVisibility</CommandFlag>
-        <CommandFlag>AllowVisibilityChangeOnToolBar</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>Add Reference Paths</ButtonText>
         </Strings>
@@ -132,6 +132,7 @@
       <Bitmap guid="guidImages" href="Commands\Resources\OpenSettingsWindowCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
       <Bitmap guid="guidImages2" href="Commands\Resources\AddProjectReferencePaths.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
       <Bitmap guid="guidImages3" href="Commands\Resources\AddProjectReference.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="SetBeatSaberDirCommandImg" href="Commands\Resources\SetBeatSaberDirCommand.png" usedList="bmpPic1" />
     </Bitmaps>
   </Commands>
 
@@ -194,6 +195,9 @@
       <IDSymbol name="bmpPicX" value="4" />
       <IDSymbol name="bmpPicArrows" value="5" />
       <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+    <GuidSymbol value="{3ed98438-44fd-4e2f-b72b-364f4903729d}" name="SetBeatSaberDirCommandImg">
+      <IDSymbol name="bmpPic1" value="1" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

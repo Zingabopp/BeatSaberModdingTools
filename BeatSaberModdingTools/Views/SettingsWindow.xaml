@@ -8,7 +8,7 @@
              xmlns:models="clr-namespace:BeatSaberModdingTools.Models"
              xmlns:converters="clr-namespace:BeatSaberModdingTools.Converters"
              mc:Ignorable="d"
-             Height="425" Width="580" ResizeMode="NoResize" ShowInTaskbar="True" Title="Beat Saber Mod Template Settings" Topmost="True"
+             Height="425" Width="580" ResizeMode="NoResize" ShowInTaskbar="True" Title="Beat Saber Modding Tools Settings" Topmost="True"
              d:DataContext="{d:DesignInstance Type=vm:WindowViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <converters:InstallTypeImageConverter x:Key="InstallTypeImageConverter"/>
@@ -118,11 +118,14 @@
                 <Grid x:Name="AddLocationGrid" Grid.Row="1" Margin="0,5,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="85"/>
+                        <ColumnDefinition Width="85"/>
                     </Grid.ColumnDefinitions>
                     <TextBox x:Name="LocationInput" Grid.Column="0" Text="{Binding NewLocationInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                           VerticalContentAlignment="Center" />
-                    <Button Grid.Column="1" Margin="5,0,0,0" Command="{Binding AddInstall}" CommandParameter="{Binding Text, ElementName=LocationInput}" IsDefault="{Binding IsFocused, ElementName=LocationInput}" Content="Add Location"/>
+                    <Button Grid.Column="1" Content="Browse..." Margin="5,0,0,0" x:Name="btnBrowse" Click="btnBrowse_Click"/>
+                    <Button Grid.Column="2" Content="Add Location" Margin="5,0,0,0" Command="{Binding AddInstall}" CommandParameter="{Binding Text, ElementName=LocationInput}" 
+                            IsDefault="{Binding IsFocused, ElementName=LocationInput}"/>
                 </Grid>
             </Grid>
         </GroupBox>

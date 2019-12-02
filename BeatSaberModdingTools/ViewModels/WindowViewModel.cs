@@ -25,9 +25,9 @@ namespace BeatSaberModdingTools.ViewModels
             var detectedLocations = BeatSaberTools.GetBeatSaberPathsFromRegistry();
             BeatSaberLocations = new ObservableCollection<BeatSaberInstall>(detectedLocations);
             SettingsViewModel = new SettingsViewModel();
-            AddLocation(new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam));
-            AddLocation(new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus));
-            AddLocation(new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual));
+            //AddLocation(new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam));
+            //AddLocation(new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus));
+            //AddLocation(new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual));
             SetInstallByPath(SettingsViewModel.CurrentSettings.ChosenInstallPath);
         }
 
@@ -123,6 +123,7 @@ namespace BeatSaberModdingTools.ViewModels
                 if (PathDidChange(oldVal, value))
                     NewLocationIsValid = false;
                 NotifyLocationTimer.Start();
+                NotifyPropertyChanged();
             }
         }
         private bool _newLocationIsValid;
