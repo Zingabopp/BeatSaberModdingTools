@@ -52,6 +52,7 @@
     <Compile Include="Commands\AddProjectReference.cs" />
     <Compile Include="Commands\CommandSetGuids.cs" />
     <Compile Include="Menus\ReferenceContextSubmenu.cs" />
+    <Compile Include="Models\ActiveSettings.cs" />
     <Compile Include="Utilities\BeatSaberTools.cs" />
     <Compile Include="Commands\AddProjectReferencePaths.cs" />
     <Compile Include="Commands\OpenSettingsWindowCommand.cs" />

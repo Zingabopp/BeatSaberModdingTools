@@ -90,9 +90,16 @@ namespace BSMT_Tests.Experimental
             }
             foreach (var item in list)
             {
-                var check = otherList.Where(r => r.Name == item.Name).Single();
-                if (item.HintPath.Contains("$(BeatSaberDir)"))
-                    Assert.AreEqual(check.RelativeDirectory, item.RelativeDirectory);
+                try
+                {
+                    var check = otherList.Where(r => r.Name == item.Name).Single();
+                    if (item.HintPath.Contains("$(BeatSaberDir)"))
+                        Assert.AreEqual(check.RelativeDirectory, item.RelativeDirectory);
+                }catch(InvalidOperationException ex)
+                {
+                    Console.WriteLine($"Exception: {item.Name}");
+                    throw ex;
+                }
             }
 
         }

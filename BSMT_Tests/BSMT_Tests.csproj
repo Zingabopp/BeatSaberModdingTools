@@ -42,6 +42,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildTasks\GetManifestInfo_Test.cs" />
+    <None Include="Data\BuildTaskTests\BeatSync_AssemblyInfo.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Experimental\XmlReading.cs" />
     <Compile Include="Experimental\XMLCreation.cs" />
     <Compile Include="Models\SettingsModel_Tests.cs" />
@@ -79,6 +83,23 @@
     <Content Include="Output\ExistingUserFile\BeatSaberDir.csproj.user">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\BuildTaskTests\BeatSync_manifest_WrongVersion.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\BuildTaskTests\BeatSync_manifest_WhiteSpace.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\BuildTaskTests\BeatSync_manifest_MissingVersion.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\BuildTaskTests\BeatSync_manifest_MissingGameVer.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\BuildTaskTests\BeatSync_manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

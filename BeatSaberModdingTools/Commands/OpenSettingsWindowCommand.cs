@@ -100,6 +100,7 @@ namespace BeatSaberModdingTools.Commands
             //}
 
             //IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
+            BSMTSettingsManager.Instance.Reload();
             var settingsDialog = new SettingsWindow();
             
             var returnedTrue = settingsDialog.ShowDialog() ?? false;

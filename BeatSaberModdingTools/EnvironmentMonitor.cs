@@ -28,6 +28,7 @@ namespace BeatSaberModdingTools
                 if (_instance == value) return;
                 if (_instance != null)
                 {
+                    Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterOpenProject -= _instance.SolutionEvents_OnAfterOpenProject;
                     Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterLoadProject -= _instance.SolutionEvents_OnAfterLoadProject;
                     Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnBeforeUnloadProject -= _instance.SolutionEvents_OnBeforeUnloadProject;
                     Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterOpenSolution -= _instance.SolutionEvents_OnAfterOpenSolution;
@@ -38,20 +39,48 @@ namespace BeatSaberModdingTools
         }
 
         public bool? BsipaProjectInSolution;
-
+        private AsyncPackage package;
         public ConcurrentDictionary<string, ProjectModel> Projects { get; } = new ConcurrentDictionary<string, ProjectModel>();
 
 
         public static async Task InitializeAsync(AsyncPackage package)
         {
+
             await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             Instance = new EnvironmentMonitor();
-
+            Instance.package = package;
+            Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterOpenProject += Instance.SolutionEvents_OnAfterOpenProject;
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterLoadProject += Instance.SolutionEvents_OnAfterLoadProject;
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnBeforeUnloadProject += Instance.SolutionEvents_OnBeforeUnloadProject;
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterOpenSolution += Instance.SolutionEvents_OnAfterOpenSolution;
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnBeforeCloseSolution += Instance.SolutionEvents_OnBeforeCloseSolution;
             Instance.RefreshProjects();
+        }
+
+        private void SolutionEvents_OnAfterOpenProject(object sender, Microsoft.VisualStudio.Shell.Events.OpenProjectEventArgs e)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            ProjectModel projModel = null;
+            e.Hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
+            if (projectObj is EnvDTE.Project project)
+            {
+                var newProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(project.FullName).First();
+                projModel = CreateProjectModel(newProject);
+                if (Projects.TryAdd(newProject.FullPath, projModel))
+                    OnProjectLoaded(newProject, projModel);
+            }
+            else
+            {
+                var newProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p =>
+                    !Projects.ContainsKey(p.FullPath)
+                    && !p.FullPath.EndsWith(".user")).ToList();
+                foreach (var item in newProjects)
+                {
+                    var projectModel = CreateProjectModel(item);
+                    if (Projects.TryAdd(item.FullPath, projectModel))
+                        OnProjectLoaded(item, projectModel);
+                }
+            }
         }
 
         private void CreateCmd_AfterExecute(string Guid, int ID, object CustomIn, object CustomOut)
@@ -71,6 +100,7 @@ namespace BeatSaberModdingTools
 
         private void SolutionEvents_OnBeforeCloseSolution(object sender, EventArgs e)
         {
+            BsipaProjectInSolution = null;
             Projects.Clear();
         }
 
@@ -85,6 +115,7 @@ namespace BeatSaberModdingTools
                 if (projModel.IsBSIPAProject)
                     BsipaProjectInSolution = true;
                 Projects.TryAdd(projModel.ProjectPath, projModel);
+                OnProjectLoaded(project, projModel);
             }
             if (BsipaProjectInSolution == null)
                 BsipaProjectInSolution = false;
@@ -130,7 +161,7 @@ namespace BeatSaberModdingTools
 
         private void SolutionEvents_OnAfterOpenSolution(object sender, Microsoft.VisualStudio.Shell.Events.OpenSolutionEventArgs e)
         {
-            RefreshProjects();
+            //RefreshProjects();
         }
 
         private void SolutionEvents_OnBeforeUnloadProject(object sender, Microsoft.VisualStudio.Shell.Events.LoadProjectEventArgs e)
@@ -150,7 +181,8 @@ namespace BeatSaberModdingTools
             {
                 var newProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(project.FullName).First();
                 projModel = CreateProjectModel(newProject);
-
+                if (Projects.TryAdd(newProject.FullPath, projModel))
+                    OnProjectLoaded(newProject, projModel);
             }
             else
             {
@@ -159,10 +191,46 @@ namespace BeatSaberModdingTools
                     && !p.FullPath.EndsWith(".user")).ToList();
                 foreach (var item in newProjects)
                 {
-                    Projects.TryAdd(item.FullPath, CreateProjectModel(item));
+                    var projectModel = CreateProjectModel(item);
+                    if (Projects.TryAdd(item.FullPath, projectModel))
+                        OnProjectLoaded(item, projectModel);
                 }
             }
 
+        }
+
+        public void OnProjectLoaded(Microsoft.Build.Evaluation.Project project, ProjectModel projectModel)
+        {
+            if (projectModel.IsBSIPAProject)
+                BsipaProjectInSolution = true;
+            Microsoft.Build.Evaluation.Project userProj = null;
+            try
+            {
+                userProj = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p => p.FullPath == (project.FullPath + ".user")).SingleOrDefault();
+                if (userProj == null) return;
+            }
+            catch (InvalidOperationException) { return; }
+            var installPath = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
+            var projBeatSaberDir = project.GetPropertyValue("BeatSaberDir");
+            var userBeatSaberDir = userProj.GetPropertyValue("BeatSaberDir");
+            if (BSMTSettingsManager.Instance.CurrentSettings.GenerateUserFileOnExisting
+                        && projectModel.SupportedCapabilities.HasFlag(ProjectCapabilities.BeatSaberDir)
+                        && !(userBeatSaberDir == installPath || projBeatSaberDir == installPath))
+            {
+                var prop = userProj.SetProperty("BeatSaberDir", BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath);
+                userProj.Save();
+                if (!string.IsNullOrEmpty(userBeatSaberDir))
+                {
+                    string message = $"Overriding BeatSaberDir in {projectModel.ProjectName} to \n{prop.EvaluatedValue}\n(Old path: {userBeatSaberDir})";
+                    VsShellUtilities.ShowMessageBox(
+                        this.package,
+                        message,
+                        $"{projectModel.ProjectName}: Auto Set BeatSaberDir",
+                        OLEMSGICON.OLEMSGICON_INFO,
+                        OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                        OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                }
+            }
         }
 
         public EnvironmentMonitor()

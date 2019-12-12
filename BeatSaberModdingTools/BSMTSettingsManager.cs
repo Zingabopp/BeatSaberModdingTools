@@ -14,7 +14,19 @@ namespace BeatSaberModdingTools
     public class BSMTSettingsManager : IBSMTSettingsManager
     {
         private Properties.BeatSaberModdingToolsSettings Settings => Properties.BeatSaberModdingToolsSettings.Default;
-        public ReadOnlySettingsModel CurrentSettings { get; private set; }
+        private ISettingsModel _currentSettings;
+        public ISettingsModel CurrentSettings {
+            get
+            {
+                if (_currentSettings == null)
+                    _currentSettings = new ActiveSettings();
+                return _currentSettings;
+            }
+            private set
+            {
+                _currentSettings = value;
+            }
+        }
 
         public bool IsDestroyed { get; protected set; }
 
@@ -33,44 +45,37 @@ namespace BeatSaberModdingTools
         public void Destroy() { IsDestroyed = true; }
         public void Initialize()
         {
-            if (CurrentSettings == null)
-                UpdateCurrentSettings();
+            if (_currentSettings == null)
+            {
+                _currentSettings = new ActiveSettings();
+                NotifySettingsChanged();
+            }
         }
 
         public void Store(ISettingsModel newSettings)
         {
-            CurrentSettings = new ReadOnlySettingsModel(newSettings);
-            Settings.ChosenInstallPath = CurrentSettings.ChosenInstallPath;
-            Settings.GenerateUserFileWithTemplate = CurrentSettings.GenerateUserFileWithTemplate;
-            Settings.GenerateUserFileOnExisting = CurrentSettings.GenerateUserFileOnExisting;
-            Settings.SetManifestJsonDefaults = CurrentSettings.SetManifestJsonDefaults;
-            Settings.CopyToIPAPendingOnBuild = CurrentSettings.CopyToIPAPendingOnBuild;
+            Settings.ChosenInstallPath = newSettings.ChosenInstallPath;
+            Settings.GenerateUserFileWithTemplate = newSettings.GenerateUserFileWithTemplate;
+            Settings.GenerateUserFileOnExisting = newSettings.GenerateUserFileOnExisting;
+            Settings.SetManifestJsonDefaults = newSettings.SetManifestJsonDefaults;
+            Settings.CopyToIPAPendingOnBuild = newSettings.CopyToIPAPendingOnBuild;
             Settings.BuildReferenceType = (byte)newSettings.BuildReferenceType;
             Settings.Manifest_Author = newSettings.Manifest_Author;
             Settings.Manifest_Donation = newSettings.Manifest_Donation;
             Settings.Manifest_AuthorEnabled = newSettings.Manifest_AuthorEnabled;
             Settings.Manifest_DonationEnabled = newSettings.Manifest_DonationEnabled;
             Settings.Save();
+            NotifySettingsChanged();
         }
 
         public void Reload()
         {
             Settings.Reload();
-            UpdateCurrentSettings();
+            NotifySettingsChanged();
         }
 
-        public void UpdateCurrentSettings()
+        public void NotifySettingsChanged()
         {
-            try
-            {
-                CurrentSettings = new ReadOnlySettingsModel(Settings.ChosenInstallPath, Settings.GenerateUserFileWithTemplate, Settings.GenerateUserFileOnExisting,
-                     Settings.SetManifestJsonDefaults, Settings.CopyToIPAPendingOnBuild, (BuildReferenceType)Settings.BuildReferenceType,
-                     Settings.Manifest_Author, Settings.Manifest_Donation, Settings.Manifest_AuthorEnabled, Settings.Manifest_DonationEnabled);
-            }
-            catch (NullReferenceException)
-            {
-                CurrentSettings = new ReadOnlySettingsModel();
-            }
             foreach (var subscriber in subscribers)
             {
                 if (subscriber.IsAlive)
@@ -98,13 +103,13 @@ namespace BeatSaberModdingTools
 
     public interface IBSMTSettingsManager
     {
-        ReadOnlySettingsModel CurrentSettings { get; }
+        ISettingsModel CurrentSettings { get; }
         bool IsDestroyed { get; }
         void Destroy();
         void Initialize();
         void Store(ISettingsModel settings);
         void Reload();
-        void UpdateCurrentSettings();
+        void NotifySettingsChanged();
 
     }
 }
