@@ -272,7 +272,8 @@
       <Using Namespace="System.IO.Compression" />
       <Using Namespace="System.IO" />
       <Using Namespace="System.Threading" />
-      <Code Type="Fragment" Language="cs"><![CDATA[
+      <Code Type="Fragment" Language="cs">
+              <![CDATA[
         try
         {
           var zipDir = new DirectoryInfo(Path.GetDirectoryName(Path.GetFullPath(ZipFileName)));
@@ -291,7 +292,7 @@
 		  
           if(File.Exists(ZipFileName))
             File.Delete(ZipFileName);
-          Log.LogMessage(MessageImportance.High, "Zipping Directory {0} to {1}", DirectoryName, ZipFileName);
+          Log.LogMessage(MessageImportance.High, "Zipping Directory \"{0}\" to \"{1}\"", DirectoryName, ZipFileName);
           ZipFile.CreateFromDirectory( DirectoryName, ZipFileName );
           return true;
         }

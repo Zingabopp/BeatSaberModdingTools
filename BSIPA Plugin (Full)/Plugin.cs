@@ -64,7 +64,7 @@ namespace $safeprojectname$
         {
             ExampleGameplayBoolSetting = true;
             Logger.log.Debug("OnApplicationStart");
-            CustomUI.Utilities.BSEvents.menuSceneLoadedFresh += MenuLoadedFresh;
+            BS_Utils.Utilities.BSEvents.menuSceneLoadedFresh += MenuLoadedFresh;
             ApplyHarmonyPatches();
         }
 

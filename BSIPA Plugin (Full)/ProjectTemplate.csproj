@@ -39,6 +39,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="BS_Utils">
+      <HintPath>$(BeatSaberDir)\Plugins\BS_Utils.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HMUI">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\HMUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="MainAssembly">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\MainAssembly.dll</HintPath>
       <Private>False</Private>
@@ -304,7 +312,7 @@
 		  
           if(File.Exists(ZipFileName))
             File.Delete(ZipFileName);
-          Log.LogMessage(MessageImportance.High, "Zipping Directory {0} to {1}", DirectoryName, ZipFileName);
+          Log.LogMessage(MessageImportance.High, "Zipping Directory \"{0}\" to \"{1}\"", DirectoryName, ZipFileName);
           ZipFile.CreateFromDirectory( DirectoryName, ZipFileName );
           return true;
         }

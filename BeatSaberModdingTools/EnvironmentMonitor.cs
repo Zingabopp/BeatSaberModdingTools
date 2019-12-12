@@ -64,7 +64,8 @@ namespace BeatSaberModdingTools
             e.Hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
             if (projectObj is EnvDTE.Project project)
             {
-                var newProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(project.FullName).First();
+                var newProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(project.FullName).FirstOrDefault();
+                if (newProject == null) return; // This event seems to randomly trigger if the project is closed and the csproj file is opened in the editor.
                 projModel = CreateProjectModel(newProject);
                 if (Projects.TryAdd(newProject.FullPath, projModel))
                     OnProjectLoaded(newProject, projModel);
