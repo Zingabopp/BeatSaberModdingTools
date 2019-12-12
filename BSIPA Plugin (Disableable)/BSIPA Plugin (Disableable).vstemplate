@@ -5,7 +5,7 @@
     <Description>A template for a Beat Saber IPA plugin that can be enabled/disabled while the game is running.</Description>
     <Icon>beat_saber.ico</Icon>
     <ProjectType>CSharp</ProjectType>
-    <RequiredFrameworkVersion>4.6.1</RequiredFrameworkVersion>
+    <RequiredFrameworkVersion>4.7.2</RequiredFrameworkVersion>
     <SortOrder>1</SortOrder>
     <TemplateID>c8e6036f-9e1a-4192-9675-e8e94cfe2539</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>

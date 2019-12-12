@@ -5,7 +5,7 @@
     <Description>A bare template for a new Beat Saber IPA plugin.</Description>
     <Icon>beat_saber.ico</Icon>
     <ProjectType>CSharp</ProjectType>
-    <RequiredFrameworkVersion>4.6.1</RequiredFrameworkVersion>
+    <RequiredFrameworkVersion>4.7.2</RequiredFrameworkVersion>
     <SortOrder>1</SortOrder>
     <TemplateID>c8e6036f-9e1a-4192-9675-e8e94cfe2540</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
