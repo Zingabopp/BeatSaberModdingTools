@@ -1,4 +1,4 @@
-# BeatSaberTemplates
+# Beat Saber Modding Tools
 A set of templates for creating Beat Saber plugins.
 
 **All Templates**
