@@ -46,6 +46,7 @@
     <None Include="Data\BuildTaskTests\BeatSync_AssemblyInfo.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="Experimental\FindGameVersion.cs" />
     <Compile Include="Experimental\XmlReading.cs" />
     <Compile Include="Experimental\XMLCreation.cs" />
     <Compile Include="Models\SettingsModel_Tests.cs" />
