@@ -1,3 +1,4 @@
-﻿-Auto-complete for the Add Location text box?
+﻿-Make SetBeatSaberDir also do HintPaths as a backup.
+-Auto-complete for the Add Location text box?
 -Redirect template build copy action to IPA\Pending\Plugins instead of the Plugins folder.
 -Project converter (convert references)
