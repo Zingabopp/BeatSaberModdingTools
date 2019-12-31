@@ -76,7 +76,7 @@ namespace BeatSaberModdingTools
 
         public void NotifySettingsChanged()
         {
-            foreach (var subscriber in subscribers)
+            foreach (var subscriber in subscribers.ToArray())
             {
                 if (subscriber.IsAlive)
                     subscriber.Execute();
