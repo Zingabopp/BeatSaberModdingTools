@@ -101,7 +101,7 @@ namespace BeatSaberModdingTools.ViewModels
             AvailableReferences.Clear();
             var refItems = BeatSaberTools.GetAvailableReferences(BeatSaberDir);
             var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).First();
-            var references = buildProject.Items.Where(obj => obj.ItemType == "Reference").ToList();
+            var references = buildProject.Items.Where(obj => obj.ItemType == "Reference").ToArray();
             var projRefs = new List<ReferenceModel>();
             foreach (var item in references)
             {
@@ -110,7 +110,7 @@ namespace BeatSaberModdingTools.ViewModels
                     refModel.HintPath = item.Metadata.Where(m => m.Name == "HintPath").First().UnevaluatedValue;
                 projRefs.Add(refModel);
             }
-            foreach (var item in refItems)
+            foreach (var item in refItems.ToArray())
             {
                 var projRefCount = projRefs.Where(r => r.Name == item.Name).Count();
 
@@ -136,15 +136,15 @@ namespace BeatSaberModdingTools.ViewModels
 
         public void UpdateReferences()
         {
-            var changedRefs = AvailableReferences.Where(r => r.StartedInProject != r.IsInProject).ToList();
-            var removedRefs = changedRefs.Where(r => !r.IsInProject).ToList();
+            var changedRefs = AvailableReferences.Where(r => r.StartedInProject != r.IsInProject).ToArray();
+            var removedRefs = changedRefs.Where(r => !r.IsInProject).ToArray();
             foreach (var item in removedRefs)
             {
                 var reference = _project.References.Find(item.Name);
                 reference.Remove();
                 item.StartedInProject = false;
             }
-            var addedRefs = changedRefs.Where(r => r.IsInProject).ToList();
+            var addedRefs = changedRefs.Where(r => r.IsInProject).ToArray();
             foreach (var item in addedRefs)
             {
                 //var refPath = item.HintPath.Replace(BeatSaberDir, "$(BeatSaberDir)");

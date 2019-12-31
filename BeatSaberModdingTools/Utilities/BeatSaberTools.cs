@@ -117,7 +117,7 @@ namespace BeatSaberModdingTools.Utilities
                     var fullPath = new DirectoryInfo(Path.Combine(beatSaberDir, path));
                     if (fullPath.Exists)
                     {
-                        foreach (var item in fullPath.GetFiles("*.dll"))
+                        foreach (var item in fullPath.GetFiles("*.dll").ToArray())
                         {
                             ReferenceModel refItem = null;
                             refItem = CreateReferenceFromFile(item.FullName);
