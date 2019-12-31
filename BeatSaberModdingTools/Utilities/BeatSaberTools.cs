@@ -16,7 +16,8 @@ namespace BeatSaberModdingTools.Utilities
         // Using Path.Combine makes it safe for regions that don't use '\' as a directory separator?
         private static readonly string STEAM_REG_KEY = Path.Combine("SOFTWARE", "Microsoft", "Windows", "CurrentVersion", "Uninstall", "Steam App 620980");
         //private const string STEAM_REG_KEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 620980";
-        private static readonly string OCULUS_REG_KEY = Path.Combine("SOFTWARE", "WOW6432Node", "Oculus VR, LLC", "Oculus", "Config");
+        private static readonly string OCULUS_LM_KEY = Path.Combine("SOFTWARE", "WOW6432Node", "Oculus VR, LLC", "Oculus", "Config");
+        private static readonly string OCULUS_CU_KEY = Path.Combine("SOFTWARE", "Oculus VR, LLC", "Oculus", "Libraries");
         //private const string OCULUS_REG_KEY = @"SOFTWARE\WOW6432Node\Oculus VR, LLC\Oculus\Config";
         public static BeatSaberInstall[] GetBeatSaberPathsFromRegistry()
         {
@@ -29,18 +30,68 @@ namespace BeatSaberModdingTools.Utilities
                     if (IsBeatSaberDirectory(path))
                         installList.Add(new BeatSaberInstall(path, InstallType.Steam));
                 }
-                using (var oculusKey = hklm?.OpenSubKey(OCULUS_REG_KEY))
+                string[] oculusLibraries = GetOculusLibraryPaths();
+                foreach (var library in oculusLibraries)
+                {
+                    string matchedLocation = FindBeatSaberInOculusLibrary(library);
+                    if (!string.IsNullOrEmpty(matchedLocation))
+                        installList.Add(new BeatSaberInstall(matchedLocation, InstallType.Oculus));
+                }
+            }
+            return installList.ToArray();
+        }
+
+        public static string FindBeatSaberInOculusLibrary(string oculusLibraryPath)
+        {
+            string possibleLocation = Path.Combine(oculusLibraryPath, "hyperbolic-magnetism-beat-saber");
+            string matchedLocation = null;
+            if (Directory.Exists(possibleLocation))
+            {
+                if (IsBeatSaberDirectory(possibleLocation))
+                    return possibleLocation;
+            }
+            else
+            {
+                string softwareFolder = Path.Combine(oculusLibraryPath, "Software");
+                if (Directory.Exists(softwareFolder))
+                    matchedLocation = FindBeatSaberInOculusLibrary(softwareFolder);
+            }
+            return matchedLocation;
+        }
+
+        public static string[] GetOculusLibraryPaths()
+        {
+            List<string> paths = new List<string>();
+            using (RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)) // Doesn't work in 32 bit mode without this
+            {
+                using (var oculusKey = hklm?.OpenSubKey(OCULUS_LM_KEY))
                 {
                     var path = (string)oculusKey?.GetValue("InitialAppLibrary", string.Empty);
                     if (!string.IsNullOrEmpty(path))
                     {
-                        path = Path.Combine(path, "Software", "hyperbolic-magnetism-beat-saber");
-                        if (IsBeatSaberDirectory(path))
-                            installList.Add(new BeatSaberInstall(path, InstallType.Oculus));
+                        paths.Add(path);
                     }
                 }
             }
-            return installList.ToArray();
+            using (RegistryKey hkcu = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry64)) // Doesn't work in 32 bit mode without this
+            {
+                using (RegistryKey oculusKey = hkcu?.OpenSubKey(OCULUS_CU_KEY))
+                {
+                    if (oculusKey != null && oculusKey.SubKeyCount > 0)
+                    {
+                        foreach (var libraryKeyName in oculusKey.GetSubKeyNames())
+                        {
+                            using (RegistryKey library = oculusKey.OpenSubKey(libraryKeyName))
+                            {
+                                var path = (string)library?.GetValue("OriginalPath", string.Empty);
+                                if (!string.IsNullOrEmpty(path) && !paths.Contains(path))
+                                    paths.Add(path);
+                            }
+                        }
+                    }
+                }
+            }
+            return paths.ToArray();
         }
 
         public static readonly char[] IllegalCharacters = new char[]

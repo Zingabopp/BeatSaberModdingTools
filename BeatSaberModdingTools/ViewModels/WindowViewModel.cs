@@ -22,8 +22,8 @@ namespace BeatSaberModdingTools.ViewModels
         {
             if (BSMTSettingsManager.Instance == null)
                 BSMTSettingsManager.UseDefaultManager();
-            //var detectedLocations = BeatSaberTools.GetBeatSaberPathsFromRegistry();
-            BeatSaberLocations = new ObservableCollection<BeatSaberInstall>();
+            var detectedLocations = BeatSaberTools.GetBeatSaberPathsFromRegistry();
+            BeatSaberLocations = new ObservableCollection<BeatSaberInstall>(detectedLocations);
             SettingsViewModel = new SettingsViewModel();
             //AddLocation(new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam));
             //AddLocation(new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus));
