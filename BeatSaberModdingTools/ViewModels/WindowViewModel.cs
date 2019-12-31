@@ -22,8 +22,8 @@ namespace BeatSaberModdingTools.ViewModels
         {
             if (BSMTSettingsManager.Instance == null)
                 BSMTSettingsManager.UseDefaultManager();
-            var detectedLocations = BeatSaberTools.GetBeatSaberPathsFromRegistry();
-            BeatSaberLocations = new ObservableCollection<BeatSaberInstall>(detectedLocations);
+            //var detectedLocations = BeatSaberTools.GetBeatSaberPathsFromRegistry();
+            BeatSaberLocations = new ObservableCollection<BeatSaberInstall>();
             SettingsViewModel = new SettingsViewModel();
             //AddLocation(new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam));
             //AddLocation(new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus));
@@ -97,10 +97,10 @@ namespace BeatSaberModdingTools.ViewModels
             get { return _chosenInstall ?? BeatSaberLocations.FirstOrDefault(); }
             set
             {
-                if (_chosenInstall == value || value == null)
+                if (_chosenInstall == value)
                     return;
                 _chosenInstall = value;
-                SettingsViewModel.ChosenInstallPath = _chosenInstall.InstallPath;
+                SettingsViewModel.ChosenInstallPath = _chosenInstall?.InstallPath ?? string.Empty;
                 NotifyPropertyChanged();
             }
         }
@@ -238,15 +238,20 @@ namespace BeatSaberModdingTools.ViewModels
 
         private bool AddLocation(BeatSaberInstall beatSaberInstall)
         {
+            bool hadEmptyList = BeatSaberLocations.Count == 0;
             BeatSaberLocations.Add(beatSaberInstall);
             if (BeatSaberLocations.Any(i => i.InstallPath == NewLocationInput.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)))
                 NewLocationIsValid = false;
+            if (hadEmptyList)
+                ChosenInstall = beatSaberInstall;
             return true;
         }
 
         private bool RemoveLocation(BeatSaberInstall install)
         {
             bool result = BeatSaberLocations.Remove(install);
+            if (ChosenInstall == install)
+                ChosenInstall = null;
             NewLocationIsValid = CanAddLocation(NewLocationInput);
             return result;
         }
