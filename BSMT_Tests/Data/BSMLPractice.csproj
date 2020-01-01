@@ -85,10 +85,6 @@
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.VRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="BeatSaberCustomUI">
-      <HintPath>$(BeatSaberDir)\Plugins\BeatSaberCustomUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HarmonyPatches\LevelListTableCellOverride.cs" />
