@@ -13,16 +13,16 @@ namespace BeatSaberModdingTools.ViewModels
         public SettingsViewModel()
         {
             CurrentSettings = new SettingsModel(PreviousSettings);
-            ExecuteOnAppSettingsChange = new WeakAction(() =>
+            ExecuteOnAppSettingsChange = () =>
             {
                 NotifyPropertyChanged(string.Empty);
-            });
-            BSMTSettingsManager.SubscribeExecuteOnChange(ExecuteOnAppSettingsChange);
+            };
+            BSMTSettingsManager.SubscribeExecuteOnChange(new WeakAction(ExecuteOnAppSettingsChange));
         }
 
         private ReadOnlySettingsModel PreviousSettings => new ReadOnlySettingsModel(BSMTSettingsManager.Instance.CurrentSettings);
         private SettingsModel _currentSettings;
-        private WeakAction ExecuteOnAppSettingsChange;
+        private readonly Action ExecuteOnAppSettingsChange;
 
         public SettingsModel CurrentSettings
         {

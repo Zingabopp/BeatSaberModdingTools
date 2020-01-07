@@ -215,8 +215,9 @@ namespace BeatSaberModdingTools
             var projBeatSaberDir = project.GetPropertyValue("BeatSaberDir");
             var userBeatSaberDir = userProj.GetPropertyValue("BeatSaberDir");
             if (BSMTSettingsManager.Instance.CurrentSettings.GenerateUserFileOnExisting
-                        && projectModel.SupportedCapabilities.HasFlag(ProjectCapabilities.BeatSaberDir)
-                        && !(userBeatSaberDir == installPath || projBeatSaberDir == installPath))
+                && !string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
+                && projectModel.SupportedCapabilities.HasFlag(ProjectCapabilities.BeatSaberDir)
+                && !(userBeatSaberDir == installPath || projBeatSaberDir == installPath))
             {
                 var prop = userProj.SetProperty("BeatSaberDir", BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath);
                 userProj.Save();

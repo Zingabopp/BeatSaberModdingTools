@@ -4,6 +4,6 @@ namespace $safeprojectname$
 {
     internal static class Logger
     {
-        public static IPALogger log { get; set; }
+        internal static IPALogger log { get; set; }
     }
 }

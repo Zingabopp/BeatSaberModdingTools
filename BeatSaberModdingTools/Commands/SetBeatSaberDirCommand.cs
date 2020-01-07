@@ -97,7 +97,12 @@ namespace BeatSaberModdingTools.Commands
             string title = "Set BeatSaberDir";
             OLEMSGICON icon = OLEMSGICON.OLEMSGICON_CRITICAL;
             string message;
-            if (TryGetSelectedProject(package, out var projectModel))
+            if(string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath))
+            {
+                icon = OLEMSGICON.OLEMSGICON_CRITICAL;
+                message = "You don't appear to have a Beat Saber install path chosen in 'Extensions > Beat Saber Modding Tools > Settings'.";
+            }
+            else if (TryGetSelectedProject(package, out var projectModel))
             {
                 if (projectModel.IsBSIPAProject)
                 {
