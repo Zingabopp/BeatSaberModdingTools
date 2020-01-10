@@ -96,6 +96,7 @@
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BuildTargets.targets" />
     <None Include="CreateJunctions.bat" />
     <None Include=".gitignore" />
   </ItemGroup>
