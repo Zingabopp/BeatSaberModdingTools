@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="BeatSaberModdingToolsInstaller.c6a253d2-2234-4376-ad66-f769645c1516" Version="0.6.1" Language="en-US" Publisher="Zingabopp" />
+        <Identity Id="BeatSaberModdingToolsInstaller.c6a253d2-2234-4376-ad66-f769645c1516" Version="0.7.0" Language="en-US" Publisher="Zingabopp" />
         <DisplayName>BeatSaberModdingTools</DisplayName>
         <Description xml:space="preserve">Installer for tools and templates for creating Beat Saber mods.</Description>
         <MoreInfo>https://github.com/Zingabopp/BeatSaberModdingTools</MoreInfo>
@@ -24,7 +24,8 @@
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="%CurrentProject%" TargetVersion="[15.0,17.0)" Path="|%CurrentProject%|" AssemblyName="|%CurrentProject%;AssemblyName|" />
         <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="BSIPA Plugin (Core)" TargetVersion="[15.0,17.0)" d:TargetPath="|BSIPA Plugin (Core);TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
         <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="BSIPA Plugin (Disableable)" TargetVersion="[15.0,17.0)" d:TargetPath="|BSIPA Plugin (Disableable);TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="BSIPA Plugin (Full)" TargetVersion="[15.0,17.0)" d:TargetPath="|BSIPA Plugin (Full);TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
         <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="MonoBehaviourTemplate" TargetVersion="[15.0,17.0)" d:TargetPath="|MonoBehaviourTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
+        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="BSMLFileTemplate" TargetVersion="[15.0,17.0)" d:TargetPath="|BSMLFileTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
+        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="BSMLViewControllerTemplate" TargetVersion="[15.0,17.0)" d:TargetPath="|BSMLViewControllerTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
     </Assets>
 </PackageManifest>

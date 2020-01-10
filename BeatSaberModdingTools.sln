@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSMT_Tests", "BSMT_Tests\BS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoBehaviourTemplate", "MonoBehaviourTemplate\MonoBehaviourTemplate.csproj", "{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSMLFileTemplate", "BSMLTemplate\BSMLFileTemplate.csproj", "{59658DC0-71DF-4344-A608-66B0B5E38838}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSMLViewControllerTemplate", "BSMLViewControllerTemplate\BSMLViewControllerTemplate.csproj", "{4B6E24D9-D390-46FB-8F72-50AB696AE846}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59658DC0-71DF-4344-A608-66B0B5E38838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59658DC0-71DF-4344-A608-66B0B5E38838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59658DC0-71DF-4344-A608-66B0B5E38838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59658DC0-71DF-4344-A608-66B0B5E38838}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B6E24D9-D390-46FB-8F72-50AB696AE846}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B6E24D9-D390-46FB-8F72-50AB696AE846}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B6E24D9-D390-46FB-8F72-50AB696AE846}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B6E24D9-D390-46FB-8F72-50AB696AE846}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
