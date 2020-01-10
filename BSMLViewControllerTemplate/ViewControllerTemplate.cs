@@ -13,6 +13,6 @@ namespace $rootnamespace$
 	internal class $safeitemrootname$ : BSMLResourceViewController
 	{
 		// For this method of setting the ResourceName, this class must be the first class in the file.
-		internal override string ResourceName => string.Join(".", GetType().Namespace, GetType().Name);
+		public override string ResourceName => string.Join(".", GetType().Namespace, GetType().Name);
 	}
 }

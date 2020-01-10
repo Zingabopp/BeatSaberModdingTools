@@ -169,7 +169,7 @@
         <ProjectReference Include="..\MonoBehaviourTemplate\MonoBehaviourTemplate.csproj">
           <Project>{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}</Project>
           <Name>MonoBehaviourTemplate</Name>
-          <VSIXSubPath>ItemTemplates\Unity</VSIXSubPath>
+          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
           <TemplateType>Item</TemplateType>
@@ -177,14 +177,14 @@
         <ProjectReference Include="..\BSMLTemplate\BSMLFileTemplate.csproj">
           <Project>{59658DC0-71DF-4344-A608-66B0B5E38838}</Project>
           <Name>BSMLFileTemplate</Name>
-          <VSIXSubPath>ItemTemplates</VSIXSubPath>
+          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
         </ProjectReference>
         <ProjectReference Include="..\BSMLViewControllerTemplate\BSMLViewControllerTemplate.csproj">
           <Project>{4B6E24D9-D390-46FB-8F72-50AB696AE846}</Project>
           <Name>BSMLViewControllerTemplate</Name>
-          <VSIXSubPath>ItemTemplates\Unity</VSIXSubPath>
+          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
         </ProjectReference>
