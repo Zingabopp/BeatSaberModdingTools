@@ -18,7 +18,7 @@ namespace $safeprojectname$
         public void Init(IPALogger logger)
         {
             Logger.log = logger;
-            Logger.log.Debug("Logger initialised.");
+            Logger.log.Debug("Logger initialized.");
         }
 
         #region BSIPA Config
