@@ -168,8 +168,10 @@ namespace BeatSaberModdingTools.ViewModels
                 {
                     newRef.SetMetadataValue("HintPath", $"$(BeatSaberDir)\\{item.RelativeDirectory}\\{item.Name}.dll");
                     newRef.SetMetadataValue("Private", "False");
+                    newRef.SetMetadataValue("SpecificVersion", "False");
                 }
             }
+            buildProject.MarkDirty();
             CheckChangedReferences();
         }
         private string GetSimpleReferenceName(string fullInclude)
