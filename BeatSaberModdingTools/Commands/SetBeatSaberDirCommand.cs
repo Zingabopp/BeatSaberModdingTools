@@ -9,8 +9,10 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 using static BeatSaberModdingTools.Utilities.EnvUtils;
+using static BeatSaberModdingTools.Utilities.Paths;
 using Microsoft.Build.Evaluation;
 using System.Linq;
+using System.IO;
 
 namespace BeatSaberModdingTools.Commands
 {
@@ -102,20 +104,17 @@ namespace BeatSaberModdingTools.Commands
                 icon = OLEMSGICON.OLEMSGICON_CRITICAL;
                 message = "You don't appear to have a Beat Saber install path chosen in 'Extensions > Beat Saber Modding Tools > Settings'.";
             }
-            else if (TryGetSelectedProject(package, out var projectModel))
+            else if (TryGetSelectedProject(package, out ProjectModel projectModel, out Project project))
             {
                 if (projectModel.IsBSIPAProject)
                 {
                     if (projectModel.SupportedCapabilities.HasFlag(ProjectCapabilities.BeatSaberDir))
                     {
-                        var user = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectModel.ProjectPath + ".user").FirstOrDefault();
-                        if (user != null)
+                        var userProj = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectModel.ProjectPath + ".user").FirstOrDefault();
+                        if (userProj != null)
                         {
-                            var prop = user.SetProperty("BeatSaberDir", BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath);
-                            user.Save();
-                            message = $"Setting BeatSaberDir in {projectModel.ProjectName} to \n{prop.EvaluatedValue}";
+                            message = SetReferencePaths(userProj, projectModel, project);
                             icon = OLEMSGICON.OLEMSGICON_INFO;
-                            
                         }
                         else
                             message = "Unable to find .user project (this shouldn't happen).";

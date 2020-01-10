@@ -15,6 +15,7 @@ using Task = System.Threading.Tasks.Task;
 using static BeatSaberModdingTools.Utilities.EnvUtils;
 using Microsoft.Build.Evaluation;
 using static BeatSaberModdingTools.Utilities.Paths;
+using BeatSaberModdingTools.Models;
 
 namespace BeatSaberModdingTools.Commands
 {
@@ -103,19 +104,12 @@ namespace BeatSaberModdingTools.Commands
             string message;
             string title = "Error adding reference paths:";
             OLEMSGICON icon = OLEMSGICON.OLEMSGICON_CRITICAL;
-            if (TryGetSelectedProject(package, out var projectModel, out var project))
+            if (TryGetSelectedProject(package, out ProjectModel projectModel, out var project))
             {
                 var userProj = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectModel.ProjectPath + ".user").FirstOrDefault();
                 if (userProj != null)
                 {
-                    var beatSaberDir = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
-                    var referencePaths = new string[] { Path_Managed, Path_Libs, Path_Plugins }.Select(p => Path.Combine(beatSaberDir, p)).ToList();
-                    string value = string.Join(";", referencePaths);
-                    userProj.SetProperty("ReferencePath", value);
-                    userProj.Save();
-                    project.MarkDirty();
-                    title = "Added reference paths to:";
-                    message = string.Join("\n\n", referencePaths);
+                    message = SetReferencePaths(userProj, projectModel, project);
                     icon = OLEMSGICON.OLEMSGICON_INFO;
                 }
                 else

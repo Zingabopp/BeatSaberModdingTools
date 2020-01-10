@@ -216,14 +216,14 @@ namespace BeatSaberModdingTools
             var userBeatSaberDir = userProj.GetPropertyValue("BeatSaberDir");
             if (BSMTSettingsManager.Instance.CurrentSettings.GenerateUserFileOnExisting
                 && !string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
-                && projectModel.SupportedCapabilities.HasFlag(ProjectCapabilities.BeatSaberDir)
-                && !(userBeatSaberDir == installPath || projBeatSaberDir == installPath))
+                && projectModel.IsBSIPAProject)
             {
-                var prop = userProj.SetProperty("BeatSaberDir", BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath);
-                userProj.Save();
-                if (!string.IsNullOrEmpty(userBeatSaberDir))
+                Utilities.EnvUtils.SetReferencePaths(userProj, projectModel, project);
+                if (!string.IsNullOrEmpty(userBeatSaberDir) &&
+                    userBeatSaberDir != BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
                 {
-                    string message = $"Overriding BeatSaberDir in {projectModel.ProjectName} to \n{prop.EvaluatedValue}\n(Old path: {userBeatSaberDir})";
+                    var prop = userProj.GetProperty("BeatSaberDir");
+                    string message = $"Overriding BeatSaberDir in {projectModel.ProjectName} to \n{prop?.EvaluatedValue}\n(Old path: {userBeatSaberDir})";
                     VsShellUtilities.ShowMessageBox(
                         this.package,
                         message,
