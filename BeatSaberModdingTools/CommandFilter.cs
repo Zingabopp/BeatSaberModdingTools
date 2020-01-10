@@ -75,7 +75,7 @@ namespace BeatSaberModdingTools
                     {
                         status |= CommandStatus.Supported;
                         var prop = project.GetProperty("BeatSaberDir")?.UnevaluatedValue;
-                        if (!string.IsNullOrEmpty(prop) && prop != BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
+                        if (!string.IsNullOrEmpty(prop))
                             status |= CommandStatus.Enabled;
                         visible = true;
                     }
