@@ -14,7 +14,7 @@ namespace $safeprojectname$
 {
 
     [Plugin(RuntimeOptions.SingleStartInit)]
-    public class Plugin : IBeatSaberPlugin
+    public class Plugin
     {
         internal static string Name => "$projectname$";
 
