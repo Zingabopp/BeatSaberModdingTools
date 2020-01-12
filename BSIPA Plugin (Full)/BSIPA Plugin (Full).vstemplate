@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
-    <Name>BSIPA Plugin (Full)</Name>
+    <Name>BSIPA4 Plugin (Full)</Name>
     <Description>A template for a new Beat Saber IPA plugin with examples.</Description>
     <Icon>beat_saber.ico</Icon>
     <ProjectType>CSharp</ProjectType>
     <RequiredFrameworkVersion>4.7.2</RequiredFrameworkVersion>
     <SortOrder>1000</SortOrder>
-    <TemplateID>7595fb77-09c1-4792-9f6c-fa73375e6708</TemplateID>
+    <TemplateID>7595fb77-09c1-4792-4000-fa73375e6708</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
     <DefaultName>BSPlugin</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>

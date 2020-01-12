@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
-    <Name>BSIPA Plugin (Core)</Name>
+    <Name>BSIPA4 Plugin (Core)</Name>
     <Description>A bare template for a new Beat Saber IPA plugin.</Description>
     <Icon>beat_saber.ico</Icon>
     <ProjectType>CSharp</ProjectType>
