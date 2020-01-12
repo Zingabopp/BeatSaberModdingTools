@@ -181,6 +181,13 @@
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
         </ProjectReference>
+        <ProjectReference Include="..\HarmonyPatchItemTemplate\HarmonyPatchItemTemplate.csproj">
+          <Project>{4f53efe0-47dc-4aa2-94be-6ba7494ec042}</Project>
+          <Name>HarmonyPatchItemTemplate</Name>
+          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
+          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+        </ProjectReference>
       </ItemGroup>
     </When>
   </Choose>
