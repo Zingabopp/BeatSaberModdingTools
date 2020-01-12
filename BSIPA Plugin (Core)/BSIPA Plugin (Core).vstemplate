@@ -7,7 +7,7 @@
     <ProjectType>CSharp</ProjectType>
     <RequiredFrameworkVersion>4.7.2</RequiredFrameworkVersion>
     <SortOrder>1</SortOrder>
-    <TemplateID>c8e6036f-9e1a-4192-9675-e8e94cfe2540</TemplateID>
+    <TemplateID>c8e6036f-9e1a-4192-4000-e8e94cfe2540</TemplateID>
     <CreateNewFolder>true</CreateNewFolder>
     <DefaultName>BSPlugin</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
@@ -23,7 +23,7 @@
 	    <ProjectItem ReplaceParameters="true" TargetFileName=".gitignore">gitignore.txt</ProjectItem>
       <ProjectItem ReplaceParameters="true">Logger.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="$safeprojectname$.cs">MonobehaviourTemplate.cs</ProjectItem>
-      <ProjectItem ReplaceParameters="true" OpenInEditor="true">PluginConfig.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="Configuration\PluginConfig.cs">PluginConfig.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">manifest.json</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">Plugin.cs</ProjectItem>

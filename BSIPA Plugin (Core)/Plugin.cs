@@ -26,13 +26,11 @@ namespace $safeprojectname$
         }
 
         #region BSIPA Config
-        // Uncomment to use BSIPA's config
+        //Uncomment to use BSIPA's config
         //[Init]
-        //public void Init(IPALogger logger, Config conf)
+        //public void InitWithConfig(Config conf)
         //{
-        //    Logger.log = logger;
-        //    Logger.log.Debug("Logger initialized.");
-        //    PluginConfig.Instance = conf.Generated<PluginConfig>();
+        //    Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
         //    Logger.log.Debug("Config loaded");
         //}
         #endregion

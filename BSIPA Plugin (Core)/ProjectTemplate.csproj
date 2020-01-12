@@ -87,7 +87,7 @@
   <ItemGroup>
     <Compile Include="Plugin.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="PluginConfig.cs" />
+    <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="$safeprojectname$.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
