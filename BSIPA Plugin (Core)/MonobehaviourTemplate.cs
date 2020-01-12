@@ -20,16 +20,14 @@ namespace $safeprojectname$
         /// </summary>
         private void Awake()
         {
-            Logger.log?.Debug($"{name}: Awake()");
-
+            
         }
         /// <summary>
         /// Only ever called once on the first frame the script is Enabled. Start is called after any other script's Awake() and before Update().
         /// </summary>
         private void Start()
         {
-            Logger.log?.Debug($"{name}: Start()");
-
+            
         }
 
         /// <summary>
