@@ -17,7 +17,7 @@
     <ProjectTypeTag>games</ProjectTypeTag>
   </TemplateData>
   <TemplateContent>
-    <Project File="ProjectTemplate.csproj" ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj">
+    <Project File="FullProjectTemplate.csproj" ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj">
       <ProjectItem ReplaceParameters="false">CreateJunctions.bat</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName=".gitignore">gitignore.txt</ProjectItem>
       <ProjectItem ReplaceParameters="true">Logger.cs</ProjectItem>

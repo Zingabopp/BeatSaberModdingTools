@@ -65,7 +65,7 @@
     <None Include="AssemblyInfo.cs" />
     <None Include="CreateJunctions.bat" />
     <None Include="manifest.json" />
-    <None Include="ProjectTemplate.csproj" />
+    <None Include="CoreProjectTemplate.csproj" />
   </ItemGroup>
   <ItemGroup>
     <VSTemplate Include="BSIPA Plugin (Core).vstemplate" />
