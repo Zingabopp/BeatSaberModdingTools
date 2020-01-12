@@ -5,67 +5,64 @@ using System.Linq;
 using System.Reflection;
 using IPA;
 using IPA.Config;
-using IPA.Utilities;
 using Harmony;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 
 namespace $safeprojectname$
 {
-    public class Plugin : IBeatSaberPlugin, IDisablablePlugin
+    [Plugin(RuntimeOptions.DynamicInit)]
+    public class Plugin
     {
-        // TODO: Change YourGitHub to the name of your GitHub account, or use the form "com.company.project.product"
-        public const string HarmonyId = "com.github.YourGitHub.$safeprojectname$";
-        public const string SongCoreHarmonyId = "com.kyle1413.BeatSaber.SongCore";
-        internal static HarmonyInstance harmony;
-        internal static string Name => "$projectname$";
-        internal static Ref<PluginConfig> config;
-        internal static IConfigProvider configProvider;
+        // TODO: If using Harmony, uncomment and change YourGitHub to the name of your GitHub account, or use the form "com.company.project.product"
+        // public const string HarmonyId = "com.github.YourGitHub.$safeprojectname$";
+        // internal static HarmonyInstance harmony => HarmonyInstance.Create(HarmonyId);
 
-        public void Init(IPALogger logger, [Config.Prefer("json")] IConfigProvider cfgProvider)
+        internal static string Name => "$projectname$";
+
+        [Init]
+        public void Init(IPALogger logger)
         {
             Logger.log = logger;
             Logger.log.Debug("Logger initialized.");
-
-            configProvider = cfgProvider;
-
-            config = configProvider.MakeLink<PluginConfig>((p, v) =>
-            {
-                // Build new config file if it doesn't exist or RegenerateConfig is true
-                if (v.Value == null || v.Value.RegenerateConfig)
-                {
-                    Logger.log.Debug("Regenerating PluginConfig");
-                    p.Store(v.Value = new PluginConfig()
-                    {
-                        // Set your default settings here.
-                        RegenerateConfig = false
-                    });
-                }
-                config = v;
-            });
-            harmony = HarmonyInstance.Create(HarmonyId);
         }
+
+        #region BSIPA Config
+        //Uncomment to use BSIPA's config
+        //[Init]
+        //public void InitWithConfig(Config conf)
+        //{
+        //    Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
+        //    Logger.log.Debug("Config loaded");
+        //}
+        #endregion
+
+
         #region IDisablable
 
         /// <summary>
         /// Called when the plugin is enabled (including when the game starts if the plugin is enabled).
         /// </summary>
+        [OnEnable]
         public void OnEnable()
         {
-            ApplyHarmonyPatches();
+            //ApplyHarmonyPatches();
         }
 
         /// <summary>
-        /// Called when the plugin is disabled. It is important to clean up any Harmony patches, GameObjects, and Monobehaviours here.
+        /// Called when the plugin is disabled and on Beat Saber quit. It is important to clean up any Harmony patches, GameObjects, and Monobehaviours here.
         /// The game should be left in a state as if the plugin was never started.
         /// </summary>
+        [OnDisable]
         public void OnDisable()
         {
-            RemoveHarmonyPatches();
+            //RemoveHarmonyPatches();
         }
         #endregion
 
+        // Uncomment the methods in this section if using Harmony
+        #region Harmony
+    /*
         /// <summary>
         /// Attempts to apply all the Harmony patches in this assembly.
         /// </summary>
@@ -99,64 +96,7 @@ namespace $safeprojectname$
                 Logger.log.Debug(ex);
             }
         }
-
-        /// <summary>
-        /// Called when the active scene is changed.
-        /// </summary>
-        /// <param name="prevScene">The scene you are transitioning from.</param>
-        /// <param name="nextScene">The scene you are transitioning to.</param>
-        public void OnActiveSceneChanged(Scene prevScene, Scene nextScene)
-        {
-
-        }
-
-        /// <summary>
-        /// Called when the a scene's assets are loaded.
-        /// </summary>
-        /// <param name="scene"></param>
-        /// <param name="sceneMode"></param>
-        public void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
-        {
-
-
-
-        }
-
-
-        public void OnApplicationQuit()
-        {
-            Logger.log.Debug("OnApplicationQuit");
-
-        }
-
-        /// <summary>
-        /// Runs at a fixed intervalue, generally used for physics calculations. 
-        /// </summary>
-        public void OnFixedUpdate()
-        {
-
-        }
-
-        /// <summary>
-        /// This is called every frame.
-        /// </summary>
-        public void OnUpdate()
-        {
-
-        }
-
-
-        public void OnSceneUnloaded(Scene scene)
-        {
-
-        }
-
-
-        /// <summary>
-        /// This should not be used with an IDisablable plugin. 
-        /// It will not be called if the plugin starts disabled and is enabled while the game is running.
-        /// </summary>
-        public void OnApplicationStart()
-        { }
-    }
+    */
+    #endregion
+}
 }
