@@ -11,6 +11,7 @@
     <DefaultName>View.bsml</DefaultName>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem ReplaceParameters="true">BSMLFileTemplate.bsml</ProjectItem>
+    <ProjectItem SubType="Code" ItemType="EmbeddedResource"
+                 ReplaceParameters="true" OpenInEditor="true">BSMLFileTemplate.bsml</ProjectItem>
   </TemplateContent>
 </VSTemplate>
