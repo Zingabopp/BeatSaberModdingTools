@@ -25,7 +25,7 @@
       <Output TaskParameter="AssemblyVersion" PropertyName="AssemblyVersion" />
     </GetManifestInfo>
     <Message Text="PluginVersion: $(PluginVersion), AssemblyVersion: $(AssemblyVersion), GameVersion: $(GameVersion)" Importance="high" />
-    <ZipDir ZipFileName="$(OutDir)zip\$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitShortHash).zip" DirectoryName="$(IntermediateOutputPath)zip" />
+    <ZipDir DirectoryName="$(IntermediateOutputPath)zip" ZipFileName="$(OutDir)zip\$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitShortHash).zip" />
   </Target>
   <!--Build Tasks-->
   <UsingTask TaskName="GetManifestInfo" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
@@ -180,8 +180,8 @@
   <!-- Source: https://stackoverflow.com/a/38127938 -->
   <UsingTask TaskName="ZipDir" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
     <ParameterGroup>
-      <ZipFileName ParameterType="System.String" Required="true" />
       <DirectoryName ParameterType="System.String" Required="true" />
+      <ZipFileName ParameterType="System.String" Required="true" />
     </ParameterGroup>
     <Task>
       <Reference Include="System.IO.Compression.FileSystem" />
