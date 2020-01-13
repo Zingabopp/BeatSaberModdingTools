@@ -17,6 +17,7 @@ namespace $safeprojectname$
     public class Plugin
     {
         // TODO: If using Harmony, uncomment and change YourGitHub to the name of your GitHub account, or use the form "com.company.project.product"
+        //       You must also add a reference to the Harmony assembly in the Libs folder.
         // public const string HarmonyId = "com.github.YourGitHub.$safeprojectname$";
         // internal static HarmonyInstance harmony => HarmonyInstance.Create(HarmonyId);
 
@@ -39,12 +40,14 @@ namespace $safeprojectname$
 
         #region BSIPA Config
         //Uncomment to use BSIPA's config
-        //[Init]
-        //public void InitWithConfig(Config conf)
-        //{
-        //    Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
-        //    Logger.log.Debug("Config loaded");
-        //}
+    /*
+        [Init]
+        public void InitWithConfig(Config conf)
+        {
+            Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
+            Logger.log.Debug("Config loaded");
+        }
+    */
         #endregion
 
 

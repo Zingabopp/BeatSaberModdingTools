@@ -15,7 +15,7 @@
 //        }
 
 //        /// <summary>
-//        /// Call this to force BSIPA to update the config file. This is also called by BSIPA if it detects the file was modified
+//        /// Call this to force BSIPA to update the config file. This is also called by BSIPA if it detects the file was modified.
 //        /// </summary>
 //        public virtual void Changed()
 //        {
