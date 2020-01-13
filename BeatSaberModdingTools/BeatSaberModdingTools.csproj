@@ -159,13 +159,6 @@
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
         </ProjectReference>
-        <ProjectReference Include="..\BSIPA Plugin %28Full%29\BSIPA Plugin %28Full%29.csproj">
-          <Project>{A9A679E8-92C9-47C6-BCC2-59F40AEA549E}</Project>
-          <Name>BSIPA Plugin %28Full%29</Name>
-          <VSIXSubPath>ProjectTemplates</VSIXSubPath>
-          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-        </ProjectReference>
         <ProjectReference Include="..\MonoBehaviourTemplate\MonoBehaviourTemplate.csproj">
           <Project>{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}</Project>
           <Name>MonoBehaviourTemplate</Name>
