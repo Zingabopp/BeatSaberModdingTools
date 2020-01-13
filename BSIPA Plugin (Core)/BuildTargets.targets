@@ -3,16 +3,17 @@
      and copying the plugin to to your Beat Saber folder. Only edit this if you know what you are doing. -->
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <BuildTargetsVersion>1.0</BuildTargetsVersion>
-    <BuildTargetsModified>false</BuildTargetsModified> <!--Set this to true if you edit this file to prevent automatic updates-->
+    <BuildTargetsVersion>1.1</BuildTargetsVersion>
+    <BuildTargetsModified>false</BuildTargetsModified>
+    <!--Set this to true if you edit this file to prevent automatic updates-->
   </PropertyGroup>
   <!--Build Targets-->
-  <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(NCrunch)' != '1'">
+  <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(DisableCopyToPlugins)' != 'True'">
     <Message Text="Copying $(OutputPath)$(AssemblyName).dll to IPA\Pending\Plugins folder" Importance="high" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).dll" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).pdb" />
   </Target>
-  <Target Name="ZipRelease" AfterTargets="Build" Condition="'$(NCrunch' != '1' AND '$(Configuration)' == 'Release'">
+  <Target Name="ZipRelease" AfterTargets="Build" Condition="'$(DisableZipRelease)' != 'True' AND '$(Configuration)' == 'Release'">
     <Message Text="Zipping plugin for release." Importance="high" />
     <GetCommitHash ProjectDir="$(ProjectDir)">
       <Output TaskParameter="CommitShortHash" PropertyName="CommitShortHash" />
@@ -172,7 +173,8 @@
                 Log.LogErrorFromException(ex);
                 return false;
             }
-      ]]></Code>
+      ]]>
+      </Code>
     </Task>
   </UsingTask>
   <!-- Source: https://stackoverflow.com/a/38127938 -->
@@ -188,7 +190,7 @@
       <Using Namespace="System.IO" />
       <Using Namespace="System.Threading" />
       <Code Type="Fragment" Language="cs">
-              <![CDATA[
+        <![CDATA[
         try
         {
           var zipDir = new DirectoryInfo(Path.GetDirectoryName(Path.GetFullPath(ZipFileName)));
@@ -216,7 +218,8 @@
           Log.LogErrorFromException(ex);
           return false;
         }
-      ]]></Code>
+      ]]>
+      </Code>
     </Task>
   </UsingTask>
   <UsingTask TaskName="GetCommitHash" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
@@ -226,7 +229,8 @@
     </ParameterGroup>
     <Task>
       <Using Namespace="System.Diagnostics" />
-      <Code Type="Fragment" Language="cs"><![CDATA[
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
             CommitShortHash = "local";
             try
             {
