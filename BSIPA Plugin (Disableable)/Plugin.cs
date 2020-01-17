@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
-using Harmony;
 using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 
