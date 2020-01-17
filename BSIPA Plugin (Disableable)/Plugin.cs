@@ -22,7 +22,7 @@ namespace $safeprojectname$
 
         internal static Plugin instance { get; private set; }
         internal static string Name => "$projectname$";
-        internal static $safeprojectname$Controller PluginController => $safeprojectname$Controller.instance;
+        internal static $safeprojectname$Controller PluginController { get { return $safeprojectname$Controller.instance; } }
 
         [Init]
         /// <summary>
