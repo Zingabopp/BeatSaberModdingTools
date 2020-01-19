@@ -15,6 +15,8 @@
     <PathMap>$(SolutionDir)=C:\</PathMap>
     <DebugType>portable</DebugType>
     <BeatSaberDir>$(ProjectDir)References</BeatSaberDir>
+    <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
+    <PathMap>$(AppOutputBase)=X:\$(AssemblyName)\</PathMap>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
