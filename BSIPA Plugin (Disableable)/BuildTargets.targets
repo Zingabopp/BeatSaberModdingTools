@@ -229,6 +229,7 @@
     </ParameterGroup>
     <Task>
       <Using Namespace="System.Diagnostics" />
+      <Using Namespace="System.ComponentModel" />
       <Code Type="Fragment" Language="cs">
         <![CDATA[
             CommitShortHash = "local";
@@ -243,10 +244,37 @@
                 process.StartInfo.RedirectStandardOutput = true;
                 process.Start();
                 var outText = process.StandardOutput.ReadToEnd();
-                if(outText.Length >= 7)
-                  CommitShortHash = outText.Substring(0, 7);
+                if (outText.Length >= 7)
+                    CommitShortHash = outText.Substring(0, 7);
                 else
-                  Log.LogMessage(MessageImportance.High, "Unable to retrieve current commit hash.");
+                    Log.LogMessage(MessageImportance.High, "Unable to retrieve current commit hash.");
+                return true;
+            }
+            catch (Win32Exception ex)
+            {
+                string gitPath = Path.GetFullPath(Path.Combine(ProjectDir, ".git"));
+                string headPath = Path.Combine(gitPath, "HEAD");
+                string headContents = null;
+                if (File.Exists(headPath))
+                    headContents = File.ReadAllText(headPath);
+                else
+                {
+                    gitPath = Path.GetFullPath(Path.Combine(ProjectDir, "..", ".git"));
+                    headPath = Path.Combine(gitPath, "HEAD");
+                    if (File.Exists(headPath))
+                        headContents = File.ReadAllText(headPath);
+                }
+                headPath = null;
+                if (!string.IsNullOrEmpty(headContents) && headContents.StartsWith("ref:"))
+                    headPath = Path.Combine(gitPath, headContents.Replace("ref:", "").Trim());
+                if(File.Exists(headPath))
+                {
+                    headContents = File.ReadAllText(headPath);
+                    if(headContents.Length >= 7)
+                        CommitShortHash = headContents.Substring(0, 7);
+                }
+                else
+                    Log.LogMessage(MessageImportance.High, "   git command not found, unable to retrieve current commit hash.");
                 return true;
             }
             catch (Exception ex)
