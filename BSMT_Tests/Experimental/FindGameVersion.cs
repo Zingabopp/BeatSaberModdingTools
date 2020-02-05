@@ -43,7 +43,7 @@ namespace BSMT_Tests.Experimental
         public void GameVersionTest()
         {
             string detectedVersion = GetVersion();
-            Assert.AreEqual("1.6.2", detectedVersion);
+            Assert.AreEqual("1.7.0", detectedVersion);
         }
     }
 }
