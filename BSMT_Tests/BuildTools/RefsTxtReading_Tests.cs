@@ -1,34 +1,35 @@
-﻿using System;
+﻿using BeatSaberModdingTools.BuildTools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BeatSaberModdingTools.BuildTools;
-using System.IO;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace BSMT_Tests.BuildTools
 {
     [TestClass]
-    public class RefsTxtReading
+    public class RefsTxtReading_Tests
     {
         private readonly string DataPath = Path.Combine("Data", "BuildTools");
         [TestMethod]
-        public void TestMethod1()
+        public void ReadFileAndCompare()
         {
             string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
-            var reader = new BuildToolsRefsParser(refsText);
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
             Assert.IsTrue(reader.FileExists);
-            var things = reader.ReadFile();
+            RootNode things = reader.ReadFile();
             Assert.IsTrue(things.Count > 0);
             string text = string.Empty;
             List<string> stringList = new List<string>();
-            foreach (var rootNode in things)
+            foreach (RefsNode rootNode in things)
             {
-                stringList.AddRange(GetLines(rootNode));
+                stringList.AddRange(rootNode.GetLines());
             }
             text = string.Join("\n", stringList);
             //Assert.AreEqual(File.ReadAllText(refsText), text);
             string line;
             int lineNumber = 0;
-            using (var streamReader = new StreamReader(refsText))
+            using (StreamReader streamReader = new StreamReader(refsText))
             {
                 while ((line = streamReader.ReadLine()) != null)
                 {
@@ -53,10 +54,13 @@ namespace BSMT_Tests.BuildTools
 
         private List<string> GetLines(RefsNode node, ref List<string> list)
         {
-            list.Add(node.RawLine);
+            string lineToAdd = node.RawLine;
+            if (node is FileNode fileNode)
+                lineToAdd = lineToAdd + " | " + fileNode.GetFilename(true);
+            list.Add(lineToAdd);
             if (node.SupportsChildren)
             {
-                foreach (var childNode in node.GetChildren())
+                foreach (RefsNode childNode in node.GetChildren())
                 {
                     GetLines(childNode, ref list);
                 }
@@ -74,10 +78,12 @@ namespace BSMT_Tests.BuildTools
                 Console.WriteLine(node.NodeDepth.ToString("00") + " | " + node.RawLine);
             if (!node.SupportsChildren)
                 return;
-            foreach (var childNode in node.GetChildren())
+            foreach (RefsNode childNode in node.GetChildren())
             {
                 PrintChildren(childNode);
             }
         }
     }
+
+
 }

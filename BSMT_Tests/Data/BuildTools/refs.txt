@@ -1,4 +1,5 @@
 ﻿::from ./bsinstalldir.txt
+"Folderless.dll
 "Beat Saber_Data/
 ""Managed/
 """Unity.TextMeshPro.dll
@@ -26,6 +27,21 @@
 ::startopt
 ::from ./mdinstalldir.txt
 "MuseDash_Data/
+""Managed/
+"""UnityEngine.
+""""dll?alias=UnityEngine.Net3.dll
+""""UnityWebRequestModule.
+"""""dll?alias=UnityEngine.UnityWebRequestModule.Net3.dll
+""""CoreModule.
+"""""dll?alias=UnityEngine.CoreModule.Net3.dll
+::endopt
+
+::from ./secondthing.txt
+"SecondThing.dll
+
+::startopt
+::from ./secondopt.txt
+"SecondOpt_Data/
 ""Managed/
 """UnityEngine.
 """"dll?alias=UnityEngine.Net3.dll

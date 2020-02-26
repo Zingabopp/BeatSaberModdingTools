@@ -8,11 +8,39 @@ namespace BeatSaberModdingTools.BuildTools
 {
     public class LeafNode : RefsNode
     {
+        protected string RelativePath;
+
         public override RefsNodesType NodeType => RefsNodesType.Leaf;
 
         public override string RawLine => LeafData.PadLeft(LeafData.Length + LeafLevel, '"');
 
         public override bool SupportsChildren => true;
+
+        public override bool TryGetReference(string fileName, out FileNode fileNode)
+        {
+            if (SupportsChildren)
+            {
+                foreach (var child in Children)
+                {
+                    if (child.TryGetReference(fileName, out FileNode foundNode))
+                    {
+                        fileNode = foundNode;
+                        return true;
+                    }
+                }
+            }
+            fileNode = null;
+            return false;
+        }
+        public virtual string GetRelativePath()
+        {
+            string name = LeafData;
+            if (Parent is LeafNode leafNode)
+                name = leafNode.GetRelativePath() + name;
+            RelativePath = name;
+            return name;
+        }
+
         public bool IsFile => NodeType == RefsNodesType.File;
         public int LeafLevel => NodeDepth;
         public string LeafData { get; protected set; }
@@ -32,6 +60,12 @@ namespace BeatSaberModdingTools.BuildTools
             }
         }
 
+        protected override void ClearCachedData()
+        {
+            base.ClearCachedData();
+            RelativePath = null;
+        }
+
         public string[] GetPathParts()
         {
             Stack<string> stack = new Stack<string>();
@@ -39,7 +73,7 @@ namespace BeatSaberModdingTools.BuildTools
             GetParentPathParts(ref stack);
             string[] retAry = new string[stack.Count];
             int stackSize = stack.Count;
-            for(int i = 0; i < stackSize; i++)
+            for (int i = 0; i < stackSize; i++)
             {
                 retAry[i] = stack.Pop();
             }
@@ -48,7 +82,7 @@ namespace BeatSaberModdingTools.BuildTools
 
         protected void GetParentPathParts(ref Stack<string> stack)
         {
-            if(Parent is LeafNode parentLeaf)
+            if (Parent is LeafNode parentLeaf)
             {
                 stack.Push(parentLeaf.LeafData);
                 parentLeaf.GetParentPathParts(ref stack);
@@ -57,16 +91,13 @@ namespace BeatSaberModdingTools.BuildTools
 
         public LeafNode(string rawLine)
         {
-            //Children = new List<RefsNode>();
             var parts = rawLine.Split('"');
-            //LeafLevel = parts.Length - 1;
             LeafData = parts.Last();
         }
 
-        public LeafNode(int leafLevel, string leafData)
+        public override string ToString()
         {
-            //Children = new List<RefsNode>();
-            LeafData = leafData;
+            return RawLine;
         }
     }
 }

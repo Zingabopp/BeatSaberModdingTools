@@ -40,10 +40,12 @@ namespace BSMT_Tests.BuildTools
             string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
             string rawLine = "::from ./bsinstalldir.txt";
             CommandNode root = new CommandNode(rawLine);
-            LeafNode childToAdd = root.AddChild(new LeafNode(@"""Beat Saber_Data/"));
-            childToAdd = childToAdd.AddChild(new LeafNode(@"""""Managed/"));
-            childToAdd.AddChild(new FileNode(@"""""""Unity.TextMeshPro.dll?virt?alias=UnityAlias.TextMeshPro.dll"));
-            childToAdd.AddChild(new FileNode(@"""""""UnityEngine.dll"));
+            LeafNode childToAdd = new LeafNode(@"""Beat Saber_Data/");
+            root.Add(childToAdd);
+            childToAdd = new LeafNode(@"""""Managed/");
+            root.Add(childToAdd);
+            childToAdd.Add(new FileNode(@"""""""Unity.TextMeshPro.dll?virt?alias=UnityAlias.TextMeshPro.dll"));
+            childToAdd.Add(new FileNode(@"""""""UnityEngine.dll"));
             PrintChildren(root);
         }
 

@@ -29,7 +29,24 @@ namespace BeatSaberModdingTools.BuildTools
             }
         }
 
-        public override bool SupportsChildren => true;
+        public override bool SupportsChildren => !(Command == CommandType.EndOptionalBlock || Command == CommandType.EmptyLine);
+
+        public override bool TryGetReference(string fileName, out FileNode fileNode)
+        {
+            if(SupportsChildren)
+            {
+                foreach (var child in Children)
+                {
+                    if (child.TryGetReference(fileName, out FileNode foundNode))
+                    {
+                        fileNode = foundNode;
+                        return true;
+                    }
+                }
+            }
+            fileNode = null;
+            return false;
+        }
 
         public CommandType Command { get; protected set; }
         public string CommandData { get; protected set; }
@@ -77,6 +94,11 @@ namespace BeatSaberModdingTools.BuildTools
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rawLine"></param>
+        /// <exception cref="ArgumentException"></exception>
         public CommandNode(string rawLine)
         {
             if(string.IsNullOrEmpty(rawLine))

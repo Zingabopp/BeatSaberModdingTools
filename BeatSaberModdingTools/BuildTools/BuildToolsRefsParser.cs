@@ -66,9 +66,6 @@ namespace BeatSaberModdingTools.BuildTools
 
     public class BuildToolsRefsParser
     {
-        private const string Cmd_FromBsInstall = @"::from ./bsinstalldir.txt";
-        private const string Cmd_StartOpt = @"::startopt";
-        private const string Cmd_EndOpt = @"::endopt";
         private string _refsFilePath;
         protected HashSet<string> RequiredReferences { get; private set; }
         protected HashSet<string> OptionalReferences { get; private set; }
@@ -80,21 +77,19 @@ namespace BeatSaberModdingTools.BuildTools
             OptionalReferences = new HashSet<string>();
         }
 
-        public List<CommandNode> Root { get; protected set; }
+        public RootNode Root { get; protected set; }
 
-        public List<CommandNode> ReadFile()
+        public RootNode ReadFile()
         {
             if (!FileExists)
                 return null;
-            List<CommandNode> rootNodes = new List<CommandNode>();
+            RootNode rootNodes = new RootNode();
             CommandNode currentRoot = null;
             RefsNode currentNode = null;
             string depsFile = File.ReadAllText(_refsFilePath);
-            var optBlock = false;
             var lineNo = 0;
             int currentLevel;
             int nextLevel;
-            bool repeat;
             string[] allLines = depsFile.Split(new[] { Environment.NewLine, "\n", "\r" }, StringSplitOptions.None);
 
             string currentLine = allLines[0];
@@ -113,8 +108,11 @@ namespace BeatSaberModdingTools.BuildTools
                 if (path.StartsWith("::") || path == string.Empty)
                 { // pseudo-command
                     if (currentNode is CommandNode currentCmd && currentCmd.Command == CommandNode.CommandType.StartOptionalBlock)
-                        currentNode = currentRoot.AddChild(new CommandNode(currentLine));
-                    else 
+                    {
+                        currentNode = new CommandNode(currentLine);
+                        currentRoot.Add(currentNode);
+                    }
+                    else
                     {
                         currentRoot = new CommandNode(currentLine);
                         currentNode = currentRoot;
@@ -125,12 +123,16 @@ namespace BeatSaberModdingTools.BuildTools
                 }
 
                 if (currentLevel < nextLevel)
-                    currentNode = currentNode.AddChild(new LeafNode(currentLine));
+                {
+                    LeafNode toAdd = new LeafNode(currentLine);
+                    currentNode.Add(toAdd);
+                    currentNode = toAdd;
+                }
                 else if (currentLevel == nextLevel)
-                    currentNode.AddChild(new FileNode(currentLine));
+                    currentNode.Add(new FileNode(currentLine));
                 else if (currentLevel > nextLevel)
                 {
-                    currentNode.AddChild(new FileNode(currentLine));
+                    currentNode.Add(new FileNode(currentLine));
                     while (currentNode.NodeDepth > nextLevel)
                         currentNode = currentNode.Parent;
                 }
@@ -140,107 +142,6 @@ namespace BeatSaberModdingTools.BuildTools
             }
             Root = rootNodes;
             return rootNodes;
-        }
-
-        public FileEntry[] ReadFileOld()
-        {
-            if (!FileExists)
-                return Array.Empty<FileEntry>();
-
-            var files = new List<FileEntry>();
-            //StreamReader file = new StreamReader(_refsFilePath);
-            string depsFile = File.ReadAllText(_refsFilePath);
-            var stack = new Stack<string>();
-
-            void Push(string val)
-            {
-                string pre = "";
-                if (stack.Count > 0)
-                    pre = stack.First();
-                stack.Push(pre + val);
-            }
-            string Pop() => stack.Pop();
-            string Replace(string val)
-            {
-                var v2 = Pop();
-                Push(val);
-                return v2;
-            }
-            var optBlock = false;
-            var lineNo = 0;
-            //string line;
-            foreach (string line in depsFile.Split(new[] { Environment.NewLine, "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                var parts = line.Split('"');
-                var path = parts.Last();
-                var level = parts.Length - 2;
-
-                if (path.StartsWith("::"))
-                { // pseudo-command
-                    parts = path.Split(' ');
-                    var command = parts[0].Substring(2);
-                    parts = parts.Skip(1).ToArray();
-                    var arglist = string.Join(" ", parts);
-                    if (command == "from")
-                    { // an "import" type command
-                        string filePath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), arglist));
-                        try
-                        {
-                            path = File.ReadAllText(filePath);
-                        }
-                        catch (FileNotFoundException e)
-                        {
-                            var errorStrength = optBlock ? "WARNING" : "ERROR";
-                            Console.WriteLine($"{errorStrength}: {Path.GetFullPath(_refsFilePath)}({lineNo}): File doesn't exist: {filePath}");
-                            path = "$\"Invalid Path";
-                        }
-                        catch (Exception e)
-                        {
-                            var errorStrength = optBlock ? "WARNING" : "ERROR";
-                            Console.WriteLine($"{errorStrength}: {Path.GetFullPath(_refsFilePath)}({lineNo}): Error resolving import {filePath}: {e}");
-                            path = "$\"Invalid Path";
-                        }
-                    }
-                    else if (command == "prompt")
-                    {
-                        Console.Write(arglist);
-                        path = Console.ReadLine();
-                    }
-                    else if (command == "startopt")
-                    {
-                        optBlock = true;
-                        goto continueTarget;
-                    }
-                    else if (command == "endopt")
-                    {
-                        optBlock = false;
-                        goto continueTarget;
-                    }
-                    else
-                    {
-                        path = "";
-                        Console.WriteLine($"{Path.GetFullPath(_refsFilePath)}({lineNo}): error: Invalid command {command}");
-                    }
-                    continue;
-                }
-
-                if (level > stack.Count - 1)
-                    Push(path);
-                else if (level == stack.Count - 1)
-                    files.Add(new FileEntry(Replace(path), lineNo, optBlock));
-                else if (level < stack.Count - 1)
-                {
-                    files.Add(new FileEntry(Pop(), lineNo, optBlock));
-                    while (level < stack.Count)
-                        Pop();
-                    Push(path);
-                }
-
-            continueTarget:
-                lineNo++;
-            }
-            files.Add(new FileEntry(Pop(), lineNo, optBlock));
-            return files.ToArray();
         }
     }
 }
