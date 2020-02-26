@@ -48,6 +48,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BuildTools\CommandNode.cs" />
+    <Compile Include="BuildTools\FileNode.cs" />
+    <Compile Include="BuildTools\LeafNode.cs" />
+    <Compile Include="BuildTools\RefsNode.cs" />
     <Compile Include="CommandFilter.cs" />
     <Compile Include="Commands\AddProjectReference.cs" />
     <Compile Include="Commands\CommandSetGuids.cs" />
@@ -78,6 +82,7 @@
       <DependentUpon>BeatSaberModdingToolsSettings.settings</DependentUpon>
     </Compile>
     <Compile Include="BSMTSettingsManager.cs" />
+    <Compile Include="BuildTools\BuildToolsRefsParser.cs" />
     <Compile Include="Utilities\EnvUtils.cs" />
     <Compile Include="Utilities\IExecuteWithObject.cs" />
     <Compile Include="Utilities\IExecuteWithObjectAndResult.cs" />
