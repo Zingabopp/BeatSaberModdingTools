@@ -20,7 +20,7 @@ namespace BeatSaberModdingTools.BuildTools
         public virtual RefsNode Parent { get; protected set; }
         public abstract int NodeDepth { get; }
         public abstract bool SupportsChildren { get; }
-        public int Count => Children?.Count ?? 0;
+        public int Count => Children.Count;
 
         /// <summary>
         /// Gets the child <see cref="RefsNode"/> at the specified index.
@@ -57,9 +57,13 @@ namespace BeatSaberModdingTools.BuildTools
         }
         protected virtual void ClearCachedData()
         {
-            return;
             if (SupportsChildren)
-                Children.ForEach(c => c.ClearCachedData());
+            {
+                foreach (RefsNode child in Children)
+                {
+                    child.ClearCachedData();
+                }
+            }
         }
         public abstract bool TryGetReference(string fileName, out FileNode fileNode);
 
@@ -69,9 +73,12 @@ namespace BeatSaberModdingTools.BuildTools
         }
         protected RefsNode()
         {
-            Children = SupportsChildren ? new List<RefsNode>() : null;
+            if (SupportsChildren)
+                Children = new List<RefsNode>();
+            else
+                Children = ReadOnlyList<RefsNode>.Empty;
         }
-        protected List<RefsNode> Children { get; }
+        protected IList<RefsNode> Children { get; }
 
         public bool IsReadOnly => SupportsChildren;
 
@@ -185,7 +192,7 @@ namespace BeatSaberModdingTools.BuildTools
 
         public virtual void Clear()
         {
-            foreach (var child in Children)
+            foreach (RefsNode child in Children)
             {
                 if (child.Parent == this)
                     child.SetParent(null);

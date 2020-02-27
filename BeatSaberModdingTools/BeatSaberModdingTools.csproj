@@ -51,6 +51,7 @@
     <Compile Include="BuildTools\CommandNode.cs" />
     <Compile Include="BuildTools\FileNode.cs" />
     <Compile Include="BuildTools\LeafNode.cs" />
+    <Compile Include="BuildTools\ReadOnlyList.cs" />
     <Compile Include="BuildTools\RefsNode.cs" />
     <Compile Include="BuildTools\RefsNodeExtensions.cs" />
     <Compile Include="BuildTools\RootNode.cs" />
