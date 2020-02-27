@@ -57,12 +57,10 @@ namespace BeatSaberModdingTools.BuildTools
         }
         protected virtual void ClearCachedData()
         {
-            if (SupportsChildren)
+            for (int i = 0; i < Children.Count; i++)
             {
-                foreach (RefsNode child in Children)
-                {
-                    child.ClearCachedData();
-                }
+                RefsNode child = Children[i];
+                child.ClearCachedData();
             }
         }
         public abstract bool TryGetReference(string fileName, out FileNode fileNode);
@@ -80,7 +78,7 @@ namespace BeatSaberModdingTools.BuildTools
         }
         protected IList<RefsNode> Children { get; }
 
-        public bool IsReadOnly => SupportsChildren;
+        public bool IsReadOnly => Children.IsReadOnly;
 
         public string[] GetLines()
         {
@@ -130,7 +128,7 @@ namespace BeatSaberModdingTools.BuildTools
         /// <param name="child"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="child"/> is null.</exception>
-        /// <exception cref="NotSupportedException">Thrown when this <see cref="RefsNode"/> doesn't support children.</exception>
+        /// <exception cref="NotSupportedException">Thrown when children aren't supported on this <see cref="RefsNode"/></exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="index"/> is less than 0.</exception>
         public virtual void Insert(int index, RefsNode child)
         {
@@ -152,6 +150,7 @@ namespace BeatSaberModdingTools.BuildTools
         /// <param name="index"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="NotSupportedException">Thrown when children aren't supported on this <see cref="RefsNode"/></exception>
         public virtual RefsNode RemoveChildAt(int index)
         {
             RefsNode toRemove = Children[index];
@@ -167,6 +166,7 @@ namespace BeatSaberModdingTools.BuildTools
         /// <param name="index"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="NotSupportedException">Thrown when children aren't supported on this <see cref="RefsNode"/></exception>
         public virtual void RemoveAt(int index)
         {
             RemoveChildAt(index);
@@ -189,7 +189,10 @@ namespace BeatSaberModdingTools.BuildTools
             child.Parent = this;
             child.ClearCachedData();
         }
-
+        /// <summary>
+        /// Removes all children from the specified <see cref="RefsNode"/>.
+        /// </summary>
+        /// <exception cref="NotSupportedException">Thrown when children aren't supported on this <see cref="RefsNode"/></exception>
         public virtual void Clear()
         {
             foreach (RefsNode child in Children)
@@ -210,6 +213,12 @@ namespace BeatSaberModdingTools.BuildTools
             Children.CopyTo(array, arrayIndex);
         }
 
+        /// <summary>
+        /// Removes the first occurence of the specified <see cref="RefsNode"/>.
+        /// </summary>
+        /// <param name="child"></param>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException">Thrown when children aren't supported on this <see cref="RefsNode"/></exception>
         public virtual bool Remove(RefsNode child)
         {
             if (Children.Remove(child))

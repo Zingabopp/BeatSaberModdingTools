@@ -29,7 +29,7 @@ namespace BeatSaberModdingTools.BuildTools
 
         public bool IsReadOnly => true;
 
-        T IList<T>.this[int index] { get => _items[index]; set => throw new NotImplementedException(); }
+        T IList<T>.this[int index] { get => _items[index]; set => throw new NotSupportedException("This operation is not supported on a ReadOnlyList"); }
 
         public int IndexOf(T item)
         {
@@ -49,22 +49,22 @@ namespace BeatSaberModdingTools.BuildTools
 
         void IList<T>.Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This operation is not supported on a ReadOnlyList");
         }
 
         void IList<T>.RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This operation is not supported on a ReadOnlyList");
         }
 
         void ICollection<T>.Add(T item)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This operation is not supported on a ReadOnlyList");
         }
 
         void ICollection<T>.Clear()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This operation is not supported on a ReadOnlyList");
         }
 
         public bool Contains(T item)
@@ -85,7 +85,7 @@ namespace BeatSaberModdingTools.BuildTools
 
         bool ICollection<T>.Remove(T item)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This operation is not supported on a ReadOnlyList");
         }
 
         public void CopyTo(T[] array, int arrayIndex)
