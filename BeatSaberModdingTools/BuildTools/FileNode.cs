@@ -62,7 +62,8 @@ namespace BeatSaberModdingTools.BuildTools
             //{
             try
             {
-                return Path.GetFileName(name);
+                Filename = Path.GetFileName(name);
+                return Filename;
             }
             catch (ArgumentException)
             {
