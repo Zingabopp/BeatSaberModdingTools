@@ -131,6 +131,178 @@ namespace BSMT_Tests.BuildTools
             Assert.IsNotNull(target);
             Assert.IsTrue(target.GetRelativePath().Contains(relativePath));
         }
+        [TestMethod]
+        public void GetPathSource_MdInstall()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string alias = @"UnityEngine.UnityWebRequestModule.Net3.dll";
+            string expectedPathSource = "./mdinstalldir.txt";
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            LeafNode target = rootNodes.Find<FileNode>(f => f.Alias == alias);
+            Assert.IsNotNull(target);
+            Assert.AreEqual(expectedPathSource, target.GetPathSource());
+        }
+
+        [TestMethod]
+        public void GetPathSource_BsInstall()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string name = @"UnityEngine.UIElementsModule.dll";
+            string expectedPathSource = "./bsinstalldir.txt";
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            LeafNode target = rootNodes.Find<FileNode>(f => f.GetFilename() == name);
+            Assert.IsNotNull(target);
+            Assert.AreEqual(expectedPathSource, target.GetPathSource());
+        }
+
+        [TestMethod]
+        public void InOptionalBlock_True()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string alias = @"UnityEngine.UnityWebRequestModule.Net3.dll";
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            LeafNode target = rootNodes.Find<FileNode>(f => f.Alias == alias);
+            Assert.IsNotNull(target);
+            Assert.IsTrue(target.InOptionalBlock());
+        }
+
+        [TestMethod]
+        public void InOptionalBlock_False()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string name = @"UnityEngine.UIElementsModule.dll";
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            LeafNode target = rootNodes.Find<FileNode>(f => f.GetFilename() == name);
+            Assert.IsNotNull(target);
+            Assert.IsFalse(target.InOptionalBlock());
+        }
+
+        [TestMethod]
+        public void InsertReference_OptionalNoMatch()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string fullName = @"Beat_Data/Managed/UnityEngine.InsertedReference.dll";
+            FileEntry fileEntry = new FileEntry(fullName, FileFlag.Virtualize, null, "./mdinstalldir.txt");
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            Assert.IsTrue(rootNodes.InsertReference(fileEntry, true)); 
+            Console.WriteLine("---------------");
+            foreach (var line in rootNodes.GetLines())
+            {
+                Console.WriteLine(line);
+            }
+        }
+
+        [TestMethod]
+        public void InsertReference_NotOptional()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string fullName = @"Beat Saber_Data/Managed/UnityEngine.InsertedReference.dll";
+            FileEntry fileEntry = new FileEntry(fullName, FileFlag.Virtualize, null, "./bsinstalldir.txt");
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            Assert.IsTrue(rootNodes.InsertReference(fileEntry, false));
+            Console.WriteLine("---------------");
+            foreach (var line in rootNodes.GetLines())
+            {
+                Console.WriteLine(line);
+            }
+        }
+
+        [TestMethod]
+        public void InsertReference_NotOptional_NoFolder()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string fullName = @"InsertedReference.dll";
+            FileEntry fileEntry = new FileEntry(fullName, FileFlag.Virtualize, null, "./bsinstalldir.txt");
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            Assert.IsTrue(rootNodes.InsertReference(fileEntry, false));
+            Console.WriteLine("---------------");
+            foreach (var line in rootNodes.GetLines())
+            {
+                Console.WriteLine(line);
+            }
+        }
+
+        [TestMethod]
+        public void InsertReference_NotOptional_NoExistingLeafs()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string fullName = @"Beat_Data/UnityEngine.InsertedReference.dll";
+            FileEntry fileEntry = new FileEntry(fullName, FileFlag.Virtualize, null, "./bsinstalldir.txt");
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            Assert.IsTrue(rootNodes.InsertReference(fileEntry, false));
+            Console.WriteLine("---------------");
+            foreach (var line in rootNodes.GetLines())
+            {
+                Console.WriteLine(line);
+            }
+        }
+
+        [TestMethod]
+        public void InsertReference_NotOptional_OtherPathSource()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string fullName = @"Beat Saber_Data/Managed/UnityEngine.InsertedReference.dll";
+            FileEntry fileEntry = new FileEntry(fullName, FileFlag.Virtualize, null, "./secondthing.txt");
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            Assert.IsTrue(rootNodes.InsertReference(fileEntry, false));
+            Console.WriteLine("---------------");
+            foreach (var line in rootNodes.GetLines())
+            {
+                Console.WriteLine(line);
+            }
+        }
+
+        [TestMethod]
+        public void InsertReference_NotOptional_NewPathSource()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string fullName = @"Beat Saber_Data/Managed/UnityEngine.InsertedReference.dll";
+            FileEntry fileEntry = new FileEntry(fullName, FileFlag.Virtualize, null, "./newsource.txt");
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            Assert.IsTrue(rootNodes.InsertReference(fileEntry, false));
+            Console.WriteLine("---------------");
+            foreach (var line in rootNodes.GetLines())
+            {
+                Console.WriteLine(line);
+            }
+        }
+
+        [TestMethod]
+        public void InsertReference_Optional_NewPathSource()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string fullName = @"Beat Saber_Data/Managed/UnityEngine.InsertedReference.dll";
+            FileEntry fileEntry = new FileEntry(fullName, FileFlag.Virtualize, null, "./newsource.txt");
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            Assert.IsTrue(rootNodes.InsertReference(fileEntry, true));
+            Console.WriteLine("---------------");
+            foreach (var line in rootNodes.GetLines())
+            {
+                Console.WriteLine(line);
+            }
+        }
 
         [TestMethod]
         public void FindAll_Leaf()

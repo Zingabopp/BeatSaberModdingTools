@@ -45,22 +45,121 @@ namespace BeatSaberModdingTools.BuildTools
             }
             return null;
         }
-        public virtual T[] FindAll<T>(Func<T, bool> func) where T : RefsNode
+        public virtual T[] FindAll<T>(Func<T, bool> func, int maxDepth = int.MaxValue) where T : RefsNode
         {
             List<T> matches = new List<T>();
-            FindAll(func, ref matches);
+            FindAll(func, ref matches, maxDepth);
             return matches.ToArray();
         }
 
 
-        protected virtual void FindAll<T>(Func<T, bool> func, ref List<T> matches) where T : RefsNode
+        protected virtual void FindAll<T>(Func<T, bool> func, ref List<T> matches, int maxDepth) where T : RefsNode
         {
+            if (maxDepth < 0)
+                return;
             if (this is T target && func(target))
                 matches.Add(target);
             foreach (var child in Children)
             {
-                child.FindAll(func, ref matches);
+                child.FindAll(func, ref matches, maxDepth - 1);
             }
+        }
+
+
+
+        private bool? _inOptionalBlock;
+        private string _pathSource;
+
+        public bool InOptionalBlock()
+        {
+            if (_inOptionalBlock != null)
+                return _inOptionalBlock ?? false;
+            if (this is CommandNode cmdNode && cmdNode.Command == CommandNode.CommandType.OptionalBlock)
+                return true;
+            _inOptionalBlock = false;
+            if (Parent != null)
+                _inOptionalBlock = Parent.InOptionalBlock();
+            return _inOptionalBlock ?? false;
+        }
+
+        public string GetPathSource()
+        {
+            if (!string.IsNullOrEmpty(_pathSource))
+                return _pathSource;
+            if (this is CommandNode cmdNode)
+            {
+                if (cmdNode.Command == CommandNode.CommandType.From)
+                {
+                    _pathSource = cmdNode.CommandData;
+                    return _pathSource;
+                }
+                else if (cmdNode.Command == CommandNode.CommandType.Prompt)
+                {
+                    _pathSource = CommandNode.PromptSourceTag;
+                    return _pathSource;
+                }
+            }
+            if (Parent != null)
+                _pathSource = Parent.GetPathSource();
+            return _pathSource;
+        }
+
+        public virtual bool InsertReference(FileEntry fileEntry, bool optional = false)
+        {
+            LeafNode[] matches = FindAll<LeafNode>(l =>
+            {
+                if (l.NodeType == RefsNodesType.File 
+                || l.InOptionalBlock() != optional
+                || l.GetPathSource() != fileEntry.PathSource)
+                    return false;
+                string relativePath = l.GetRelativePath();
+                if(fileEntry.Fullname.StartsWith(relativePath))
+                    return true;
+                return false;
+            });
+            LeafNode bestMatch = matches.OrderByDescending(l => l.GetRelativePath().Length).FirstOrDefault();
+            if (bestMatch != null)
+            {
+                for(int i = 0; i < bestMatch.Count; i++)
+                {
+                    if(bestMatch[i].Count > 0)
+                    {
+                        bestMatch.AddFile(fileEntry);
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                RootNode rootNode = this as RootNode;
+                CommandNode matchedCommandNode = this as CommandNode;
+                if (rootNode != null)
+                {
+                    matchedCommandNode = rootNode.FindAll<CommandNode>(c => c.GetPathSource() == fileEntry.PathSource && c.InOptionalBlock() == optional, 2).FirstOrDefault();
+                    if (matchedCommandNode == null)
+                        return false;
+                }
+                string[] pathParts = fileEntry.Fullname.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                if(pathParts.Length == 1)
+                {
+                    matchedCommandNode.Insert(0, new FileNode(fileEntry.Fullname, fileEntry));
+                    return true;
+                }
+                RefsNode current = matchedCommandNode;
+                for (int i = 0; i < pathParts.Length - 1; i++)
+                {
+                    LeafNode newLeaf = new LeafNode(pathParts[i] + "/");
+                    current.Add(newLeaf);
+                    current = newLeaf;
+                }
+                if (current is LeafNode leaf)
+                {
+                    leaf.AddFile(fileEntry);
+                    return true;
+                }
+
+            }
+            return false;
         }
 
         /// <summary>
@@ -149,6 +248,8 @@ namespace BeatSaberModdingTools.BuildTools
 
         protected virtual void ClearCachedData()
         {
+            _inOptionalBlock = null;
+            _pathSource = null;
             for (int i = 0; i < Children.Count; i++)
             {
                 RefsNode child = Children[i];

@@ -9,6 +9,8 @@ namespace BeatSaberModdingTools.BuildTools
 {
     public class CommandNode : RefsNode
     {
+        public static readonly string DefaultFromSource = "./bsinstalldir.txt";
+        public static readonly string PromptSourceTag = "PROMPT";
         public enum CommandType
         {
             None = 0,

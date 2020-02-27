@@ -42,6 +42,12 @@ namespace BeatSaberModdingTools.BuildTools
             return name;
         }
 
+        public void AddFile(FileEntry fileEntry, int index = 0)
+        {
+            string name = fileEntry.Fullname.Replace(GetRelativePath(), string.Empty);
+            Insert(index, new FileNode(name, fileEntry));
+        }
+
         public bool IsFile => NodeType == RefsNodesType.File;
         public int LeafLevel => NodeDepth;
         public string LeafData { get; protected set; }
@@ -89,6 +95,8 @@ namespace BeatSaberModdingTools.BuildTools
                 parentLeaf.GetParentPathParts(ref stack);
             }
         }
+
+        protected LeafNode() { }
 
         public LeafNode(string rawLine)
         {

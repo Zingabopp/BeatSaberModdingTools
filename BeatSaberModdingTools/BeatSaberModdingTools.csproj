@@ -49,6 +49,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BuildTools\CommandNode.cs" />
+    <Compile Include="BuildTools\FileEntry.cs" />
     <Compile Include="BuildTools\FileNode.cs" />
     <Compile Include="BuildTools\LeafNode.cs" />
     <Compile Include="BuildTools\ReadOnlyList.cs" />

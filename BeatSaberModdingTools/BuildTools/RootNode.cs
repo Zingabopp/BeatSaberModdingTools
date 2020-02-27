@@ -35,6 +35,26 @@ namespace BeatSaberModdingTools.BuildTools
             return string.Join("\n", GetLines());
         }
 
+
+        public override bool InsertReference(FileEntry fileEntry, bool optional = false)
+        {
+            if (base.InsertReference(fileEntry, optional))
+                return true;
+            CommandNode newCommand;
+            RefsNode currentNode = this;
+            CommandNode.CommandType commandType = fileEntry.PathSource == CommandNode.PromptSourceTag ? CommandNode.CommandType.Prompt : CommandNode.CommandType.From;
+            Add(new CommandNode(CommandNode.CommandType.EmptyLine, null));
+            if (optional)
+            {
+                newCommand = new CommandNode(CommandNode.CommandType.OptionalBlock, null);
+                Add(newCommand);
+                currentNode = newCommand;
+            }
+            newCommand = new CommandNode(commandType, fileEntry.PathSource);
+            currentNode.Add(newCommand);
+            return newCommand.InsertReference(fileEntry, optional);
+        }
+
         public void WriteToStream(Stream stream, Encoding encoding = null)
         {
             if (encoding == null)
@@ -48,9 +68,14 @@ namespace BeatSaberModdingTools.BuildTools
             }
             finally
             {
-                if(writer != null)
+                if (writer != null)
                     writer.Dispose();
             }
+        }
+
+        protected override void SetParent(RefsNode newParent)
+        {
+            throw new NotSupportedException("RootNodes cannot have parents.");
         }
 
         public void WriteToFile(string path)

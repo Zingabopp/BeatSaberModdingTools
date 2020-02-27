@@ -41,7 +41,7 @@
 
 ::startopt
 ::from ./secondopt.txt
-"SecondOpt_Data/
+"Beat Saber_Data/
 ""Managed/
 """UnityEngine.
 """"dll?alias=UnityEngine.Net3.dll

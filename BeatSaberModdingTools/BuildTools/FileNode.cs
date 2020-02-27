@@ -147,6 +147,13 @@ namespace BeatSaberModdingTools.BuildTools
             SetData(rawLine);
         }
 
+        public FileNode(string name, FileEntry fileEntry)
+        {
+            File = name;
+            Flag = fileEntry.Flag;
+            Alias = fileEntry.Alias;
+        }
+
         private void SetData(string data)
         {
             string[] fileParts = data.Split('?');
