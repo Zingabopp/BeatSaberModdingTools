@@ -45,6 +45,23 @@ namespace BeatSaberModdingTools.BuildTools
             }
             return null;
         }
+        public virtual T[] FindAll<T>(Func<T, bool> func) where T : RefsNode
+        {
+            List<T> matches = new List<T>();
+            FindAll(func, ref matches);
+            return matches.ToArray();
+        }
+
+
+        protected virtual void FindAll<T>(Func<T, bool> func, ref List<T> matches) where T : RefsNode
+        {
+            if (this is T target && func(target))
+                matches.Add(target);
+            foreach (var child in Children)
+            {
+                child.FindAll(func, ref matches);
+            }
+        }
 
         /// <summary>
         /// Removes and returns the child at the specified <paramref name="index"/>.

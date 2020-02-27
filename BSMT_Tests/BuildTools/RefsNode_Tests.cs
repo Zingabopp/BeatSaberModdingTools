@@ -133,6 +133,19 @@ namespace BSMT_Tests.BuildTools
         }
 
         [TestMethod]
+        public void FindAll_Leaf()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string relativePath = @"Beat Saber_Data/Managed";
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            LeafNode[] matches = rootNodes.FindAll<LeafNode>(l => l.GetRelativePath().Contains(relativePath) && l.NodeType == RefsNodesType.Leaf);
+            Assert.IsNotNull(matches);
+
+        }
+
+        [TestMethod]
         public void Find_NoMatch()
         {
             string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
