@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,6 +97,15 @@ namespace BeatSaberModdingTools.BuildTools
             base.GetLines(ref list);
             if (Command == CommandType.OptionalBlock)
                 list.Add("::endopt");
+        }
+
+        protected override void WriteStream(ref StreamWriter writer)
+        {
+            base.WriteStream(ref writer);
+            if (Command == CommandType.OptionalBlock)
+            {
+                writer.WriteLine("::endopt");
+            }
         }
 
         /// <summary>

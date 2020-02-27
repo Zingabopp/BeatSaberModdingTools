@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,32 @@ namespace BeatSaberModdingTools.BuildTools
         public string GetFileString()
         {
             return string.Join("\n", GetLines());
+        }
+
+        public void WriteToStream(Stream stream, Encoding encoding = null)
+        {
+            if (encoding == null)
+                encoding = Encoding.Default;
+            StreamWriter writer = null;
+            try
+            {
+                writer = new StreamWriter(stream, encoding, 1024, true);
+                writer.AutoFlush = true;
+                WriteStream(ref writer);
+            }
+            finally
+            {
+                if(writer != null)
+                    writer.Dispose();
+            }
+        }
+
+        public void WriteToFile(string path)
+        {
+            using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                WriteToStream(fs);
+            }
         }
 
         public override string ToString()

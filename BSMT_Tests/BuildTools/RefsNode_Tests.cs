@@ -11,6 +11,7 @@ namespace BSMT_Tests.BuildTools
     public class RefsNode_Tests
     {
         private readonly string DataPath = Path.Combine("Data", "BuildTools");
+        private readonly string OutputPath = Path.Combine("Output", "BuildTools");
 
         [TestMethod]
         public void TryGetReference_Exists()
@@ -106,6 +107,44 @@ namespace BSMT_Tests.BuildTools
         }
 
         [TestMethod]
+        public void Find_File()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string fileName = "UnityEngine.dll";
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            FileNode target = rootNodes.Find<FileNode>(f => f.GetFilename() == fileName);
+            Assert.IsNotNull(target);
+            Assert.AreEqual(fileName, target.GetFilename());
+        }
+
+        [TestMethod]
+        public void Find_Leaf()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string relativePath = @"Beat Saber_Data/Managed";
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            LeafNode target = rootNodes.Find<LeafNode>(l => l.GetRelativePath().Contains(relativePath));
+            Assert.IsNotNull(target);
+            Assert.IsTrue(target.GetRelativePath().Contains(relativePath));
+        }
+
+        [TestMethod]
+        public void Find_NoMatch()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string fileName = "None.dll";
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNodes = reader.ReadFile();
+            FileNode target = rootNodes.Find<FileNode>(f => f.GetFilename() == fileName);
+            Assert.IsNull(target);
+        }
+
+        [TestMethod]
         public void GetFilenameAfterRelativePath()
         {
             string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
@@ -163,6 +202,81 @@ namespace BSMT_Tests.BuildTools
                 }
             }
             Assert.AreEqual(lineNumber, stringList.Length);
+        }
+
+        [TestMethod]
+        public void StreamCompare()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNode = reader.ReadFile();
+            Assert.IsTrue(rootNode.Count > 0);
+            string originalLine;
+            string parsedLine;
+            int index = 0;
+            Directory.CreateDirectory(OutputPath);
+            using (MemoryStream ms = new MemoryStream())
+            using (StreamReader originalFile = new StreamReader(refsText))
+            {
+                rootNode.WriteToStream(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                using (StreamReader writtenFile = new StreamReader(ms))
+                {
+                    originalLine = originalFile.ReadLine();
+                    parsedLine = writtenFile.ReadLine();
+                    do
+                    {
+                        Console.WriteLine((++index).ToString("00") + "|" + originalLine ?? "<NULL>");
+                        Console.WriteLine("   " + (parsedLine ?? "<NULL>"));
+                        if (originalLine != parsedLine)
+                        {
+                            Assert.Fail($"{originalLine} != {parsedLine}");
+                        }
+
+                        originalLine = originalFile.ReadLine();
+                        parsedLine = writtenFile.ReadLine();
+                    } while (originalLine != null && parsedLine != null);
+                    if (originalLine != null || parsedLine != null)
+                        Assert.Fail("Lines aren't matching nulls");
+                }
+            }
+        }
+
+        [TestMethod]
+        public void WriteToFile()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            string filePath = Path.GetFullPath(Path.Combine(OutputPath, "WriteToFile.txt"));
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode rootNode = reader.ReadFile();
+            rootNode.WriteToFile(filePath);
+            Assert.IsTrue(rootNode.Count > 0);
+            string originalLine;
+            string parsedLine;
+            int index = 0;
+            Directory.CreateDirectory(OutputPath);
+            using (StreamReader writtenFile = new StreamReader(filePath))
+            using (StreamReader originalFile = new StreamReader(refsText))
+            {
+                originalLine = originalFile.ReadLine();
+                parsedLine = writtenFile.ReadLine();
+                do
+                {
+                    Console.WriteLine((++index).ToString("00") + "|" + originalLine ?? "<NULL>");
+                    Console.WriteLine("   " + (parsedLine ?? "<NULL>"));
+                    if (originalLine != parsedLine)
+                    {
+                        Assert.Fail($"{originalLine} != {parsedLine}");
+                    }
+
+                    originalLine = originalFile.ReadLine();
+                    parsedLine = writtenFile.ReadLine();
+                } while (originalLine != null && parsedLine != null);
+                if (originalLine != null || parsedLine != null)
+                    Assert.Fail("Lines aren't matching nulls");
+            }
         }
 
         [TestMethod]

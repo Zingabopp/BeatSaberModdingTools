@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace BeatSaberModdingTools.BuildTools
@@ -78,6 +79,19 @@ namespace BeatSaberModdingTools.BuildTools
         }
         protected IList<RefsNode> Children { get; }
 
+        public virtual T Find<T>(Func<T, bool> func) where T : RefsNode
+        {
+            if (this is T target && func(target))
+                return target;
+            foreach (var child in Children)
+            {
+                T obj = child.Find(func);
+                if (obj != null)
+                    return obj;
+            }
+            return null;
+        }
+
         public bool IsReadOnly => Children.IsReadOnly;
 
         public string[] GetLines()
@@ -96,6 +110,20 @@ namespace BeatSaberModdingTools.BuildTools
                 foreach (RefsNode childNode in GetChildren())
                 {
                     childNode.GetLines(ref list);
+                }
+            }
+        }
+        protected virtual void WriteStream(ref StreamWriter writer)
+        {
+            if (!NoOutput)
+            {
+                writer.WriteLine(RawLine);
+            }
+            if (SupportsChildren)
+            {
+                foreach (RefsNode childNode in GetChildren())
+                {
+                    childNode.WriteStream(ref writer);
                 }
             }
         }
