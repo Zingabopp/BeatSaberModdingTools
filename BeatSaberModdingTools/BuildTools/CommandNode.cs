@@ -13,8 +13,7 @@ namespace BeatSaberModdingTools.BuildTools
             None = 0,
             From = 1,
             Prompt = 2,
-            StartOptionalBlock = 3,
-            EndOptionalBlock = 4,
+            OptionalBlock = 3,
             EmptyLine
         }
 
@@ -29,11 +28,11 @@ namespace BeatSaberModdingTools.BuildTools
             }
         }
 
-        public override bool SupportsChildren => !(Command == CommandType.EndOptionalBlock || Command == CommandType.EmptyLine);
+        public override bool SupportsChildren => !(Command == CommandType.EmptyLine);
 
         public override bool TryGetReference(string fileName, out FileNode fileNode)
         {
-            if(SupportsChildren)
+            if (SupportsChildren)
             {
                 foreach (var child in Children)
                 {
@@ -65,12 +64,12 @@ namespace BeatSaberModdingTools.BuildTools
             }
             else if (command == "startopt")
             {
-                return CommandType.StartOptionalBlock;
+                return CommandType.OptionalBlock;
             }
-            else if (command == "endopt")
-            {
-                return CommandType.EndOptionalBlock;
-            }
+            //else if (command == "endopt")
+            //{
+            //    return CommandType.EndOptionalBlock;
+            //}
             else
                 return CommandType.None;
         }
@@ -83,15 +82,20 @@ namespace BeatSaberModdingTools.BuildTools
                     return "from";
                 case CommandType.Prompt:
                     return "prompt";
-                case CommandType.StartOptionalBlock:
+                case CommandType.OptionalBlock:
                     return "startopt";
-                case CommandType.EndOptionalBlock:
-                    return "endopt";
                 case CommandType.EmptyLine:
                     return string.Empty;
                 default:
                     return "INVALID";
             }
+        }
+
+        protected override void GetLines(ref List<string> list)
+        {
+            base.GetLines(ref list);
+            if (Command == CommandType.OptionalBlock)
+                list.Add("::endopt");
         }
 
         /// <summary>
@@ -101,7 +105,7 @@ namespace BeatSaberModdingTools.BuildTools
         /// <exception cref="ArgumentException"></exception>
         public CommandNode(string rawLine)
         {
-            if(string.IsNullOrEmpty(rawLine))
+            if (string.IsNullOrEmpty(rawLine))
             {
                 Command = CommandType.EmptyLine;
                 CommandData = string.Empty;
@@ -116,7 +120,7 @@ namespace BeatSaberModdingTools.BuildTools
                 parts = parts.Skip(1).ToArray();
                 string arglist = string.Join(" ", parts);
                 Command = ConvertFromString(command);
-                if(Command == CommandType.None) throw new ArgumentException($"Invalid command: {rawLine}");
+                if (Command == CommandType.None) throw new ArgumentException($"Invalid command: {rawLine}");
                 CommandData = arglist;
             }
             else

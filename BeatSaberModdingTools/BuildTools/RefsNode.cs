@@ -86,10 +86,11 @@ namespace BeatSaberModdingTools.BuildTools
             GetLines(ref lines);
             return lines.ToArray();
         }
-
+        protected virtual bool NoOutput => false;
         protected virtual void GetLines(ref List<string> list)
         {
-            list.Add(RawLine);
+            if (!NoOutput)
+                list.Add(RawLine);
             if (SupportsChildren)
             {
                 foreach (RefsNode childNode in GetChildren())

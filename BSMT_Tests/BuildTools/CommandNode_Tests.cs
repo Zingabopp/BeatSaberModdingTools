@@ -20,15 +20,15 @@ namespace BSMT_Tests.BuildTools
             Assert.AreEqual(node1.RawLine, node2.RawLine);
 
             rawLine = "::startopt";
-            commandType = CommandNode.CommandType.StartOptionalBlock;
+            commandType = CommandNode.CommandType.OptionalBlock;
             commandData = "";
             node1 = new CommandNode(rawLine);
             node2 = new CommandNode(commandType, commandData);
             Assert.AreEqual(node1.RawLine, node2.RawLine);
 
-            rawLine = "::endopt";
-            commandType = CommandNode.CommandType.EndOptionalBlock;
-            commandData = "";
+            //rawLine = "::endopt";
+            //commandType = CommandNode.CommandType.EndOptionalBlock;
+            //commandData = "";
             node1 = new CommandNode(rawLine);
             node2 = new CommandNode(commandType, commandData);
             Assert.AreEqual(node1.RawLine, node2.RawLine);
@@ -53,7 +53,7 @@ namespace BSMT_Tests.BuildTools
         {
             if (node is FileNode leafNode)
             {
-                Console.WriteLine(node.RawLine + " | " + leafNode.GetFileEntry());
+                Console.WriteLine(node.RawLine + " | " + leafNode);
             }
             else
                 Console.WriteLine(node.RawLine);

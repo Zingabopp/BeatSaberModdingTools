@@ -7,63 +7,7 @@ using System.Threading.Tasks;
 
 namespace BeatSaberModdingTools.BuildTools
 {
-    public enum FileFlag
-    {
-        Unknown = 0,
-        Empty = 1,
-        Virtualize = 2,
-        Native = 3
-    }
-    public struct FileEntry
-    {
-        private const string AliasFlag = "alias=";
-        public readonly string File;
-        public readonly string Alias;
-        public readonly FileFlag Flag;
-        public readonly int Line;
-        public readonly bool Optional;
-
-        public FileEntry(string file, int line, bool optional)
-        {
-            string[] fileParts = file.Split('?');
-            File = fileParts[0];
-            Alias = null;
-            Flag = FileFlag.Empty;
-            for (int i = 1; i < fileParts.Length; i++)
-            {
-                if (string.IsNullOrEmpty(fileParts[i]))
-                    continue;
-                if (fileParts[i].StartsWith("virt"))
-                    Flag = FileFlag.Virtualize;
-                else if (fileParts[i].StartsWith("native"))
-                    Flag = FileFlag.Native;
-                else if (fileParts[i].StartsWith(AliasFlag))
-                {
-                    Alias = fileParts[i].Substring(AliasFlag.Length);
-                }
-                else
-                    Console.WriteLine($"WARNING: ({line}): Unrecognized file flag: {fileParts[i]}");
-            }
-
-            Line = line;
-            Optional = optional;
-        }
-
-        public FileEntry(string file, int line, bool optional, FileFlag flag, string alias)
-        {
-            File = file;
-            Line = line;
-            Flag = flag;
-            Alias = alias;
-            Optional = optional;
-        }
-
-        public override string ToString()
-        {
-            return $"({Line.ToString("00")}): {File}{(Optional ? "*" : string.Empty)} |{Flag}|{(string.IsNullOrEmpty(Alias) ? string.Empty : $" -> {Alias}")}";
-        }
-    }
-
+    
     public class BuildToolsRefsParser
     {
         private string _refsFilePath;
@@ -83,8 +27,8 @@ namespace BeatSaberModdingTools.BuildTools
         {
             if (!FileExists)
                 return null;
-            RootNode rootNodes = new RootNode();
-            CommandNode currentRoot = null;
+            RootNode rootNode = new RootNode();
+            CommandNode currentCommand = null;
             RefsNode currentNode = null;
             string depsFile = File.ReadAllText(_refsFilePath);
             var lineNo = 0;
@@ -107,16 +51,28 @@ namespace BeatSaberModdingTools.BuildTools
                 nextLevel = Math.Max(nextParts.Length - 2, 0);
                 if (path.StartsWith("::") || path == string.Empty)
                 { // pseudo-command
-                    if (currentNode is CommandNode currentCmd && currentCmd.Command == CommandNode.CommandType.StartOptionalBlock)
+                    if (currentNode is CommandNode currentCmd && currentCmd.Command == CommandNode.CommandType.OptionalBlock)
                     {
                         currentNode = new CommandNode(currentLine);
-                        currentRoot.Add(currentNode);
+                        currentCommand.Add(currentNode);
+                    }
+                    else if(path.StartsWith("::endopt"))
+                    {
+                        while(currentNode.Parent != null)
+                        {
+                            currentNode = currentNode.Parent;
+                            if(currentNode is CommandNode commandNode && commandNode.Command == CommandNode.CommandType.OptionalBlock)
+                            {
+                                currentNode = currentNode.Parent;
+                                break;
+                            }
+                        }
                     }
                     else
                     {
-                        currentRoot = new CommandNode(currentLine);
-                        currentNode = currentRoot;
-                        rootNodes.Add(currentRoot);
+                        currentCommand = new CommandNode(currentLine);
+                        currentNode = currentCommand;
+                        rootNode.Add(currentCommand);
                     }
                     currentLine = nextLine;
                     continue;
@@ -140,8 +96,8 @@ namespace BeatSaberModdingTools.BuildTools
                 lineNo++;
                 currentLine = nextLine;
             }
-            Root = rootNodes;
-            return rootNodes;
+            Root = rootNode;
+            return rootNode;
         }
     }
 }

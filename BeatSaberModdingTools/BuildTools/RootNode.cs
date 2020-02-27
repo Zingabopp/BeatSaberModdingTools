@@ -26,5 +26,17 @@ namespace BeatSaberModdingTools.BuildTools
             fileNode = null;
             return false;
         }
+
+        protected override bool NoOutput => true;
+
+        public string GetFileString()
+        {
+            return string.Join("\n", GetLines());
+        }
+
+        public override string ToString()
+        {
+            return $"<Root> | {Children.Count} children";
+        }
     }
 }

@@ -120,6 +120,20 @@ namespace BSMT_Tests.BuildTools
         }
 
         [TestMethod]
+        public void GetLines()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode root = reader.ReadFile();
+            Assert.IsTrue(root.Count > 0);
+            foreach (var line in root.GetLines())
+            {
+                Console.WriteLine(line);
+            }
+        }
+
+        [TestMethod]
         public void ReadFileAndCompare()
         {
             string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
@@ -128,11 +142,8 @@ namespace BSMT_Tests.BuildTools
             RootNode things = reader.ReadFile();
             Assert.IsTrue(things.Count > 0);
             string text = string.Empty;
-            List<string> stringList = new List<string>();
-            foreach (RefsNode rootNode in things)
-            {
-                stringList.AddRange(rootNode.GetLines());
-            }
+            string[] stringList = things.GetLines();
+
             text = string.Join("\n", stringList);
             //Assert.AreEqual(File.ReadAllText(refsText), text);
             string line;
@@ -141,7 +152,7 @@ namespace BSMT_Tests.BuildTools
             {
                 while ((line = streamReader.ReadLine()) != null)
                 {
-                    if (lineNumber < stringList.Count)
+                    if (lineNumber < stringList.Length)
                     {
                         Console.WriteLine(stringList[lineNumber]);
                         Assert.AreEqual(line, stringList[lineNumber]);
@@ -151,7 +162,35 @@ namespace BSMT_Tests.BuildTools
                     lineNumber++;
                 }
             }
-            Assert.AreEqual(lineNumber, stringList.Count);
+            Assert.AreEqual(lineNumber, stringList.Length);
+        }
+
+        [TestMethod]
+        public void GetFileString()
+        {
+            string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
+            BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
+            Assert.IsTrue(reader.FileExists);
+            RootNode things = reader.ReadFile();
+            Assert.IsTrue(things.Count > 0);
+            string[] parsedText = things.GetFileString().Split(new char[] { '\n' }, StringSplitOptions.None);
+            string line;
+            int lineNumber = 0;
+            using (StreamReader streamReader = new StreamReader(refsText))
+            {
+                while ((line = streamReader.ReadLine()) != null)
+                {
+                    if (lineNumber < parsedText.Length)
+                    {
+                        Console.WriteLine(parsedText[lineNumber]);
+                        Assert.AreEqual(line, parsedText[lineNumber]);
+                    }
+                    else
+                        Assert.Fail("Different number of lines");
+                    lineNumber++;
+                }
+            }
+            //Assert.AreEqual(originalText, parsedText);
         }
 
         public string[] GetLines(RefsNode node)
@@ -178,9 +217,9 @@ namespace BSMT_Tests.BuildTools
 
         public void PrintChildren(RefsNode node)
         {
-            if (node is FileNode leafNode)
+            if (node is FileNode fileNode)
             {
-                Console.WriteLine(node.NodeDepth.ToString("00") + " | " + node.RawLine + " | " + leafNode.GetFileEntry());
+                Console.WriteLine(node.NodeDepth.ToString("00") + " | " + node.RawLine + " | " + fileNode);
             }
             else
                 Console.WriteLine(node.NodeDepth.ToString("00") + " | " + node.RawLine);

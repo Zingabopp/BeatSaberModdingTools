@@ -12,38 +12,15 @@ namespace BSMT_Tests.BuildTools
     {
         private readonly string DataPath = Path.Combine("Data", "BuildTools");
         [TestMethod]
-        public void ReadFileAndCompare()
+        public void PrintInfo()
         {
             string refsText = Path.GetFullPath(Path.Combine(DataPath, "refs.txt"));
             BuildToolsRefsParser reader = new BuildToolsRefsParser(refsText);
             Assert.IsTrue(reader.FileExists);
-            RootNode things = reader.ReadFile();
-            Assert.IsTrue(things.Count > 0);
-            string text = string.Empty;
-            List<string> stringList = new List<string>();
-            foreach (RefsNode rootNode in things)
-            {
-                stringList.AddRange(rootNode.GetLines());
-            }
-            text = string.Join("\n", stringList);
-            //Assert.AreEqual(File.ReadAllText(refsText), text);
-            string line;
-            int lineNumber = 0;
-            using (StreamReader streamReader = new StreamReader(refsText))
-            {
-                while ((line = streamReader.ReadLine()) != null)
-                {
-                    if (lineNumber < stringList.Count)
-                    {
-                        Console.WriteLine(stringList[lineNumber]);
-                        Assert.AreEqual(line, stringList[lineNumber]);
-                    }
-                    else
-                        Assert.Fail("Different number of lines");
-                    lineNumber++;
-                }
-            }
-            Assert.AreEqual(lineNumber, stringList.Count);
+            RootNode root = reader.ReadFile();
+            Assert.IsTrue(root.Count > 0);
+            PrintChildren(root);
+
         }
 
         public string[] GetLines(RefsNode node)
@@ -70,9 +47,9 @@ namespace BSMT_Tests.BuildTools
 
         public void PrintChildren(RefsNode node)
         {
-            if (node is FileNode leafNode)
+            if (node is FileNode fileNode)
             {
-                Console.WriteLine(node.NodeDepth.ToString("00") + " | " + node.RawLine + " | " + leafNode.GetFileEntry());
+                Console.WriteLine(node.NodeDepth.ToString("00") + " | " + node.RawLine + " | " + fileNode);
             }
             else
                 Console.WriteLine(node.NodeDepth.ToString("00") + " | " + node.RawLine);

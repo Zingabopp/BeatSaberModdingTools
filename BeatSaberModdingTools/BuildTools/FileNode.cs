@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace BeatSaberModdingTools.BuildTools
 {
+    public enum FileFlag
+    {
+        Unknown = 0,
+        Empty = 1,
+        Virtualize = 2,
+        Native = 3
+    }
+
     public class FileNode : LeafNode
     {
         private const string AliasFlag = "alias=";
@@ -110,22 +118,26 @@ namespace BeatSaberModdingTools.BuildTools
         }
 
         public override bool SupportsChildren => false;
-
-        public FileEntry GetFileEntry()
+        private bool? _optional;
+        public bool Optional
         {
-            if (!IsFile)
-                throw new InvalidOperationException("Cannot create a file entry from a LeafNode that is not a file.");
-            int lineNumber = 1;
-            RefsNode next = Parent;
-            bool inOptionalBlock = false;
-            while (next != null)
+            get
             {
-                if (next is CommandNode cmdNode && cmdNode.Command == CommandNode.CommandType.StartOptionalBlock)
-                    inOptionalBlock = true;
-                lineNumber++;
-                next = next.Parent;
+                if (_optional != null)
+                    return _optional ?? false;
+                _optional = false;
+                RefsNode next = Parent;
+                while (next != null)
+                {
+                    if (next is CommandNode cmdNode && cmdNode.Command == CommandNode.CommandType.OptionalBlock)
+                    {
+                        _optional = true;
+                        break;
+                    }
+                    next = next.Parent;
+                }
+                return _optional ?? false;
             }
-            return new FileEntry(GetRelativePath() + GetFilename(), lineNumber, inOptionalBlock);
         }
 
         public FileNode(string rawLine)
