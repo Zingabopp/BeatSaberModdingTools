@@ -32,6 +32,7 @@ namespace BeatSaberModdingTools.BuildTools
             fileNode = null;
             return false;
         }
+
         public virtual string GetRelativePath()
         {
             string name = LeafData;
