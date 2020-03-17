@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using IPA.Config.Stores;
 
-[assembly: InternalsVisibleTo(GeneratedExtension.AssemblyVisibilityTarget)]
+[assembly: InternalsVisibleTo(GeneratedStore.AssemblyVisibilityTarget)]
 namespace $safeprojectname$.Configuration
 {
     internal class PluginConfig
