@@ -1,0 +1,52 @@
+﻿::from ./bsinstalldir.txt
+"Folderless.dll
+"Beat Saber_Data/
+""Managed/
+"""Unity.TextMeshPro.dll
+"""UnityEngine.
+""""dll
+""""CoreModule.dll
+""""UI
+""""".dll
+"""""ElementsModule.dll
+"""""Module.dll
+""""VRModule.dll
+""Managed/
+"""HMLib.dll?virt
+"""HMUI.dll?virt
+"""Main.dll?virt
+"""IPA.Loader.dll
+"Libs/
+""0Harmony.1.2.0.1.dll
+""SemVer.1.2.0.0.dll
+"Plugins/
+""BS_Utils.dll
+""BSML.dll
+""SongCore.dll
+
+::startopt
+::from ./mdinstalldir.txt
+"MuseDash_Data/
+""Managed/
+"""UnityEngine.
+""""dll?alias=UnityEngine.Net3.dll
+""""UnityWebRequestModule.
+"""""dll?alias=UnityEngine.UnityWebRequestModule.Net3.dll
+""""CoreModule.
+"""""dll?alias=UnityEngine.CoreModule.Net3.dll
+::endopt
+
+::from ./secondthing.txt
+"SecondThing.dll
+
+::startopt
+::from ./secondopt.txt
+"Beat Saber_Data/
+""Managed/
+"""UnityEngine.
+""""dll?alias=UnityEngine.Net3.dll
+""""UnityWebRequestModule.
+"""""dll?alias=UnityEngine.UnityWebRequestModule.Net3.dll
+""""CoreModule.
+"""""dll?alias=UnityEngine.CoreModule.Net3.dll
+::endopt

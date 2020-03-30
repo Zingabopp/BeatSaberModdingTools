@@ -98,7 +98,7 @@ namespace BSMT_Tests.Experimental
                 }catch(InvalidOperationException ex)
                 {
                     Console.WriteLine($"Exception: {item.Name}");
-                    throw ex;
+                    //throw ex;
                 }
             }
 

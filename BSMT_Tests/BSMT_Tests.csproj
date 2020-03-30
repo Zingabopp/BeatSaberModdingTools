@@ -157,6 +157,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="BuildTasks\TestLogger.cs" />
+    <Compile Include="BuildTools\RefsNode_Tests.cs" />
+    <Compile Include="BuildTools\RefsTxtReading_Tests.cs" />
+    <Compile Include="BuildTools\CommandNode_Tests.cs" />
     <Compile Include="Experimental\FindGameVersion.cs" />
     <Compile Include="Experimental\XmlReading.cs" />
     <Compile Include="Experimental\XMLCreation.cs" />
@@ -190,6 +193,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\BuildTaskTests\.git\ms-persist.xml" />
+    <Content Include="Data\BuildTools\refs.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\ReferencePaths.csproj.user">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

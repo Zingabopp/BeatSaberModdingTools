@@ -59,14 +59,13 @@
     <None Include="MonobehaviourTemplate.cs" />
     <None Include="Plugin.cs" />
     <None Include="PluginConfig.cs" />
-    <None Include="LevelListTableCellOverride.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblyInfo.cs" />
     <None Include="CreateJunctions.bat" />
     <None Include="manifest.json" />
-    <None Include="ProjectTemplate.csproj" />
+    <None Include="DisableableProjectTemplate.csproj" />
   </ItemGroup>
   <ItemGroup>
     <VSTemplate Include="BSIPA Plugin (Disableable).vstemplate" />

@@ -3,69 +3,95 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using IPA;
 using IPA.Config;
-using IPA.Utilities;
-using Harmony;
-using UnityEngine.SceneManagement;
+using IPA.Config.Stores;
 using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 
 namespace $safeprojectname$
 {
-    public class Plugin : IBeatSaberPlugin, IDisablablePlugin
+    [Plugin(RuntimeOptions.DynamicInit)]
+    public class Plugin
     {
-        // TODO: Change YourGitHub to the name of your GitHub account, or use the form "com.company.project.product"
-        public const string HarmonyId = "com.github.YourGitHub.$safeprojectname$";
-        public const string SongCoreHarmonyId = "com.kyle1413.BeatSaber.SongCore";
-        internal static HarmonyInstance harmony;
-        internal static string Name => "$projectname$";
-        internal static Ref<PluginConfig> config;
-        internal static IConfigProvider configProvider;
+        // TODO: If using Harmony, uncomment and change YourGitHub to the name of your GitHub account, or use the form "com.company.project.product"
+        //       You must also add a reference to the Harmony assembly in the Libs folder.
+        // public const string HarmonyId = "com.github.YourGitHub.$safeprojectname$";
+        // internal static HarmonyInstance harmony => HarmonyInstance.Create(HarmonyId);
 
-        public void Init(IPALogger logger, [Config.Prefer("json")] IConfigProvider cfgProvider)
+        internal static Plugin instance { get; private set; }
+        internal static string Name => "$projectname$";
+        internal static $safeprojectname$Controller PluginController { get { return $safeprojectname$Controller.instance; } }
+
+        [Init]
+        /// <summary>
+        /// Called when the plugin is first loaded by IPA (either when the game starts or when the plugin is enabled if it starts disabled).
+        /// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
+        /// Only use [Init] with one Constructor.
+        /// </summary>
+        public Plugin(IPALogger logger)
         {
+            instance = this;
             Logger.log = logger;
             Logger.log.Debug("Logger initialized.");
-
-            configProvider = cfgProvider;
-
-            config = configProvider.MakeLink<PluginConfig>((p, v) =>
-            {
-                // Build new config file if it doesn't exist or RegenerateConfig is true
-                if (v.Value == null || v.Value.RegenerateConfig)
-                {
-                    Logger.log.Debug("Regenerating PluginConfig");
-                    p.Store(v.Value = new PluginConfig()
-                    {
-                        // Set your default settings here.
-                        RegenerateConfig = false
-                    });
-                }
-                config = v;
-            });
-            harmony = HarmonyInstance.Create(HarmonyId);
         }
+
+        #region BSIPA Config
+        //Uncomment to use BSIPA's config
+    /*
+        [Init]
+        public void InitWithConfig(Config conf)
+        {
+            Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
+            Logger.log.Debug("Config loaded");
+        }
+    */
+        #endregion
+
+
         #region IDisablable
 
         /// <summary>
         /// Called when the plugin is enabled (including when the game starts if the plugin is enabled).
         /// </summary>
+        [OnEnable]
         public void OnEnable()
         {
-            ApplyHarmonyPatches();
+            new GameObject("$safeprojectname$Controller").AddComponent<$safeprojectname$Controller>();
+            //ApplyHarmonyPatches();
         }
 
         /// <summary>
-        /// Called when the plugin is disabled. It is important to clean up any Harmony patches, GameObjects, and Monobehaviours here.
+        /// Called when the plugin is disabled and on Beat Saber quit. It is important to clean up any Harmony patches, GameObjects, and Monobehaviours here.
         /// The game should be left in a state as if the plugin was never started.
+        /// Methods marked [OnDisable] must return void or Task.
         /// </summary>
+        [OnDisable]
         public void OnDisable()
         {
-            RemoveHarmonyPatches();
+            if(PluginController != null)
+                GameObject.Destroy(PluginController);
+            //RemoveHarmonyPatches();
         }
+
+     /*
+        /// <summary>
+        /// Called when the plugin is disabled and on Beat Saber quit.
+        /// Return Task for when the plugin needs to do some long-running, asynchronous work to disable.
+        /// [OnDisable] methods that return Task are called after all [OnDisable] methods that return void.
+        /// </summary>
+        [OnDisable]
+        public async Task OnDisableAsync()
+        {
+            await LongRunningUnloadTask().ConfigureAwait(false);
+        }
+    */
         #endregion
 
+        // Uncomment the methods in this section if using Harmony
+        #region Harmony
+        /*
         /// <summary>
         /// Attempts to apply all the Harmony patches in this assembly.
         /// </summary>
@@ -99,64 +125,7 @@ namespace $safeprojectname$
                 Logger.log.Debug(ex);
             }
         }
-
-        /// <summary>
-        /// Called when the active scene is changed.
-        /// </summary>
-        /// <param name="prevScene">The scene you are transitioning from.</param>
-        /// <param name="nextScene">The scene you are transitioning to.</param>
-        public void OnActiveSceneChanged(Scene prevScene, Scene nextScene)
-        {
-
-        }
-
-        /// <summary>
-        /// Called when the a scene's assets are loaded.
-        /// </summary>
-        /// <param name="scene"></param>
-        /// <param name="sceneMode"></param>
-        public void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
-        {
-
-
-
-        }
-
-
-        public void OnApplicationQuit()
-        {
-            Logger.log.Debug("OnApplicationQuit");
-
-        }
-
-        /// <summary>
-        /// Runs at a fixed intervalue, generally used for physics calculations. 
-        /// </summary>
-        public void OnFixedUpdate()
-        {
-
-        }
-
-        /// <summary>
-        /// This is called every frame.
-        /// </summary>
-        public void OnUpdate()
-        {
-
-        }
-
-
-        public void OnSceneUnloaded(Scene scene)
-        {
-
-        }
-
-
-        /// <summary>
-        /// This should not be used with an IDisablable plugin. 
-        /// It will not be called if the plugin starts disabled and is enabled while the game is running.
-        /// </summary>
-        public void OnApplicationStart()
-        { }
-    }
+    */
+    #endregion
+}
 }

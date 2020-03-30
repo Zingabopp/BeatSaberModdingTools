@@ -48,6 +48,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BuildTools\CommandNode.cs" />
+    <Compile Include="BuildTools\FileEntry.cs" />
+    <Compile Include="BuildTools\FileNode.cs" />
+    <Compile Include="BuildTools\LeafNode.cs" />
+    <Compile Include="BuildTools\ReadOnlyList.cs" />
+    <Compile Include="BuildTools\RefsNode.cs" />
+    <Compile Include="BuildTools\RefsNodeExtensions.cs" />
+    <Compile Include="BuildTools\RootNode.cs" />
     <Compile Include="CommandFilter.cs" />
     <Compile Include="Commands\AddProjectReference.cs" />
     <Compile Include="Commands\CommandSetGuids.cs" />
@@ -78,6 +86,7 @@
       <DependentUpon>BeatSaberModdingToolsSettings.settings</DependentUpon>
     </Compile>
     <Compile Include="BSMTSettingsManager.cs" />
+    <Compile Include="BuildTools\BuildToolsRefsParser.cs" />
     <Compile Include="Utilities\EnvUtils.cs" />
     <Compile Include="Utilities\IExecuteWithObject.cs" />
     <Compile Include="Utilities\IExecuteWithObjectAndResult.cs" />
@@ -177,6 +186,13 @@
         <ProjectReference Include="..\BSMLViewControllerTemplate\BSMLViewControllerTemplate.csproj">
           <Project>{4B6E24D9-D390-46FB-8F72-50AB696AE846}</Project>
           <Name>BSMLViewControllerTemplate</Name>
+          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
+          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+        </ProjectReference>
+        <ProjectReference Include="..\HarmonyPatchItemTemplate\HarmonyPatchItemTemplate.csproj">
+          <Project>{4f53efe0-47dc-4aa2-94be-6ba7494ec042}</Project>
+          <Name>HarmonyPatchItemTemplate</Name>
           <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
