@@ -3,15 +3,10 @@
      and copying the plugin to to your Beat Saber folder. Only edit this if you know what you are doing. -->
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <BuildTargetsVersion>1.1</BuildTargetsVersion>
+    <BuildTargetsVersion>1.2</BuildTargetsVersion>
     <BuildTargetsModified>false</BuildTargetsModified> <!--Set this to true if you edit this file to prevent automatic updates-->
   </PropertyGroup>
   <!--Build Targets-->
-  <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(DisableCopyToPlugins)' != 'True'">
-    <Message Text="Copying $(OutputPath)$(AssemblyName).dll to IPA\Pending\Plugins folder" Importance="high" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).dll" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).pdb" />
-  </Target>
   <Target Name="ZipRelease" AfterTargets="Build" Condition="'$(DisableZipRelease)' != 'True' AND '$(Configuration)' == 'Release'">
     <Message Text="Zipping plugin for release." Importance="high" />
     <GetCommitHash ProjectDir="$(ProjectDir)">
@@ -25,6 +20,12 @@
     </GetManifestInfo>
     <Message Text="PluginVersion: $(PluginVersion), AssemblyVersion: $(AssemblyVersion), GameVersion: $(GameVersion)" Importance="high" />
     <ZipDir DirectoryName="$(IntermediateOutputPath)zip" ZipFileName="$(OutDir)zip\$(AssemblyName)-$(PluginVersion)-bs$(GameVersion)-$(CommitShortHash).zip" />
+  </Target>
+  <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(DisableCopyToPlugins)' != 'True'">
+    <Error Text="Unable to copy assembly to game folder. BeatSaberDir doesn't exist: $(BeatSaberDir)" Condition="!Exists($(BeatSaberDir))"/>
+    <Message Text="Copying $(OutputPath)$(AssemblyName).dll to IPA\Pending\Plugins folder" Importance="high" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).dll" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).pdb" />
   </Target>
   <!--Build Tasks-->
   <UsingTask TaskName="GetManifestInfo" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
