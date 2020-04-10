@@ -7,7 +7,7 @@
     <BuildTargetsModified>false</BuildTargetsModified> <!--Set this to true if you edit this file to prevent automatic updates-->
   </PropertyGroup>
   <!--Build Targets-->
-  <Target Name="CheckManifest" AfterTargets="Build" Condition="'$(DisableZipRelease)' == 'True'">
+  <Target Name="CheckManifest" AfterTargets="Build" Condition="'$(DisableZipRelease)' == 'True' OR '$(Configuration)' == 'Debug'">
     <GetManifestInfo ErrorOnMismatch="False">
       <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
       <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
