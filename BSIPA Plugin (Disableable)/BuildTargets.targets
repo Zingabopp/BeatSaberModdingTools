@@ -3,17 +3,26 @@
      and copying the plugin to to your Beat Saber folder. Only edit this if you know what you are doing. -->
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <BuildTargetsVersion>1.2</BuildTargetsVersion>
-    <BuildTargetsModified>false</BuildTargetsModified> <!--Set this to true if you edit this file to prevent automatic updates-->
+    <BuildTargetsVersion>1.3</BuildTargetsVersion>
+    <BuildTargetsModified>false</BuildTargetsModified>
+    <!--Set this to true if you edit this file to prevent automatic updates-->
   </PropertyGroup>
   <!--Build Targets-->
+  <Target Name="CheckManifest" AfterTargets="Build" Condition="'$(DisableZipRelease)' == 'True'">
+    <GetManifestInfo ErrorOnMismatch="False">
+      <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
+      <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
+      <Output TaskParameter="AssemblyVersion" PropertyName="AssemblyVersion" />
+    </GetManifestInfo>
+    <Message Text="PluginVersion: $(PluginVersion), AssemblyVersion: $(AssemblyVersion), GameVersion: $(GameVersion)" Importance="high" />
+  </Target>
   <Target Name="ZipRelease" AfterTargets="Build" Condition="'$(DisableZipRelease)' != 'True' AND '$(Configuration)' == 'Release'">
     <Message Text="Zipping plugin for release." Importance="high" />
     <GetCommitHash ProjectDir="$(ProjectDir)">
       <Output TaskParameter="CommitShortHash" PropertyName="CommitShortHash" />
     </GetCommitHash>
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(IntermediateOutputPath)zip\Plugins\$(AssemblyName).dll" />
-    <GetManifestInfo>
+    <GetManifestInfo ErrorOnMismatch="False">
       <Output TaskParameter="PluginVersion" PropertyName="PluginVersion" />
       <Output TaskParameter="GameVersion" PropertyName="GameVersion" />
       <Output TaskParameter="AssemblyVersion" PropertyName="AssemblyVersion" />
@@ -33,6 +42,7 @@
       <GameVersion ParameterType="System.String" Output="true" />
       <PluginVersion ParameterType="System.String" Output="true" />
       <AssemblyVersion ParameterType="System.String" Output="true" />
+      <ErrorOnMismatch ParameterType="System.Boolean" Required="false" />
     </ParameterGroup>
     <Task>
       <Reference Include="System.Runtime" />
@@ -92,6 +102,8 @@
                 {
                     Log.LogError("Build", "BSMOD04", "", manifestFile, 0, 0, 0, 0, "PluginVersion not found in manifest.json");
                     PluginVersion = "E.R.R";
+                    if(ErrorOnMismatch)
+                       return false;
                 }
 
                 if (!string.IsNullOrEmpty(manifest_gameVerLine))
@@ -102,6 +114,8 @@
                 {
                     Log.LogError("Build", "BSMOD05", "", manifestFile, 0, 0, 0, 0, "GameVersion not found in manifest.json");
                     GameVersion = "E.R.R";
+                    if(ErrorOnMismatch)
+                       return false;
                 }
 
                 line = null;
@@ -141,6 +155,8 @@
                 if (badParse)
                 {
                     Log.LogError("Build", "BSMOD03", "", assemblyFile, 0, 0, 0, 0, "Unable to parse the AssemblyVersion from {0}", assemblyFile);
+                    if(ErrorOnMismatch)
+                       return false;
                     badParse = false;
                 }
 
@@ -148,6 +164,8 @@
                 {
                     Log.LogError("Build", "BSMOD01", "", assemblyFile, startLine, startColumn + 1, startLine, endColumn + 1, "PluginVersion {0} in manifest.json does not match AssemblyVersion {1} in AssemblyInfo.cs", PluginVersion, AssemblyVersion, assemblyFile);
                     Log.LogMessage(MessageImportance.High, "PluginVersion {0} does not match AssemblyVersion {1}", PluginVersion, AssemblyVersion);
+                    if(ErrorOnMismatch)
+                       return false;
                 }
                 if (!string.IsNullOrEmpty(endLineStr))
                 {
@@ -157,19 +175,24 @@
                     {
                         assemblyFileVersion = endLineStr.Substring(startColumn, endColumn - startColumn);
                         if (AssemblyVersion != assemblyFileVersion)
+                        {
                             Log.LogWarning("Build", "BSMOD02", "", assemblyFile, endLine, startColumn + 1, endLine, endColumn + 1, "AssemblyVersion {0} does not match AssemblyFileVersion {1} in AssemblyInfo.cs", AssemblyVersion, assemblyFileVersion);
+                            if(ErrorOnMismatch)
+                               return false;
+                        }
 
                     }
                     else
                     {
                         Log.LogWarning("Build", "BSMOD06", "", assemblyFile, 0, 0, 0, 0, "Unable to parse the AssemblyFileVersion from {0}", assemblyFile);
+                        if(ErrorOnMismatch)
+                           return false;
                     }
                 }
                 return true;
             }
             catch (Exception ex)
             {
-                throw;
                 Log.LogErrorFromException(ex);
                 return false;
             }
