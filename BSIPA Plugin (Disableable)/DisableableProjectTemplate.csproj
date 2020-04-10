@@ -15,7 +15,7 @@
     <DebugType>portable</DebugType>
     <BeatSaberDir>$(ProjectDir)Refs</BeatSaberDir>
     <BeatSaberReferences>$(BeatSaberDir)</BeatSaberReferences>
-    <ReferencePath>$(ProjectDir)Refs</ReferencePath>
+    <ReferencePath>$(SolutionDir)Refs</ReferencePath>
     <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
     <PathMap>$(AppOutputBase)=X:\$(AssemblyName)\</PathMap>
   </PropertyGroup>
