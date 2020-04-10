@@ -50,7 +50,7 @@ namespace $safeprojectname$
         #endregion
 
 
-        #region IDisablable
+        #region Disableable
 
         /// <summary>
         /// Called when the plugin is enabled (including when the game starts if the plugin is enabled).
