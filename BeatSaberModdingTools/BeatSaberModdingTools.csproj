@@ -149,7 +149,9 @@
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.3.2099" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="beat_saber.ico" />
+    <Content Include="beat_saber.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(NCrunch)' != '1'">
