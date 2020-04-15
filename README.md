@@ -22,7 +22,7 @@ A set of templates for creating Beat Saber plugins.
   * If you have Visual Studio 2019, you can download BeatSaberTemplateInstaller.vsix from the [Releases](https://github.com/Zingabopp/BeatSaberTemplates/releases) page and run it.
     * **Important:** *If you manually added the templates to your Visual Studio Templates folder, they may override the installer's templates.*
     * You can download and run newer versions of the VSIX installer, they will replace the old version.
-  * Copy the template zip (or folder) into "\<UserFolder>\Documents\Visual Studio <2019/2017>\Templates\ProjectTemplates\C#"
+  * Copy the template zip (or folder) into "\<UserFolder>\Documents\Visual Studio <2019/2017>\Templates\ProjectTemplates\Visual C#"
 * In Visual Studio, create a new project using the template.
 * Set your Beat Saber game folder path in one of two ways:
   * If you are using the VSIX:
