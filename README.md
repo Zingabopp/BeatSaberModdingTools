@@ -13,6 +13,7 @@ A set of templates for creating Beat Saber plugins.
 
 # Prerequisites
 * Templates can be manually installed for Visual Studio 2017 and 2019.
+  * There appears to be a bug right now where the templates are only available if your Visual Studio language is set to English. [Issue](https://github.com/Zingabopp/BeatSaberModdingTools/issues/4)
 * The optional BeatSaberModdingTools VSIX requires Visual Studio 2019.
 * All templates require at least .Net Framework 4.7.2, you can get the Developer Pack from [Here](https://dotnet.microsoft.com/download/visual-studio-sdks).
 * To develop mods you have to have the game files and BSIPA.
