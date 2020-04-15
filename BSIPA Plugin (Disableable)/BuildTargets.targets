@@ -3,7 +3,7 @@
      and copying the plugin to to your Beat Saber folder. Only edit this if you know what you are doing. -->
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <BuildTargetsVersion>1.3</BuildTargetsVersion>
+    <BuildTargetsVersion>1.4</BuildTargetsVersion>
     <BuildTargetsModified>false</BuildTargetsModified>
     <!--Set this to true if you edit this file to prevent automatic updates-->
   </PropertyGroup>
@@ -32,9 +32,18 @@
   </Target>
   <Target Name="CopyToPlugins" AfterTargets="Build" Condition="'$(DisableCopyToPlugins)' != 'True'">
     <Error Text="Unable to copy assembly to game folder. BeatSaberDir doesn't exist: $(BeatSaberDir)" Condition="!Exists($(BeatSaberDir))"/>
-    <Message Text="Copying $(OutputPath)$(AssemblyName).dll to IPA\Pending\Plugins folder" Importance="high" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).dll" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(BeatSaberDir)\IPA\Pending\Plugins\$(AssemblyName).pdb" />
+    <IsProcessRunning ProcessName="Beat Saber">
+      <Output TaskParameter="IsRunning" PropertyName="IsRunning" />
+    </IsProcessRunning>
+    <PropertyGroup Condition="'$(IsRunning)' == 'True'">
+      <PluginDir>$(BeatSaberDir)\IPA\Pending\Plugins</PluginDir>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(IsRunning)' == 'False'">
+      <PluginDir>$(BeatSaberDir)\Plugins</PluginDir>
+    </PropertyGroup>
+    <Message Text="Copying $(OutputPath)$(AssemblyName).dll to $(PluginDir)" Importance="high" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(PluginDir)\Plugins\$(AssemblyName).dll" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(PluginDir)\Plugins\$(AssemblyName).pdb" />
   </Target>
   <!--Build Tasks-->
   <UsingTask TaskName="GetManifestInfo" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
@@ -317,6 +326,31 @@
                     Log.LogMessage(MessageImportance.High, "   Unable to retrieve current commit hash.");
             }
             return true;
+      ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  <UsingTask TaskName="IsProcessRunning" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+    <ParameterGroup>
+      <ProcessName ParameterType="System.String" Required="true" />
+      <IsRunning ParameterType="System.Boolean" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Diagnostics" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+            if (string.IsNullOrEmpty(ProcessName))
+            {
+                return false;
+            }
+            foreach (Process proc in Process.GetProcesses())
+            {
+                if (proc.ProcessName.Contains(ProcessName))
+                {
+                    IsRunning = true;
+                    break;
+                }
+            }
       ]]>
       </Code>
     </Task>
