@@ -1,0 +1,3 @@
+[submodule "BS-Plugin-BuildTools"]
+	path = BS-Plugin-BuildTools
+	url = https://github.com/beat-saber-modding-group/BS-Plugin-BuildTools.git
