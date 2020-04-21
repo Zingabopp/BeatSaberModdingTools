@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>BSIPA4 Plugin (Bare)</Name>
+    <Description>A lightweight template for a Beat Saber IPA plugin. Not recommended for beginners.</Description>
+    <Icon>beat_saber.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <RequiredFrameworkVersion>4.7.2</RequiredFrameworkVersion>
+    <SortOrder>1</SortOrder>
+    <TemplateID>c8e6036f-9e1a-4192-4000-e8e94cfe2538</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>BSPlugin</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+	  <LanguageTag>csharp</LanguageTag>
+	  <PlatformTag>windows</PlatformTag>
+	  <ProjectTypeTag>library</ProjectTypeTag>
+	  <ProjectTypeTag>games</ProjectTypeTag>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="BareProjectTemplate.csproj" ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj">
+      <ProjectItem ReplaceParameters="true">BuildTargets.targets</ProjectItem>
+	    <ProjectItem ReplaceParameters="true" TargetFileName=".gitignore">gitignore.txt</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true">manifest.json</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true">Plugin.cs</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>
