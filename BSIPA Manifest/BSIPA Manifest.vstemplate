@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>BSIPA Manifest</Name>
+    <Description>Creates a new manifest.json file containing a mod's metadata required by BSIPA.</Description>
+    <Icon>BSIPA Manifest.ico</Icon>
+    <TemplateID>f994418b-4997-48f6-84ad-89d9acbf717e</TemplateID>
+    <ProjectType>CSharp</ProjectType>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+    <DefaultName>manifest.json</DefaultName>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem ReplaceParameters="true">manifest.json</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

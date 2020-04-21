@@ -235,6 +235,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BSIPA Manifest\BSIPA Manifest.csproj">
+      <Project>{5187C807-6976-4B61-9435-9C4C93F4A0AD}</Project>
+      <Name>BSIPA Manifest</Name>
+      <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
     <ProjectReference Include="..\BSIPA Plugin %28Lightweight%29\BSIPA Plugin %28Bare%29.csproj">
       <Project>{F87FD4E5-9CC9-4E02-B5BF-E8E65665375E}</Project>
       <Name>BSIPA Plugin %28Bare%29</Name>

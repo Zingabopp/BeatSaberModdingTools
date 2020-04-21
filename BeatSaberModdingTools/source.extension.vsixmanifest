@@ -29,5 +29,6 @@
         <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="BSMLViewControllerTemplate" TargetVersion="[15.0,17.0)" d:TargetPath="|BSMLViewControllerTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
         <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="HarmonyPatchItemTemplate" TargetVersion="[15.0,17.0)" d:TargetPath="|HarmonyPatchItemTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
         <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="BSIPA Plugin (Bare)" TargetVersion="[15.0,17.0)" d:TargetPath="|BSIPA Plugin (Bare);TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
+        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="BSIPA Manifest" TargetVersion="[15.0,17.0)" d:TargetPath="|BSIPA Manifest;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
     </Assets>
 </PackageManifest>
