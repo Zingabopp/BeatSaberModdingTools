@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSIPA Plugin (Core)", "BSIP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSIPA Plugin (Disableable)", "BSIPA Plugin (Disableable)\BSIPA Plugin (Disableable).csproj", "{F87FD4E5-9CC9-4E02-B5BF-E8E65665375F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSIPA Plugin (Bare)", "BSIPA Plugin (Lightweight)\BSIPA Plugin (Bare).csproj", "{F87FD4E5-9CC9-4E02-B5BF-E8E65665375E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSIPA Plugin (Bare)", "BSIPA Plugin (Bare)\BSIPA Plugin (Bare).csproj", "{F87FD4E5-9CC9-4E02-B5BF-E8E65665375E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaberModdingTools", "BeatSaberModdingTools\BeatSaberModdingTools.csproj", "{FF7C6FC3-AB29-449E-BA85-08E4653F9AAA}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSMLViewControllerTemplate", "BSMLViewControllerTemplate\BSMLViewControllerTemplate.csproj", "{4B6E24D9-D390-46FB-8F72-50AB696AE846}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarmonyPatchItemTemplate", "HarmonyPatchItemTemplate\HarmonyPatchItemTemplate.csproj", "{4F53EFE0-47DC-4AA2-94BE-6BA7494EC042}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSIPA Manifest", "BSIPA Manifest\BSIPA Manifest.csproj", "{5187C807-6976-4B61-9435-9C4C93F4A0AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{4F53EFE0-47DC-4AA2-94BE-6BA7494EC042}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F53EFE0-47DC-4AA2-94BE-6BA7494EC042}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F53EFE0-47DC-4AA2-94BE-6BA7494EC042}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5187C807-6976-4B61-9435-9C4C93F4A0AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5187C807-6976-4B61-9435-9C4C93F4A0AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5187C807-6976-4B61-9435-9C4C93F4A0AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5187C807-6976-4B61-9435-9C4C93F4A0AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
