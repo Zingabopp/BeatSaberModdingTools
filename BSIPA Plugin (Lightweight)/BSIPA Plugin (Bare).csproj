@@ -55,17 +55,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BuildTargets.targets" />
-    <None Include="Logger.cs" />
     <None Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblyInfo.cs" />
     <None Include="manifest.json" />
-    <None Include="LightweightProjectTemplate.csproj" />
+    <None Include="BareProjectTemplate.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <VSTemplate Include="BSIPA Plugin (Lightweight).vstemplate" />
+    <VSTemplate Include="BSIPA Plugin %28Bare%29.vstemplate" />
   </ItemGroup>
   <ItemGroup>
     <None Include="beat_saber.ico" />

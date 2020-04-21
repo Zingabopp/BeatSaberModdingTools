@@ -95,9 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugin.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="Configuration\PluginConfig.cs" />
-    <Compile Include="$safeprojectname$Controller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

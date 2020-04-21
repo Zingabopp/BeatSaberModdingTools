@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSIPA Plugin (Core)", "BSIP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSIPA Plugin (Disableable)", "BSIPA Plugin (Disableable)\BSIPA Plugin (Disableable).csproj", "{F87FD4E5-9CC9-4E02-B5BF-E8E65665375F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSIPA Plugin (Lightweight)", "BSIPA Plugin (Lightweight)\BSIPA Plugin (Lightweight).csproj", "{F87FD4E5-9CC9-4E02-B5BF-E8E65665375E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BSIPA Plugin (Bare)", "BSIPA Plugin (Lightweight)\BSIPA Plugin (Bare).csproj", "{F87FD4E5-9CC9-4E02-B5BF-E8E65665375E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaberModdingTools", "BeatSaberModdingTools\BeatSaberModdingTools.csproj", "{FF7C6FC3-AB29-449E-BA85-08E4653F9AAA}"
 EndProject

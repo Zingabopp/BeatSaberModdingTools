@@ -234,6 +234,15 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BSIPA Plugin %28Lightweight%29\BSIPA Plugin %28Bare%29.csproj">
+      <Project>{F87FD4E5-9CC9-4E02-B5BF-E8E65665375E}</Project>
+      <Name>BSIPA Plugin %28Bare%29</Name>
+      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != '' AND '$(NCrunch)' != '1'" />
   <PropertyGroup>

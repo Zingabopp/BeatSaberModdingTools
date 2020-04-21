@@ -1,40 +1,32 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using IPA;
-using IPA.Config;
-using IPA.Config.Stores;
-using UnityEngine;
+﻿using IPA;
 using IPALogger = IPA.Logging.Logger;
 
 namespace $safeprojectname$
 {
-    [Plugin(RuntimeOptions.DynamicInit)]
+    [Plugin(RuntimeOptions.SingleStartInit)]
     public class Plugin
     {
         internal static Plugin Instance { get; private set; }
-        internal static string Name => "$projectname$";
+        internal static IPALogger log { get; set; }
 
         [Init]
         public Plugin(IPALogger logger)
         {
             Instance = this;
-            Logger.log = logger;
+            log = logger;
         }
 
-        [OnEnable]
-        public void OnEnable()
+        [OnStart]
+        public void OnApplicationStart()
         {
             
         }
 
-        [OnDisable]
-        public void OnDisable()
+        [OnExit]
+        public void OnApplicationQuit()
         {
             
         }
+
     }
 }
