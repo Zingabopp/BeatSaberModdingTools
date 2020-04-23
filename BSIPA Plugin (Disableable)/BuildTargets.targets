@@ -4,8 +4,7 @@
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <BuildTargetsVersion>1.4</BuildTargetsVersion>
-    <BuildTargetsModified>false</BuildTargetsModified>
-    <!--Set this to true if you edit this file to prevent automatic updates-->
+    <BuildTargetsModified>false</BuildTargetsModified> <!--Set this to true if you edit this file to prevent automatic updates-->
   </PropertyGroup>
   <!--Build Targets-->
   <Target Name="CheckManifest" AfterTargets="Build" Condition="'$(DisableZipRelease)' == 'True' OR '$(Configuration)' == 'Debug'">
@@ -42,8 +41,8 @@
       <PluginDir>$(BeatSaberDir)\Plugins</PluginDir>
     </PropertyGroup>
     <Message Text="Copying $(OutputPath)$(AssemblyName).dll to $(PluginDir)" Importance="high" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(PluginDir)\Plugins\$(AssemblyName).dll" />
-    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(PluginDir)\Plugins\$(AssemblyName).pdb" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(PluginDir)\$(AssemblyName).dll" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(PluginDir)\$(AssemblyName).pdb" />
   </Target>
   <!--Build Tasks-->
   <UsingTask TaskName="GetManifestInfo" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
