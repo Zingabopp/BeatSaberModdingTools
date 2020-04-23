@@ -12,8 +12,8 @@
     <ProjectGuid>{F87FD4E5-9CC9-4E02-B5BF-E8E65665375E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BSIPA_Plugin__Lightweight_</RootNamespace>
-    <AssemblyName>BSIPA Plugin %28Lightweight%29</AssemblyName>
+    <RootNamespace>BSIPA_Plugin__Bare_</RootNamespace>
+    <AssemblyName>BSIPA Plugin %28Bare%29</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
