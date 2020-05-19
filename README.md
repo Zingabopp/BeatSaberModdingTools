@@ -1,6 +1,6 @@
 # Beat Saber Modding Tools
 A set of templates for creating Beat Saber plugins.
-**A wiki has been started [here](https://github.com/Zingabopp/BeatSaberModdingTools/wiki/1.-Home) with more details on using the extension**
+**A wiki has been started [here](https://github.com/Zingabopp/BeatSaberModdingTools/wiki) with more details on using the extension**
 
 **All Templates**
 * Have the option of creating directory junctions to important folders in your Beat Saber directory (Managed/Libs/Plugins).
