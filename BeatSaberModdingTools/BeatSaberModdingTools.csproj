@@ -56,6 +56,7 @@
     <Compile Include="BuildTools\RefsNode.cs" />
     <Compile Include="BuildTools\RefsNodeExtensions.cs" />
     <Compile Include="BuildTools\RootNode.cs" />
+    <Compile Include="BuildTools\Virtualizer.cs" />
     <Compile Include="CommandFilter.cs" />
     <Compile Include="Commands\AddProjectReference.cs" />
     <Compile Include="Commands\CommandSetGuids.cs" />
@@ -145,8 +146,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.202" ExcludeAssets="runtime" />
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.3.2099" />
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.205" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.7.3051">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Mono.Cecil">
+      <Version>0.11.2</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="beat_saber.ico" />
