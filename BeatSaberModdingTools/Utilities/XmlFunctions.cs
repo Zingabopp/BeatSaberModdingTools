@@ -48,11 +48,14 @@ namespace BeatSaberModdingTools.Utilities
 
                         string refName = element.Attributes()?.Where(a => a.Name.LocalName == "Include").FirstOrDefault()?.Value;
                         string hintPath = element.Elements().Where(e => e.Name.LocalName == "HintPath").FirstOrDefault()?.Value ?? string.Empty;
+                        
+                        string strippedVal = element.Elements().Where(e => e.Name.LocalName == "IncludeStripped").FirstOrDefault()?.Value ?? "False";
+                        bool stripped = bool.TryParse(strippedVal, out bool result) && result;
                         if (!string.IsNullOrEmpty(refName))
                         {
                             if (!string.IsNullOrEmpty(hintPath) || !externalOnly)
                             {
-                                var refItem = new ReferenceModel(refName, n.Parent, hintPath);
+                                var refItem = new ReferenceModel(refName, n.Parent, stripped, hintPath);
                                 if (hintPath.Contains($"$(BeatSaberDir"))
                                     refItem.RelativeDirectory = hintPath.Replace("$(BeatSaberDir)", string.Empty)
                                         .Replace(refItem.Name + ".dll", string.Empty)

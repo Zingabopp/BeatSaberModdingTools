@@ -56,7 +56,10 @@ namespace BeatSaberModdingTools.Utilities
                             if (element.TryGetAttribute("Include", out string includeVal))
                             {
                                 element.TryFindFirstChild("HintPath", out XElement hintPathElement);
-                                ReferenceModel reference = new ReferenceModel(includeVal, element.Parent, hintPathElement?.Value);
+                                element.TryFindFirstChild("IncludeStripped", out XElement strippedElement);
+                                string strippedVal = strippedElement.Value ?? "False";
+                                bool stripped = bool.TryParse(strippedVal, out bool result) && result;
+                                ReferenceModel reference = new ReferenceModel(includeVal, element.Parent, stripped, hintPathElement?.Value);
                                 //reference.InProject = true;
                                 results.References.Add(reference);
                             }

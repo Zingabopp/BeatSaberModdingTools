@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using VSLangProj;
 
@@ -20,18 +19,26 @@ namespace BeatSaberModdingTools.ViewModels
         private string _windowTitle;
         public string WindowTitle
         {
-            get 
+            get
             {
                 if (_windowTitle == null)
                     _windowTitle = $"{_projectName} - Beat Saber Reference Manager";
-                return _windowTitle; 
+                return _windowTitle;
             }
         }
-        public ObservableCollection<ReferenceItemViewModel> DesignExample => new ObservableCollection<ReferenceItemViewModel>()
+        public ObservableCollection<ReferenceModel> DesignExample
         {
-            new ReferenceItemViewModel(this, new ReferenceModel( "TestInProject", null, @"C:\BeatSaber\Beat Saber_Data\Managed\TestInProject.dll"){  RelativeDirectory="Beat Saber_Data\\Managed", Version="1.1.1.0"}, false),
-            new ReferenceItemViewModel()
-        };
+            get
+            {
+                ReferenceModel testModel = new ReferenceModel("TestInProject", null, true, @"C:\BeatSaber\Beat Saber_Data\Managed\TestInProject.dll") { RelativeDirectory = "Beat Saber_Data\\Managed", Version = "1.1.1.0" };
+                testModel.HintPath = @"C:\BeatSaber\Beat Saber_Data\Changed\TestInProject.dll";
+                return new ObservableCollection<ReferenceModel>()
+                        {
+                            testModel,
+                            new ReferenceModel()
+                        };
+            }
+        }
 
         public ObservableCollection<ReferenceFilter> Filters { get; } = new ObservableCollection<ReferenceFilter>()
         {
@@ -60,7 +67,7 @@ namespace BeatSaberModdingTools.ViewModels
         public bool Filter(object item)
         {
             bool shown = true;
-            if (item is ReferenceItemViewModel target)
+            if (item is ReferenceModel target)
             {
 
                 if (!string.IsNullOrEmpty(SelectedFilter.Prefix) && !target.Name.StartsWith(SelectedFilter.Prefix))
@@ -74,7 +81,7 @@ namespace BeatSaberModdingTools.ViewModels
             return shown;
         }
 
-        public ObservableCollection<ReferenceItemViewModel> AvailableReferences { get; }
+        public ObservableCollection<ReferenceModel> AvailableReferences { get; }
         public string ProjectFilePath { get; private set; }
         public string BeatSaberDir { get; private set; }
         public ReferenceWindowViewModel()
@@ -87,7 +94,7 @@ namespace BeatSaberModdingTools.ViewModels
         }
         public ReferenceWindowViewModel(string projectFilePath, string projectName, VSProject project, string beatSaberDir)
         {
-            AvailableReferences = new ObservableCollection<ReferenceItemViewModel>();
+            AvailableReferences = new ObservableCollection<ReferenceModel>();
             ProjectFilePath = projectFilePath;
             BeatSaberDir = beatSaberDir;
             _project = project;
@@ -99,76 +106,96 @@ namespace BeatSaberModdingTools.ViewModels
         public void RefreshData()
         {
             AvailableReferences.Clear();
-            var refItems = BeatSaberTools.GetAvailableReferences(BeatSaberDir);
-            var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).First();
-            var references = buildProject.Items.Where(obj => obj.ItemType == "Reference").ToArray();
-            var projRefs = new List<ReferenceModel>();
-            foreach (var item in references)
+            List<ReferenceModel> refItems = BeatSaberTools.GetAvailableReferences(BeatSaberDir);
+            Project buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).First();
+            ProjectItem[] references = buildProject.Items.Where(obj => obj.ItemType == "Reference").ToArray();
+            Dictionary<string, ReferenceModel> projRefs = new Dictionary<string, ReferenceModel>();
+            foreach (ProjectItem item in references)
             {
-                var refModel = new ReferenceModel(item.UnevaluatedInclude);
+                ReferenceModel refModel = new ReferenceModel(item.UnevaluatedInclude);
                 if (item.HasMetadata("HintPath"))
                     refModel.HintPath = item.Metadata.Where(m => m.Name == "HintPath").First().UnevaluatedValue;
-                projRefs.Add(refModel);
-            }
-            foreach (var item in refItems.ToArray())
-            {
-                var projRefCount = projRefs.Where(r => r.Name == item.Name).Count();
-
-                ReferenceItemViewModel refVM = null;
-                if (projRefCount > 0)
+                if (item.HasMetadata("IncludeStripped"))
                 {
-                    refVM = new ReferenceItemViewModel(this, item, true);
-                    refVM.IsInProject = true;
-                    if (projRefCount > 1)
-                        refVM.WarningStr = $"Project contains more than one reference to {item.Name}";
+                    string strippedVal = item.Metadata.First(m => m.Name == "IncludeStripped").EvaluatedValue;
+                    refModel.IncludeStripped = bool.TryParse(strippedVal, out bool result) && result;
+                }
+                refModel.IsInProject = true;
+                refModel.ResetModified();
+                if (projRefs.TryGetValue(refModel.Name, out ReferenceModel existing))
+                {
+                    existing.IncludeStripped = existing.IncludeStripped || refModel.IncludeStripped;
+                    if (string.IsNullOrEmpty(existing.HintPath))
+                        existing.HintPath = refModel.HintPath;
+                    existing.WarningStr = $"Project contains more than one reference to {refModel.Name}";
                 }
                 else
-                    refVM = new ReferenceItemViewModel(this, item, false);
-                AvailableReferences.Add(refVM);
+                    projRefs.Add(refModel.Name, refModel);
+            }
+            foreach (ReferenceModel item in refItems.ToArray())
+            {
+                if (item == null)
+                    continue;
+                if (projRefs.TryGetValue(item.Name, out ReferenceModel existing))
+                {
+                    item.CloneFrom(existing);
+                }
+
+                item.ResetModified();
+                item.PropertyChanged += Item_PropertyChanged;
+                AvailableReferences.Add(item);
+            }
+        }
+
+        private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender is ReferenceModel referenceModel)
+            {
+                CheckChangedReferences();
             }
         }
 
         public void CheckChangedReferences()
         {
-            var changedRefs = AvailableReferences.Where(r => r.StartedInProject != r.IsInProject).ToList();
-            ReferencesChanged = AvailableReferences.Any(r => r.StartedInProject != r.IsInProject);
+            ReferencesChanged = AvailableReferences.Any(r => r.IsModified);
         }
 
         public void UpdateReferences()
         {
-            var changedRefs = AvailableReferences.Where(r => r.StartedInProject != r.IsInProject).ToArray();
-            var removedRefs = changedRefs.Where(r => !r.IsInProject).ToArray();
-            foreach (var item in removedRefs)
+            ReferenceModel[] changedRefs = AvailableReferences.Where(r => r.IsModified).ToArray();
+            ReferenceModel[] removedRefs = changedRefs.Where(r => !r.IsInProject).ToArray();
+            ReferenceModel[] addOrUpdatedRefs = changedRefs.Where(r => r.IsInProject).ToArray();
+            foreach (ReferenceModel item in removedRefs)
             {
-                var reference = _project.References.Find(item.Name);
+                Reference reference = _project.References.Find(item.Name);
                 reference.Remove();
-                item.StartedInProject = false;
+                item.IsInProject = false;
+                item.ResetModified();
             }
-            var addedRefs = changedRefs.Where(r => r.IsInProject).ToArray();
-            foreach (var item in addedRefs)
+            foreach (ReferenceModel item in addOrUpdatedRefs)
             {
                 //var refPath = item.HintPath.Replace(BeatSaberDir, "$(BeatSaberDir)");
                 if (_project.References.Find(item.Name) == null)
                 {
-                    var reference = _project.References.Add(item.HintPath);
-                    reference.CopyLocal = false;
-                    item.StartedInProject = true;
+                    Reference reference = _project.References.Add(item.HintPath);
+                    reference.CopyLocal = true;
                 }
-                else
-                {
-                    item.StartedInProject = true;
-                    item.IsInProject = true;                    
-                }
+                item.IsInProject = true;
             }
-            var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).First();
-            foreach (var item in addedRefs)
+            Project buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).First();
+            foreach (ReferenceModel item in addOrUpdatedRefs)
             {
-                var newRef = buildProject.Items.Where(obj => obj.ItemType == "Reference" && GetSimpleReferenceName(obj.EvaluatedInclude) == item.Name).First();
+                ProjectItem newRef = buildProject.Items.Where(obj => obj.ItemType == "Reference" && GetSimpleReferenceName(obj.EvaluatedInclude) == item.Name).First();
                 if (newRef != null)
                 {
                     newRef.SetMetadataValue("HintPath", $"$(BeatSaberDir)\\{item.RelativeDirectory}\\{item.Name}.dll");
-                    newRef.SetMetadataValue("Private", "False");
+                    newRef.SetMetadataValue("Private", "True");
                     newRef.SetMetadataValue("SpecificVersion", "False");
+                    if (item.IncludeStripped)
+                        newRef.SetMetadataValue("IncludeStripped", item.IncludeStripped.ToString());
+                    else
+                        newRef.RemoveMetadata("IncludeStripped");
+                    item.ResetModified();
                 }
             }
             buildProject.MarkDirty();
@@ -259,7 +286,7 @@ namespace BeatSaberModdingTools.ViewModels
             Prefix = prefix;
         }
 
-        public Func<ReferenceItemViewModel, bool> IsMatch { get; }
+        public Func<ReferenceModel, bool> IsMatch { get; }
 
         public override string ToString()
         {

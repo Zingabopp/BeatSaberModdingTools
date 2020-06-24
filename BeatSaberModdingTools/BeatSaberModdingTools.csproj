@@ -61,6 +61,7 @@
     <Compile Include="Commands\CommandSetGuids.cs" />
     <Compile Include="Menus\ReferenceContextSubmenu.cs" />
     <Compile Include="Models\ActiveSettings.cs" />
+    <Compile Include="Models\ObservableModel.cs" />
     <Compile Include="Utilities\BeatSaberTools.cs" />
     <Compile Include="Commands\AddProjectReferencePaths.cs" />
     <Compile Include="Commands\OpenSettingsWindowCommand.cs" />
@@ -101,7 +102,6 @@
     <Compile Include="Utilities\XmlExtensions.cs" />
     <Compile Include="Utilities\XmlFunctions.cs" />
     <Compile Include="Utilities\XmlNames.cs" />
-    <Compile Include="ViewModels\ReferenceItemViewModel.cs" />
     <Compile Include="ViewModels\ReferenceWindowViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\WindowViewModel.cs" />
