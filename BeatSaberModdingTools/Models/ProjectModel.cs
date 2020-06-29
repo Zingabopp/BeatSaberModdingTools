@@ -29,6 +29,11 @@ namespace BeatSaberModdingTools.Models
             UserFileOptions = userFileOptions;
             SupportedCapabilities = supportedCapabilities;
         }
+
+        public void OverrideBSIPAProject(bool isBSIPAProject)
+        {
+            IsBSIPAProject = isBSIPAProject;
+        }
     }
 
     [Flags]
