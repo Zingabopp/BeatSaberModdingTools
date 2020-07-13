@@ -49,6 +49,6 @@ A set of templates for creating Beat Saber plugins.
   * Located by right-clicking a BSIPA project > Beat Saber Modding Tools > Add Reference Paths
   
 # Available Templates
-* **BSIPA Core Template:** This template creates a bare plugin.
+* **BSIPA Bare Template:** This template creates a bare plugin.
 * **BSIPA Core Template:** This template creates a basic plugin.
 * **BSIPA Disableable Template:** This template creates a plugin that can be enable/disabled while the game is running.
