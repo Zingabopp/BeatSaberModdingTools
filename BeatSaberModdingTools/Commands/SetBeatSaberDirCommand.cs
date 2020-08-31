@@ -1,18 +1,13 @@
-﻿using System;
-using System.ComponentModel.Design;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
-using BeatSaberModdingTools.Models;
-using BeatSaberModdingTools.Utilities;
+﻿using BeatSaberModdingTools.Models;
+using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Task = System.Threading.Tasks.Task;
-using static BeatSaberModdingTools.Utilities.EnvUtils;
-using static BeatSaberModdingTools.Utilities.Paths;
-using Microsoft.Build.Evaluation;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
-using System.IO;
+using static BeatSaberModdingTools.Utilities.EnvUtils;
+using Task = System.Threading.Tasks.Task;
 
 namespace BeatSaberModdingTools.Commands
 {
@@ -47,8 +42,8 @@ namespace BeatSaberModdingTools.Commands
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
-            var menuCommandID = new CommandID(CommandSet, CommandId);
-            var menuItem = new MenuCommand(this.Execute, menuCommandID);
+            CommandID menuCommandID = new CommandID(CommandSet, CommandId);
+            MenuCommand menuItem = new MenuCommand(this.Execute, menuCommandID);
             commandService.AddCommand(menuItem);
         }
 
@@ -99,7 +94,7 @@ namespace BeatSaberModdingTools.Commands
             string title = "Set BeatSaberDir";
             OLEMSGICON icon = OLEMSGICON.OLEMSGICON_CRITICAL;
             string message;
-            if(string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath))
+            if (string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath))
             {
                 icon = OLEMSGICON.OLEMSGICON_CRITICAL;
                 message = "You don't appear to have a Beat Saber install path chosen in 'Extensions > Beat Saber Modding Tools > Settings'.";
@@ -110,10 +105,28 @@ namespace BeatSaberModdingTools.Commands
                 {
                     if (projectModel.SupportedCapabilities.HasFlag(ProjectCapabilities.BeatSaberDir))
                     {
-                        var userProj = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectModel.ProjectPath + ".user").FirstOrDefault();
+                        Project userProj = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectModel.ProjectPath + ".user").FirstOrDefault();
+                        var propChecks = new HashSet<string>()
+                        {
+                            "BeatSaberDir",
+                            "BeatSaberReferences",
+                            "ReferencePath",
+                            "ModifiedPropertyThing",
+                            "DirectoryTargetsFile",
+                            "BuildTargetsModified",
+                            "DirectoryPropsFile",
+                        };
+                        var AllEvalProps = project.AllEvaluatedProperties.Where(p => propChecks.Contains(p.Name)).ToArray();
+                        var props = project.Properties.Where(p => propChecks.Contains(p.Name)).ToArray();
+                        var globalThings = new Dictionary<string, string>();
+                        foreach (var item in propChecks)
+                        {
+                            if (project.GlobalProperties.TryGetValue(item, out string value))
+                                globalThings.Add(item, value);
+                        }
                         if (userProj != null)
                         {
-                            message = SetReferencePaths(userProj, projectModel, project);
+                            message = SetBeatSaberDir(userProj, projectModel, project);
                             icon = OLEMSGICON.OLEMSGICON_INFO;
                         }
                         else

@@ -3,6 +3,8 @@
   <PropertyGroup>
     <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>beat_saber.ico</ApplicationIcon>
@@ -56,7 +58,7 @@
     <Compile Include="BuildTools\RefsNode.cs" />
     <Compile Include="BuildTools\RefsNodeExtensions.cs" />
     <Compile Include="BuildTools\RootNode.cs" />
-    <Compile Include="BuildTools\Virtualizer.cs" />
+    <None Include="BuildTools\Virtualizer.cs" />
     <Compile Include="CommandFilter.cs" />
     <Compile Include="Commands\AddProjectReference.cs" />
     <Compile Include="Commands\CommandSetGuids.cs" />
@@ -146,15 +148,21 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.205" ExcludeAssets="runtime">
+    <PackageReference Include="Microsoft.Build">
+      <Version>16.6.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.206" ExcludeAssets="runtime">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.7.3051">
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.6.2057">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Mono.Cecil">
       <Version>0.11.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Xml.XDocument">
+      <Version>4.3.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

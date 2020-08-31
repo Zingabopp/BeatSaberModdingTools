@@ -1,6 +1,7 @@
 ﻿using BeatSaberModdingTools.Models;
 using BeatSaberModdingTools.Utilities;
 using Microsoft.Build.Evaluation;
+using Microsoft.Build;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

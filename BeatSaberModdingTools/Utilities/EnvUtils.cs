@@ -43,16 +43,31 @@ namespace BeatSaberModdingTools.Utilities
             return EnvironmentMonitor.Instance.TryGetProject(proj.FullName, out projectModel, out project);
         }
 
+        public static string SetBeatSaberDir(Project userProj, ProjectModel projectModel, Project project)
+        {
+            string beatSaberDir = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
+            string previous = GetProperty("BeatSaberDir", project, userProj).UnevaluatedValue ?? "<NONE>";
+            ProjectProperty prop = userProj.SetProperty("BeatSaberDir", beatSaberDir);
+            userProj.Save();
+            project.MarkDirty();
+            return $"Setting BeatSaberDir in {projectModel.ProjectName} to \n{prop.EvaluatedValue} (previous: '{previous}')";
+        }
+
         public static string SetReferencePaths(Project userProj, ProjectModel projectModel, Project project)
         {
             string beatSaberDir = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
-            ProjectProperty prop = userProj.SetProperty("BeatSaberDir", beatSaberDir);
             string[] referencePaths = new string[] { Path_Managed, Path_Libs, Path_Plugins }.Select(p => Path.Combine(beatSaberDir, p)).ToArray();
             string hintPathsStr = string.Join(";", referencePaths);
             userProj.SetProperty("ReferencePath", hintPathsStr);
             userProj.Save();
             project.MarkDirty();
-            return $"Setting BeatSaberDir in {projectModel.ProjectName} to \n{prop.EvaluatedValue}";
+            return $"Setting ReferencePaths in {projectModel.ProjectName} to \n{hintPathsStr}";
+        }
+
+        public static ProjectProperty GetProperty(string propertyName, Project project, Project userProj = null)
+        {
+            return userProj?.GetProperty(propertyName)
+                ?? project?.GetProperty(propertyName);
         }
     }
 }
