@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>$guid1$</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>$safeprojectname$</RootNamespace>
+    <AssemblyName>$safeprojectname$</AssemblyName>
+    <TargetFrameworkVersion>v$targetframeworkversion$</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <DebugType>portable</DebugType>
+    <AudicaDir>..\Refs</AudicaDir>
+    <ReferencePath>$(SolutionDir)Refs</ReferencePath>
+    <AppOutputBase>$(MSBuildProjectDirectory)\</AppOutputBase>
+    <PathMap>$(AppOutputBase)=X:\$(AssemblyName)\</PathMap>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(DefineConstants.Contains('CIBuild')) OR '$(NCrunch)' == '1'">
+    <DisableCopyToPlugins>True</DisableCopyToPlugins>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(NCrunch)' == '1'">
+    <DisableCopyToPlugins>True</DisableCopyToPlugins>
+    <DisableZipRelease>True</DisableZipRelease>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Il2CppMono.Security">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Il2CppMono.Security.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Il2Cppmscorlib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Il2CppSystem">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Il2CppSystem.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Il2CppSystem.Configuration">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Il2CppSystem.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Il2CppSystem.Core">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Il2CppSystem.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Il2CppSystem.Runtime.Serialization">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Il2CppSystem.Runtime.Serialization.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Il2CppSystem.Xml">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Il2CppSystem.Xml.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MelonLoader.ModHandler">
+      <HintPath>$(AudicaDir)\MelonLoader\MelonLoader.ModHandler.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Oculus.VR">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Oculus.VR.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Sanford.Multimedia.Midi">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Sanford.Multimedia.Midi.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SonyNP">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\SonyNP.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SteamVR">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\SteamVR.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TwitchChatter">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\TwitchChatter.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnhollowerBaseLib">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnhollowerBaseLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnhollowerRuntimeLib">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnhollowerRuntimeLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\Unity.TextMeshPro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.AIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.AudioModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.Physics2DModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.TerrainModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.TextCoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.UIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.VehiclesModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>$(AudicaDir)\MelonLoader\Managed\UnityEngine.XRModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$safeprojectname$.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Directory.Build.props" />
+    <None Include="Directory.Build.targets" />
+    <None Include="$safeprojectname$.csproj.user" Condition="Exists('$safeprojectname$.csproj.user')" />
+    <None Include=".gitignore" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="BeatSaberModdingTools.Tasks">
+      <Version>1.2.2</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent></PostBuildEvent>
+  </PropertyGroup>
+</Project>
