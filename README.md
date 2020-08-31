@@ -1,6 +1,6 @@
 # Beat Saber Modding Tools
 A set of templates for creating Beat Saber plugins.
-**A wiki has been started [here](https://github.com/Zingabopp/BeatSaberModdingTools/wiki/1.-Home) with more details on using the extension**
+**A wiki has been started [here](https://github.com/Zingabopp/BeatSaberModdingTools/wiki) with more details on using the extension**
 
 **All Templates**
 * Have the option of creating directory junctions to important folders in your Beat Saber directory (Managed/Libs/Plugins).
@@ -49,6 +49,6 @@ A set of templates for creating Beat Saber plugins.
   * Located by right-clicking a BSIPA project > Beat Saber Modding Tools > Add Reference Paths
   
 # Available Templates
-* **BSIPA Full Template:** This template demonstrates how to create a basic plugin and use CustomUI. It also has examples for using Harmony and ReflectionUtil.
-* **BSIPA Core Template:** This template creates a bare plugin.
+* **BSIPA Bare Template:** This template creates a bare plugin.
+* **BSIPA Core Template:** This template creates a basic plugin.
 * **BSIPA Disableable Template:** This template creates a plugin that can be enable/disabled while the game is running.

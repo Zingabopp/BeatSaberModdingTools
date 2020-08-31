@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This file contains the build tasks and targets for verifying the manifest, zipping Release builds,
+     and copying the plugin to to your Beat Saber folder. Only edit this if you know what you are doing. -->
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--copy /Y "$(TargetDir)$(TargetName).vsix" "$(SolutionDir)Output\$(TargetName).vsix-->
+  <Target Name="CopyOutput" BeforeTargets="Build">
+    <PropertyGroup>
+      <OutputDirectory>$(SolutionDir)Output\</OutputDirectory>
+    </PropertyGroup>
+    <Message Text="Creating output directory: '$(OutputDirectory)'" Importance="high"/>
+    <MakeDir Directories="$(OutputDirectory)" Condition="!Exists($(OutputDirectory))"/>
+  </Target>
+</Project>

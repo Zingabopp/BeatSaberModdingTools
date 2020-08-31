@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>Audica Mod (Bare)</Name>
+    <Description>A lightweight template for an Audica MelonLoader plugin. Not recommended for beginners.</Description>
+    <Icon>audicalogo.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <RequiredFrameworkVersion>4.7.2</RequiredFrameworkVersion>
+    <SortOrder>1</SortOrder>
+    <TemplateID>c8e6036f-9e1a-4192-4000-aaa94cfe2538</TemplateID>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>AudicaMod</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+	  <LanguageTag>csharp</LanguageTag>
+	  <PlatformTag>windows</PlatformTag>
+	  <ProjectTypeTag>library</ProjectTypeTag>
+	  <ProjectTypeTag>games</ProjectTypeTag>
+  </TemplateData>
+  <TemplateContent>
+    <Project File="BareProjectTemplate.csproj" ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj">
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="$safeprojectname$.csproj.user">BareProjectTemplate.csproj.user</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Directory.Build.targets">build.targets</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Directory.Build.props">build.props</ProjectItem>
+	    <ProjectItem ReplaceParameters="true" TargetFileName=".gitignore">gitignore.txt</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="$safeprojectname$.cs">Main.cs</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>
