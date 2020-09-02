@@ -117,20 +117,14 @@ namespace BeatSaberModdingTools.Utilities
                 return null;
             try
             {
-                using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
-                {
-                    byte[] file = File.ReadAllBytes(filename);
-                    byte[] bytes = new byte[16];
+                byte[] file = File.ReadAllBytes(filename);
+                string str = Encoding.Default.GetString(file);
+                string versionLocation = "public.app-category.games";
+                int startIndex = str.IndexOf(versionLocation) + 136;
+                int length = str.IndexOfAny(IllegalCharacters, startIndex) - startIndex;
+                string version = str.Substring(startIndex, length);
 
-                    fs.Read(file, 0, Convert.ToInt32(fs.Length));
-                    fs.Close();
-                    int index = Encoding.Default.GetString(file).IndexOf("public.app-category.games") + 136;
-
-                    Array.Copy(file, index, bytes, 0, 16);
-                    string version = Encoding.Default.GetString(bytes).Trim(IllegalCharacters);
-
-                    return version;
-                }
+                return version;
             }
             catch
             {
