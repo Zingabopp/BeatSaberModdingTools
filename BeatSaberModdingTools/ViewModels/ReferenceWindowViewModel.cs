@@ -256,8 +256,7 @@ namespace BeatSaberModdingTools.ViewModels
                     item.IsInProject = true;
                 }
             }
-
-            var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).FirstOrDefault();
+            var buildProject = EvaluationProject;
             if (buildProject != null)
             {
                 string rootPath = GetReferenceRootPath(buildProject);
