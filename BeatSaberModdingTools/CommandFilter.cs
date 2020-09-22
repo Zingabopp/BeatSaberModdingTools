@@ -1,11 +1,11 @@
 ﻿using BeatSaberModdingTools.Commands;
 using BeatSaberModdingTools.Menus;
 using BeatSaberModdingTools.Models;
+using BeatSaberModdingTools.Utilities;
 using EnvDTE80;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
@@ -71,11 +71,11 @@ namespace BeatSaberModdingTools
                 {
                     bool visible = false;
                     CommandStatus status = 0;
-                    if (TryGetSelectedProject(package, out ProjectModel projectModel, out var project) && projectModel.IsBSIPAProject)
+                    if (TryGetSelectedProject(package, out ProjectModel projectModel, out var project, out _) && projectModel.IsBSIPAProject)
                     {
                         status |= CommandStatus.Supported;
-                        var prop = project.GetProperty("BeatSaberDir")?.UnevaluatedValue;
-                        if (!string.IsNullOrEmpty(prop))
+                        string prop = project.GetProperty("BeatSaberDir")?.UnevaluatedValue;
+                        if (prop != BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
                             status |= CommandStatus.Enabled;
                         visible = true;
                     }
@@ -89,12 +89,12 @@ namespace BeatSaberModdingTools
                 {
                     bool visible = false;
                     CommandStatus status = 0;
-                    if (TryGetSelectedProject(package, out ProjectModel projectModel, out var project) 
-                        && projectModel.IsBSIPAProject && projectModel.SupportedCapabilities == Models.ProjectCapabilities.None)
+                    if (TryGetSelectedProject(package, out ProjectModel projectModel, out var project, out _)
+                        && projectModel.IsBSIPAProject)
                     {
                         status |= CommandStatus.Supported;
-                        var prop = project.GetProperty("BeatSaberDir")?.UnevaluatedValue;
-                        if (string.IsNullOrEmpty(prop) || prop != BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
+                        string prop = project.GetProperty("ReferencePath")?.UnevaluatedValue;
+                        if (prop != EnvUtils.GetReferencePathString(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath))
                             status |= CommandStatus.Enabled;
                         visible = true;
                     }
@@ -127,6 +127,15 @@ namespace BeatSaberModdingTools
             if (commandStatus.HasFlag(CommandStatus.Invisible))
                 ret |= OLECMDF.OLECMDF_INVISIBLE;
             return ret;
+        }
+
+        [Flags]
+        private enum CommandStatus
+        {
+            None = 0,
+            Supported = 1 << 0,
+            Enabled = 1 << 1,
+            Invisible = 1 << 2
         }
     }
 }

@@ -105,7 +105,8 @@ namespace BeatSaberModdingTools.Commands
             {
                 var proj = (EnvDTE.Project)activeProjects.GetValue(0);
                 var csProj = (VSProject)proj.Object;
-                var settingsDialog = new ReferencesDialog(csProj);
+                var evalProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(proj.FileName).FirstOrDefault();
+                var settingsDialog = new ReferencesDialog(csProj, evalProject);
                 var returnedTrue = settingsDialog.ShowDialog() ?? false;
             }
             //var proj = dte.Solution.Projects.

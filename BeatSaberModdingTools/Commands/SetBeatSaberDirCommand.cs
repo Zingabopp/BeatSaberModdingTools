@@ -96,28 +96,31 @@ namespace BeatSaberModdingTools.Commands
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            string title = "Set BeatSaberDir";
+            string title = "Error setting BeatSaberDir:";
             OLEMSGICON icon = OLEMSGICON.OLEMSGICON_CRITICAL;
             string message;
-            if(string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath))
+            if (string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath))
             {
                 icon = OLEMSGICON.OLEMSGICON_CRITICAL;
                 message = "You don't appear to have a Beat Saber install path chosen in 'Extensions > Beat Saber Modding Tools > Settings'.";
             }
-            else if (TryGetSelectedProject(package, out ProjectModel projectModel, out Project project))
+            else if (TryGetSelectedProject(package, out ProjectModel projectModel, out Project project, out EnvDTE.Project dteProject))
             {
                 if (projectModel.IsBSIPAProject)
                 {
                     if (projectModel.SupportedCapabilities.HasFlag(ProjectCapabilities.BeatSaberDir))
                     {
-                        var userProj = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectModel.ProjectPath + ".user").FirstOrDefault();
-                        if (userProj != null)
+                        try
                         {
-                            message = SetReferencePaths(userProj, projectModel, project);
-                            icon = OLEMSGICON.OLEMSGICON_INFO;
+                            var userProj = EnvUtils.GetProject(projectModel.ProjectPath + ".user");
+                            message = SetBeatSaberDir(userProj, projectModel, project, dteProject);
+                            icon = OLEMSGICON.OLEMSGICON_INFO; 
+                            title = "Set BeatSaberDir:";
                         }
-                        else
-                            message = "Unable to find .user project (this shouldn't happen).";
+                        catch (Exception ex)
+                        {
+                            message = ex.Message;
+                        }
                     }
                     else
                         message = $"Project {projectModel.ProjectName} doesn't support the BeatSaberDir property";

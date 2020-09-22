@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BeatSaberModdingTools.ViewModels;
 using VSLangProj;
+using Microsoft.Build.Evaluation;
 
 namespace BeatSaberModdingTools.Views
 {
@@ -24,10 +25,10 @@ namespace BeatSaberModdingTools.Views
     {
         public ReferenceWindowViewModel ViewModel;
         public CollectionViewSource ReferencesView;
-        public ReferencesDialog(VSProject project)
+        public ReferencesDialog(VSProject project, Project evalProject)
         {
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
-            ViewModel = new ReferenceWindowViewModel(project.Project.FullName, project.Project.Name, project, BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath);
+            ViewModel = new ReferenceWindowViewModel(project.Project.FullName, project.Project.Name, project, evalProject, BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath);
             DataContext = ViewModel;
             InitializeComponent();
             ReferencesView = (CollectionViewSource)FindResource("ReferenceListSource");

@@ -16,6 +16,8 @@ using static BeatSaberModdingTools.Utilities.EnvUtils;
 using Microsoft.Build.Evaluation;
 using static BeatSaberModdingTools.Utilities.Paths;
 using BeatSaberModdingTools.Models;
+using BeatSaberModdingTools.Utilities;
+using Microsoft.VisualStudio.OLE.Interop;
 
 namespace BeatSaberModdingTools.Commands
 {
@@ -101,30 +103,51 @@ namespace BeatSaberModdingTools.Commands
         private async void Execute(object sender, EventArgs e)
         {
             await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            string message;
-            string title = "Error adding reference paths:";
+            string message = null;
+            string title = "Error setting Reference Paths:";
+            bool skipped = false;
             OLEMSGICON icon = OLEMSGICON.OLEMSGICON_CRITICAL;
-            if (TryGetSelectedProject(package, out ProjectModel projectModel, out var project))
+            if (TryGetSelectedProject(package, out ProjectModel projectModel, out var project, out EnvDTE.Project dteProject))
             {
-                var userProj = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(projectModel.ProjectPath + ".user").FirstOrDefault();
-                if (userProj != null)
+                try
                 {
-                    message = SetReferencePaths(userProj, projectModel, project);
-                    icon = OLEMSGICON.OLEMSGICON_INFO;
+                    //OK = 1, Cancel = 2, Abort = 3, Retry = 4, Ignore = 5, Yes = 6, No = 7 depending on what button is pressed.
+                    int forceReference = 6;
+                    if (projectModel.SupportedCapabilities.HasFlag(ProjectCapabilities.BeatSaberDir))
+                    {
+                        forceReference = VsShellUtilities.ShowMessageBox(
+                        this.package, "It looks like this project supports 'BeatSaberDir', are you sure you want to use ReferencePath?",
+                         "", OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_YESNO, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_SECOND);
+
+                    }
+                    if (forceReference == 6 || forceReference == 1)
+                    {
+                        var userProj = EnvUtils.GetProject(projectModel.ProjectPath + ".user");
+                        message = SetReferencePaths(userProj, projectModel, project, dteProject);
+                        icon = OLEMSGICON.OLEMSGICON_INFO; 
+                        title = "Set Reference Paths:";
+                    }
+                    else
+                        skipped = true;
                 }
-                else
-                    message = "Unable to retrieve user specific project.";
+                catch (Exception ex)
+                {
+                    message = ex.Message;
+                }
             }
             else
                 message = "Unable to retrieve project information.";
-            // OK = 1, Cancel = 2, Abort = 3, Retry = 4, Ignore = 5, Yes = 6, No = 7 depending on what button is pressed.
-            int result = VsShellUtilities.ShowMessageBox(
-                this.package,
-                message,
-                title,
-                icon,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            if (!skipped)
+            {
+                // OK = 1, Cancel = 2, Abort = 3, Retry = 4, Ignore = 5, Yes = 6, No = 7 depending on what button is pressed.
+                int result = VsShellUtilities.ShowMessageBox(
+                    this.package,
+                    message,
+                    title,
+                    icon,
+                    OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            }
         }
     }
 }

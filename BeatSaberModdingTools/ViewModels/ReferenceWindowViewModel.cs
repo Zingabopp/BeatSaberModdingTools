@@ -78,20 +78,102 @@ namespace BeatSaberModdingTools.ViewModels
         }
 
         public ObservableCollection<ReferenceItemViewModel> AvailableReferences { get; }
+        public ObservableCollection<string> PathOptions { get; } = new ObservableCollection<string>(PathProperties.Append("None").ToArray());
         public string ProjectFilePath { get; private set; }
         public string BeatSaberDir { get; private set; }
+
+        private readonly HashSet<string> ProjectProperties = new HashSet<string>();
+
+        private string _pathOption;
+
+        public string PathOption
+        {
+            get { return _pathOption; }
+            set
+            {
+                WarningText = GetDisplayPathWarningText(value);
+                if (_pathOption == value) return;
+                _pathOption = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string GetDisplayPathWarningText(string value)
+        {
+            if (ProjectProperties.Count > 0)
+            {
+                if (value == "None")
+                    return $"Path option 'None' will use absolute paths for references, it is recommended to use '{ProjectProperties.First()}'.";
+                if (!ProjectProperties.Contains(value))
+                    return $"Path option '{value}' does not appear to be used by the project.";
+                if (ProjectProperties.First() != value)
+                    return $"Path option '{ProjectProperties.First()}' is recommended for this project.";
+            }
+            else if (value != "None")
+                return $"Path option '{value}' does not appear to be used by the project.";
+            if (IsSDK)
+                return "SDK projects are not fully supported. You will have to manually change the HintPath for added references.";
+            return string.Empty;
+        }
+
+        private string _warningText;
+
+        public string WarningText
+        {
+            get { return _warningText; }
+            set
+            {
+                if (_warningText == value) return;
+                _warningText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
         public ReferenceWindowViewModel()
         {
             AvailableReferences = DesignExample;
             _projectName = "DesignerTest";
             BeatSaberDir = @"C:\TestBeatSaberDir";
+            PathOption = "BeatSaberReferences";
             SelectedFilter = Filters.First();
             //Refresh.Execute(null);
         }
-        public ReferenceWindowViewModel(string projectFilePath, string projectName, VSProject project, string beatSaberDir)
+
+        public static bool IsSDKProject(Project project)
+        {
+            if (project == null)
+                return false;
+            ProjectProperty prop = project.GetProperty("UsingMicrosoftNetSdk");
+            string val = prop?.EvaluatedValue;
+            return val != null && val.Equals("true", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public bool IsSDK { get; set; }
+        private Project _evaluationProject;
+
+        public Project EvaluationProject
+        {
+            get
+            {
+                if (_evaluationProject == null && !string.IsNullOrWhiteSpace(ProjectFilePath))
+                    _evaluationProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).FirstOrDefault();
+                return _evaluationProject;
+            }
+            set { _evaluationProject = value; }
+        }
+
+        public ReferenceWindowViewModel(string projectFilePath, string projectName, VSProject project, Project evalProject, string beatSaberDir)
         {
             AvailableReferences = new ObservableCollection<ReferenceItemViewModel>();
             ProjectFilePath = projectFilePath;
+            EvaluationProject = evalProject;
+            UpdateAvailableReferenceRoots(evalProject);
+            IsSDK = IsSDKProject(evalProject);
+            if (ProjectProperties.Count > 0)
+                PathOption = ProjectProperties.First();
+            else
+                PathOption = "None";
             BeatSaberDir = beatSaberDir;
             _project = project;
             _projectName = projectName;
@@ -103,8 +185,10 @@ namespace BeatSaberModdingTools.ViewModels
         {
             AvailableReferences.Clear();
             var refItems = BeatSaberTools.GetAvailableReferences(BeatSaberDir);
-            var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).First();
-            var references = buildProject.Items.Where(obj => obj.ItemType == "Reference").ToArray();
+            var buildProject = EvaluationProject;
+            if(buildProject == null)
+                WarningText = $"Could not load project information from '{ProjectFilePath}'";
+            ProjectItem[] references = buildProject?.Items.Where(obj => obj.ItemType == "Reference").ToArray() ?? Array.Empty<ProjectItem>();
             var projRefs = new List<ReferenceModel>();
             foreach (var item in references)
             {
@@ -141,19 +225,28 @@ namespace BeatSaberModdingTools.ViewModels
         {
             var changedRefs = AvailableReferences.Where(r => r.StartedInProject != r.IsInProject).ToArray();
             var removedRefs = changedRefs.Where(r => !r.IsInProject).ToArray();
+            Dictionary<string, Reference> references = new Dictionary<string, Reference>();
+            foreach (Reference reference in _project.References)
+            {
+                if (!references.ContainsKey(reference.Name))
+                    references.Add(reference.Name, reference);
+            }
             foreach (var item in removedRefs)
             {
-                var reference = _project.References.Find(item.Name);
-                reference.Remove();
-                item.StartedInProject = false;
+                if (references.TryGetValue(item.Name, out Reference reference))
+                {
+                    reference.Remove();
+                    item.StartedInProject = false;
+                    item.IsInProject = false;
+                }
             }
             var addedRefs = changedRefs.Where(r => r.IsInProject).ToArray();
             foreach (var item in addedRefs)
             {
                 //var refPath = item.HintPath.Replace(BeatSaberDir, "$(BeatSaberDir)");
-                if (_project.References.Find(item.Name) == null)
+                if (!references.TryGetValue(item.Name, out Reference reference))
                 {
-                    Reference reference = _project.References.Add(item.HintPath);
+                    reference = _project.References.Add(item.HintPath);
                     reference.CopyLocal = false;
                     item.StartedInProject = true;
                 }
@@ -164,30 +257,61 @@ namespace BeatSaberModdingTools.ViewModels
                 }
             }
 
-            var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).First();
-            foreach (var item in addedRefs)
+            var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).FirstOrDefault();
+            if (buildProject != null)
             {
-                var newRef = buildProject.Items.Where(obj => obj.ItemType == "Reference" && GetSimpleReferenceName(obj.EvaluatedInclude) == item.Name).FirstOrDefault();
-                KeyValuePair<string, string>[] meta = new KeyValuePair<string, string>[]
+                string rootPath = GetReferenceRootPath(buildProject);
+                foreach (var item in addedRefs)
                 {
-                    new KeyValuePair<string, string>("HintPath", $"$(BeatSaberDir)\\{item.RelativeDirectory}\\{item.Name}.dll"),
-                    new KeyValuePair<string, string>("Private", "False"),
-                    new KeyValuePair<string, string>("SpecificVersion", "False")
-                };
-                //if (newRef == null)
-                //    newRef = buildProject.AddItem("Reference", item.Name).FirstOrDefault();
-                if (newRef != null)
-                {
-                    foreach (var pair in meta)
+                    var newRef = buildProject.Items.Where(obj => obj.ItemType == "Reference" && GetSimpleReferenceName(obj.EvaluatedInclude) == item.Name).FirstOrDefault();
+                    string hintPath = item.HintPath;
+                    if (rootPath != null)
+                        hintPath = $"{rootPath}\\{item.RelativeDirectory}\\{item.Name}.dll";
+                    KeyValuePair<string, string>[] meta = new KeyValuePair<string, string>[]
                     {
-                        newRef.SetMetadataValue(pair.Key, pair.Value);
+                        new KeyValuePair<string, string>("HintPath", hintPath),
+                        new KeyValuePair<string, string>("Private", "False"),
+                        new KeyValuePair<string, string>("SpecificVersion", "False")
+                    };
+                    //if (newRef == null)
+                    //    newRef = buildProject.AddItem("Reference", item.Name).FirstOrDefault();
+                    if (newRef != null)
+                    {
+                        foreach (var pair in meta)
+                        {
+                            newRef.SetMetadataValue(pair.Key, pair.Value);
+                        }
                     }
                 }
+                buildProject.MarkDirty();
             }
-            buildProject.MarkDirty();
             //buildProject.ReevaluateIfNecessary();
             //buildProject.Save();
             CheckChangedReferences();
+        }
+        private static readonly string[] PathProperties = new string[] { "BeatSaberReferences", "BeatSaberDir" };
+        private void UpdateAvailableReferenceRoots(Project project)
+        {
+            if (project == null)
+                return;
+            ProjectProperties.Clear();
+            ProjectProperty prop = null;
+            for (int i = 0; i < PathProperties.Length; i++)
+            {
+                prop = project.GetProperty(PathProperties[i]);
+                if (prop != null && !string.IsNullOrWhiteSpace(prop.UnevaluatedValue))
+                {
+                    ProjectProperties.Add(prop.Name);
+                }
+            }
+            PathOption = PathOption;
+        }
+
+        private string GetReferenceRootPath(Project project)
+        {
+            if (PathOption == "None" || PathOption == null)
+                return null;
+            return $"$({PathOption})";
         }
 
         private static string GetSimpleReferenceName(string fullInclude)
