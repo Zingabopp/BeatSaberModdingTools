@@ -18,11 +18,11 @@ namespace $safeprojectname$
         // TODO: If using Harmony, uncomment and change YourGitHub to the name of your GitHub account, or use the form "com.company.project.product"
         //       You must also add a reference to the Harmony assembly in the Libs folder.
         // public const string HarmonyId = "com.github.YourGitHub.$safeprojectname$";
-        // internal static HarmonyInstance harmony => HarmonyInstance.Create(HarmonyId);
+        // internal static readonly HarmonyLib.Harmony harmony = new HarmonyLib.Harmony(HarmonyId);
 
-        internal static Plugin instance { get; private set; }
-        internal static string Name => "$projectname$";
-        internal static $safeprojectname$Controller PluginController { get { return $safeprojectname$Controller.instance; } }
+        internal static Plugin Instance { get; private set; }
+        internal static IPALogger Log { get; private set; }
+        internal static $safeprojectname$Controller PluginController { get { return $safeprojectname$Controller.Instance; } }
 
         [Init]
         /// <summary>
@@ -32,21 +32,21 @@ namespace $safeprojectname$
         /// </summary>
         public Plugin(IPALogger logger)
         {
-            instance = this;
-            Logger.log = logger;
-            Logger.log.Debug("Logger initialized.");
+            Instance = this;
+            Plugin.Log = logger;
+            Plugin.Log?.Debug("Logger initialized.");
         }
 
         #region BSIPA Config
         //Uncomment to use BSIPA's config
-    /*
+        /*
         [Init]
         public void InitWithConfig(Config conf)
         {
             Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
-            Logger.log.Debug("Config loaded");
+            Plugin.Log?.Debug("Config loaded");
         }
-    */
+        */
         #endregion
 
 
@@ -75,7 +75,7 @@ namespace $safeprojectname$
             //RemoveHarmonyPatches();
         }
 
-     /*
+        /*
         /// <summary>
         /// Called when the plugin is disabled and on Beat Saber quit.
         /// Return Task for when the plugin needs to do some long-running, asynchronous work to disable.
@@ -86,7 +86,7 @@ namespace $safeprojectname$
         {
             await LongRunningUnloadTask().ConfigureAwait(false);
         }
-    */
+        */
         #endregion
 
         // Uncomment the methods in this section if using Harmony
@@ -95,24 +95,24 @@ namespace $safeprojectname$
         /// <summary>
         /// Attempts to apply all the Harmony patches in this assembly.
         /// </summary>
-        public static void ApplyHarmonyPatches()
+        internal static void ApplyHarmonyPatches()
         {
             try
             {
-                Logger.log.Debug("Applying Harmony patches.");
+                Plugin.Log?.Debug("Applying Harmony patches.");
                 harmony.PatchAll(Assembly.GetExecutingAssembly());
             }
             catch (Exception ex)
             {
-                Logger.log.Critical("Error applying Harmony patches: " + ex.Message);
-                Logger.log.Debug(ex);
+                Plugin.Log?.Error("Error applying Harmony patches: " + ex.Message);
+                Plugin.Log?.Debug(ex);
             }
         }
 
         /// <summary>
         /// Attempts to remove all the Harmony patches that used our HarmonyId.
         /// </summary>
-        public static void RemoveHarmonyPatches()
+        internal static void RemoveHarmonyPatches()
         {
             try
             {
@@ -121,11 +121,11 @@ namespace $safeprojectname$
             }
             catch (Exception ex)
             {
-                Logger.log.Critical("Error removing Harmony patches: " + ex.Message);
-                Logger.log.Debug(ex);
+                Plugin.Log?.Error("Error removing Harmony patches: " + ex.Message);
+                Plugin.Log?.Debug(ex);
             }
         }
-    */
-    #endregion
-}
+        */
+        #endregion
+    }
 }

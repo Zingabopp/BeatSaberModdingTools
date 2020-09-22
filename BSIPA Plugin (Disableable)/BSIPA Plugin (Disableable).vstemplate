@@ -18,14 +18,14 @@
   </TemplateData>
   <TemplateContent>
     <Project File="DisableableProjectTemplate.csproj" ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj">
-      <ProjectItem ReplaceParameters="true">BuildTargets.targets</ProjectItem>
-	    <ProjectItem ReplaceParameters="true" TargetFileName=".gitignore">gitignore.txt</ProjectItem>
-      <ProjectItem ReplaceParameters="true">Logger.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="$safeprojectname$Controller.cs">MonobehaviourTemplate.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="Configuration\PluginConfig.cs">PluginConfig.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
-      <ProjectItem ReplaceParameters="true" OpenInEditor="true">manifest.json</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">Plugin.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Directory.Build.targets">Directory.Build.targets.template</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Directory.Build.props">Directory.Build.props.template</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true">manifest.json</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj.user">csproj.user.template</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>
