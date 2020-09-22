@@ -7,25 +7,28 @@ namespace $safeprojectname$
     public class Plugin
     {
         internal static Plugin Instance { get; private set; }
-        internal static IPALogger log { get; set; }
+        /// <summary>
+        /// Use to send log messages through BSIPA.
+        /// </summary>
+        internal static IPALogger Log { get; set; }
 
         [Init]
         public Plugin(IPALogger logger)
         {
             Instance = this;
-            log = logger;
+            Log = logger;
         }
 
         [OnStart]
         public void OnApplicationStart()
         {
-            
+            Plugin.Log.Info("OnApplicationStart");
         }
 
         [OnExit]
         public void OnApplicationQuit()
         {
-            
+
         }
 
     }
