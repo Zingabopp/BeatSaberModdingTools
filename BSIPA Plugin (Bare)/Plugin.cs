@@ -10,7 +10,7 @@ namespace $safeprojectname$
         /// <summary>
         /// Use to send log messages through BSIPA.
         /// </summary>
-        internal static IPALogger Log { get; set; }
+        internal static IPALogger Log { get; private set; }
 
         [Init]
         public Plugin(IPALogger logger)

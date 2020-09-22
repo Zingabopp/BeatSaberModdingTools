@@ -18,12 +18,12 @@
   </TemplateData>
   <TemplateContent>
     <Project File="BareProjectTemplate.csproj" ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj">
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true">Plugin.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="Directory.Build.targets">Directory.Build.targets.template</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="Directory.Build.props">Directory.Build.props.template</ProjectItem>
-	    <ProjectItem ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj.user">BareProjectTemplate.csproj.user.template</ProjectItem>
-      <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">manifest.json</ProjectItem>
-      <ProjectItem ReplaceParameters="true" OpenInEditor="true">Plugin.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj.user">csproj.user.template</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>
