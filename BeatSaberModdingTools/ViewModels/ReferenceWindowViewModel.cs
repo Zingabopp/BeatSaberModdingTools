@@ -1,6 +1,7 @@
 ﻿using BeatSaberModdingTools.Models;
 using BeatSaberModdingTools.Utilities;
 using Microsoft.Build.Evaluation;
+using Microsoft.Build.Execution;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using VSLangProj;
 
 namespace BeatSaberModdingTools.ViewModels
@@ -20,11 +22,11 @@ namespace BeatSaberModdingTools.ViewModels
         private string _windowTitle;
         public string WindowTitle
         {
-            get 
+            get
             {
                 if (_windowTitle == null)
                     _windowTitle = $"{_projectName} - Beat Saber Reference Manager";
-                return _windowTitle; 
+                return _windowTitle;
             }
         }
         public ObservableCollection<ReferenceItemViewModel> DesignExample => new ObservableCollection<ReferenceItemViewModel>()
@@ -36,6 +38,7 @@ namespace BeatSaberModdingTools.ViewModels
         public ObservableCollection<ReferenceFilter> Filters { get; } = new ObservableCollection<ReferenceFilter>()
         {
             new ReferenceFilter("<all>", string.Empty, string.Empty),
+            new ReferenceFilter("Game", Paths.Path_Managed, new Func<ReferenceItemViewModel, bool>(t => t != null ? t.Name == "Main" || t.Name.StartsWith("HM") : false)),
             new ReferenceFilter("System", Paths.Path_Managed, "System."),
             new ReferenceFilter("Unity", Paths.Path_Managed, "Unity."),
             new ReferenceFilter("UnityEngine", Paths.Path_Managed, "UnityEngine."),
@@ -60,10 +63,10 @@ namespace BeatSaberModdingTools.ViewModels
         public bool Filter(object item)
         {
             bool shown = true;
-            if (item is ReferenceItemViewModel target)
+            if (item is ReferenceItemViewModel target && SelectedFilter.IsValid)
             {
 
-                if (!string.IsNullOrEmpty(SelectedFilter.Prefix) && !target.Name.StartsWith(SelectedFilter.Prefix))
+                if (!SelectedFilter.IsMatch(target))
                     shown = false;
                 if (shown && !string.IsNullOrEmpty(SelectedFilter.RelativeDir) && target.RelativeDirectory != SelectedFilter.RelativeDir)
                     shown = false;
@@ -150,31 +153,44 @@ namespace BeatSaberModdingTools.ViewModels
                 //var refPath = item.HintPath.Replace(BeatSaberDir, "$(BeatSaberDir)");
                 if (_project.References.Find(item.Name) == null)
                 {
-                    var reference = _project.References.Add(item.HintPath);
+                    Reference reference = _project.References.Add(item.HintPath);
                     reference.CopyLocal = false;
                     item.StartedInProject = true;
                 }
                 else
                 {
                     item.StartedInProject = true;
-                    item.IsInProject = true;                    
+                    item.IsInProject = true;
                 }
             }
+
             var buildProject = ProjectCollection.GlobalProjectCollection.GetLoadedProjects(ProjectFilePath).First();
             foreach (var item in addedRefs)
             {
-                var newRef = buildProject.Items.Where(obj => obj.ItemType == "Reference" && GetSimpleReferenceName(obj.EvaluatedInclude) == item.Name).First();
+                var newRef = buildProject.Items.Where(obj => obj.ItemType == "Reference" && GetSimpleReferenceName(obj.EvaluatedInclude) == item.Name).FirstOrDefault();
+                KeyValuePair<string, string>[] meta = new KeyValuePair<string, string>[]
+                {
+                    new KeyValuePair<string, string>("HintPath", $"$(BeatSaberDir)\\{item.RelativeDirectory}\\{item.Name}.dll"),
+                    new KeyValuePair<string, string>("Private", "False"),
+                    new KeyValuePair<string, string>("SpecificVersion", "False")
+                };
+                //if (newRef == null)
+                //    newRef = buildProject.AddItem("Reference", item.Name).FirstOrDefault();
                 if (newRef != null)
                 {
-                    newRef.SetMetadataValue("HintPath", $"$(BeatSaberDir)\\{item.RelativeDirectory}\\{item.Name}.dll");
-                    newRef.SetMetadataValue("Private", "False");
-                    newRef.SetMetadataValue("SpecificVersion", "False");
+                    foreach (var pair in meta)
+                    {
+                        newRef.SetMetadataValue(pair.Key, pair.Value);
+                    }
                 }
             }
             buildProject.MarkDirty();
+            //buildProject.ReevaluateIfNecessary();
+            //buildProject.Save();
             CheckChangedReferences();
         }
-        private string GetSimpleReferenceName(string fullInclude)
+
+        private static string GetSimpleReferenceName(string fullInclude)
         {
             if (fullInclude.Contains(","))
                 return fullInclude.Substring(0, fullInclude.IndexOf(",")).Trim();
@@ -251,15 +267,31 @@ namespace BeatSaberModdingTools.ViewModels
     {
         public string Name { get; }
         public string RelativeDir { get; }
-        public string Prefix { get; }
+        protected string Prefix { get; }
+        public bool IsValid { get; }
+        public Func<ReferenceItemViewModel, bool> IsMatch { get; protected set; }
+
         public ReferenceFilter(string name, string relativeDir, string prefix)
         {
             Name = name;
             RelativeDir = relativeDir;
             Prefix = prefix;
+            if (!string.IsNullOrEmpty(prefix))
+            {
+                IsMatch = new Func<ReferenceItemViewModel, bool>(t => t?.Name.StartsWith(prefix) ?? false);
+            }
+            else
+                IsMatch = new Func<ReferenceItemViewModel, bool>(t => true);
+            IsValid = true;
         }
 
-        public Func<ReferenceItemViewModel, bool> IsMatch { get; }
+        public ReferenceFilter(string name, string relativeDir, Func<ReferenceItemViewModel, bool> predicate)
+        {
+            Name = name;
+            RelativeDir = relativeDir;
+            IsValid = predicate != null;
+            IsMatch = predicate;
+        }
 
         public override string ToString()
         {
