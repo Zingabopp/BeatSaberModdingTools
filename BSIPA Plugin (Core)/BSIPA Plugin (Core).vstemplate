@@ -2,7 +2,7 @@
 <VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
     <Name>BSIPA4 Plugin (Core)</Name>
-    <Description>A bare template for a new Beat Saber IPA plugin.</Description>
+    <Description>A basic template for a new Beat Saber IPA plugin.</Description>
     <Icon>beat_saber.ico</Icon>
     <ProjectType>CSharp</ProjectType>
     <RequiredFrameworkVersion>4.7.2</RequiredFrameworkVersion>
@@ -18,14 +18,14 @@
   </TemplateData>
   <TemplateContent>
     <Project File="CoreProjectTemplate.csproj" ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj">
-      <ProjectItem ReplaceParameters="true">BuildTargets.targets</ProjectItem>
-	    <ProjectItem ReplaceParameters="true" TargetFileName=".gitignore">gitignore.txt</ProjectItem>
-      <ProjectItem ReplaceParameters="true">Logger.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="$safeprojectname$Controller.cs">MonobehaviourTemplate.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="Configuration\PluginConfig.cs">PluginConfig.cs</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true" TargetFileName="Properties\AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
-      <ProjectItem ReplaceParameters="true" OpenInEditor="true">manifest.json</ProjectItem>
       <ProjectItem ReplaceParameters="true" OpenInEditor="true">Plugin.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Directory.Build.targets">Directory.Build.targets.template</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Directory.Build.props">Directory.Build.props.template</ProjectItem>
+      <ProjectItem ReplaceParameters="true" OpenInEditor="true">manifest.json</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="$safeprojectname$.csproj.user">csproj.user.template</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

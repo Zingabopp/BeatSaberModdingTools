@@ -15,8 +15,8 @@ namespace $safeprojectname$
     [Plugin(RuntimeOptions.SingleStartInit)]
     public class Plugin
     {
-        internal static Plugin instance { get; private set; }
-        internal static string Name => "$projectname$";
+        internal static Plugin Instance { get; private set; }
+        internal static IPALogger Log { get; private set; }
 
         [Init]
         /// <summary>
@@ -26,9 +26,9 @@ namespace $safeprojectname$
         /// </summary>
         public void Init(IPALogger logger)
         {
-            instance = this;
-            Logger.log = logger;
-            Logger.log.Debug("Logger initialized.");
+            Instance = this;
+            Log = logger;
+            Log.Info("$projectname$ initialized.");
         }
 
         #region BSIPA Config
@@ -38,7 +38,7 @@ namespace $safeprojectname$
         public void InitWithConfig(Config conf)
         {
             Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
-            Logger.log.Debug("Config loaded");
+            Log.Debug("Config loaded");
         }
         */
         #endregion
@@ -46,7 +46,7 @@ namespace $safeprojectname$
         [OnStart]
         public void OnApplicationStart()
         {
-            Logger.log.Debug("OnApplicationStart");
+            Log.Debug("OnApplicationStart");
             new GameObject("$safeprojectname$Controller").AddComponent<$safeprojectname$Controller>();
 
         }
@@ -54,7 +54,7 @@ namespace $safeprojectname$
         [OnExit]
         public void OnApplicationQuit()
         {
-            Logger.log.Debug("OnApplicationQuit");
+            Log.Debug("OnApplicationQuit");
 
         }
     }
