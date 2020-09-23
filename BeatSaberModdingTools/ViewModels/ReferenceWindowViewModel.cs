@@ -294,6 +294,18 @@ namespace BeatSaberModdingTools.ViewModels
             if (project == null)
                 return;
             ProjectProperties.Clear();
+            KeyValuePair<string, int>[] rootsUsed = project.Items
+                .Where(i => i.ItemType == "Reference" && i.HasMetadata("HintPath"))
+                .Select(r => r.GetMetadata("HintPath").UnevaluatedValue.Split('\\', '/').FirstOrDefault())
+                .Where(p => p?.StartsWith("$(") ?? false)
+                .GroupBy(r => r)
+                .Select(g => new KeyValuePair<string, int>(g.Key.Trim('$', '(', ')'), g.Count()))
+                .OrderByDescending(p => p.Value).ToArray();
+            for(int i = 0; i < rootsUsed.Length; i++)
+            {
+                if (PathProperties.Contains(rootsUsed[i].Key))
+                    ProjectProperties.Add(rootsUsed[i].Key);
+            }
             ProjectProperty prop = null;
             for (int i = 0; i < PathProperties.Length; i++)
             {
@@ -303,6 +315,7 @@ namespace BeatSaberModdingTools.ViewModels
                     ProjectProperties.Add(prop.Name);
                 }
             }
+
             PathOption = PathOption;
         }
 
