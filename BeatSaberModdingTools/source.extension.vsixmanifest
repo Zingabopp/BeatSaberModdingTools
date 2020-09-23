@@ -3,7 +3,7 @@
     <Metadata>
         <Identity Id="BeatSaberModdingToolsInstaller.c6a253d2-2234-4376-ad66-f769645c1516" Version="0.9.1" Language="en-US" Publisher="Zingabopp" />
         <DisplayName>BeatSaberModdingTools</DisplayName>
-        <Description xml:space="preserve">Installer for tools and templates for creating Beat Saber mods.</Description>
+        <Description xml:space="preserve">Tools and templates for creating Beat Saber mods.</Description>
         <MoreInfo>https://github.com/Zingabopp/BeatSaberModdingTools</MoreInfo>
         <License>LICENSE.txt</License>
         <GettingStartedGuide>https://github.com/Zingabopp/BeatSaberModdingTools/wiki</GettingStartedGuide>
