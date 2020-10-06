@@ -55,9 +55,9 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn MinWidth="80" Width="240" Header="Name" Binding="{Binding Name}" />
-                    <DataGridTextColumn Width="*" Header="Relative Path" Binding="{Binding RelativeDirectory}" />
-                    <DataGridTextColumn Width="80" Header="Version" Binding="{Binding Version}" />
+                    <DataGridTextColumn MinWidth="80" Width="240" Header="Name" Binding="{Binding Name, Mode=OneWay}" IsReadOnly="True" />
+                    <DataGridTextColumn Width="*" Header="Relative Path" Binding="{Binding RelativeDirectory, Mode=OneWay}" IsReadOnly="True" />
+                    <DataGridTextColumn Width="80" Header="Version" Binding="{Binding Version, Mode=OneWay}" IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
