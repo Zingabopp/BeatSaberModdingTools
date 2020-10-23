@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using BeatSaberModdingTools.Models;
+using BeatSaberModdingTools.Utilities;
 using BeatSaberModdingTools.ViewModels;
 
 namespace BeatSaberModdingTools.Views
@@ -57,17 +59,15 @@ namespace BeatSaberModdingTools.Views
 
         private void btnBrowse_Click(object sender, RoutedEventArgs e)
         {
-            using (FolderBrowserDialog folderBrowser = new FolderBrowserDialog())
+            var dialog = new FolderSelectDialog
             {
-                folderBrowser.RootFolder = Environment.SpecialFolder.MyComputer;
-                folderBrowser.ShowNewFolderButton = false;
-                folderBrowser.Description = "Select your Beat Saber game folder.";
-                var result = folderBrowser.ShowDialog();
-                if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(folderBrowser.SelectedPath))
-                {
-                    WindowViewModel.NewLocationInput = folderBrowser.SelectedPath;
-                    LocationInput.Focus();
-                }
+                InitialDirectory = Directory.GetCurrentDirectory(),
+                Title = "Select your Beat Saber game folder."
+            };
+            if (dialog.Show())
+            {
+                WindowViewModel.NewLocationInput = dialog.FileName;
+                LocationInput.Focus();
             }
         }
     }
