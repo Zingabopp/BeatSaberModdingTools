@@ -38,7 +38,16 @@ namespace BeatSaberModdingTools.ViewModels
         public ObservableCollection<ReferenceFilter> Filters { get; } = new ObservableCollection<ReferenceFilter>()
         {
             new ReferenceFilter("<all>", string.Empty, string.Empty),
-            new ReferenceFilter("Game", Paths.Path_Managed, new Func<ReferenceItemViewModel, bool>(t => t != null ? t.Name == "Main" || t.Name.StartsWith("HM") : false)),
+            new ReferenceFilter("Game", Paths.Path_Managed, new Func<ReferenceItemViewModel, bool>(t =>
+            {
+                if(t == null)
+                    return false;
+                return t.Name == "Main"
+                || t.Name.StartsWith("HM")
+                || t.Name.StartsWith("Zenject")
+                || t.Name == "BeatmapCore"
+                || t.Name == "GameplayCore";
+            })),
             new ReferenceFilter("System", Paths.Path_Managed, "System."),
             new ReferenceFilter("Unity", Paths.Path_Managed, "Unity."),
             new ReferenceFilter("UnityEngine", Paths.Path_Managed, "UnityEngine."),
