@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using BeatSaberModdingTools.Models;
 using BeatSaberModdingTools.Utilities;
 using BeatSaberModdingTools.ViewModels;
@@ -18,11 +19,13 @@ namespace BeatSaberModdingTools.Views
     public partial class SettingsWindow : Window
     {
         WindowViewModel WindowViewModel;
+        WindowInteropHelper InteropHelper;
         public SettingsWindow()
         {
             WindowViewModel = new WindowViewModel();
             DataContext = WindowViewModel;
             InitializeComponent();
+            InteropHelper = new WindowInteropHelper(this);
         }
 
         void ApplyButton_Click(object sender, RoutedEventArgs e)
@@ -68,7 +71,7 @@ namespace BeatSaberModdingTools.Views
                 InitialDirectory = dir,
                 Title = "Select your Beat Saber game folder."
             };
-            if (dialog.Show())
+            if (dialog.Show(InteropHelper.Handle))
             {
                 WindowViewModel.NewLocationInput = dialog.FileName;
                 LocationInput.Focus();
