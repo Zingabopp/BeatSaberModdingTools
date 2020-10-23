@@ -19,7 +19,7 @@ namespace BeatSaberModdingTools.Utilities
 
         public string InitialDirectory
         {
-            get { return string.IsNullOrEmpty(_initialDirectory) ? Environment.CurrentDirectory : _initialDirectory; }
+            get { return _initialDirectory ?? Environment.CurrentDirectory; }
             set { _initialDirectory = value; }
         }
         public string Title

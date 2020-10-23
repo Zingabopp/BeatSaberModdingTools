@@ -59,9 +59,13 @@ namespace BeatSaberModdingTools.Views
 
         private void btnBrowse_Click(object sender, RoutedEventArgs e)
         {
+            btnBrowse.IsEnabled = false;
+            string dir = WindowViewModel.NewLocationInput;
+            if (dir == null || dir.Length == 0 || !Directory.Exists(dir))
+                dir = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
             var dialog = new FolderSelectDialog
             {
-                InitialDirectory = Directory.GetCurrentDirectory(),
+                InitialDirectory = dir,
                 Title = "Select your Beat Saber game folder."
             };
             if (dialog.Show())
@@ -69,6 +73,7 @@ namespace BeatSaberModdingTools.Views
                 WindowViewModel.NewLocationInput = dialog.FileName;
                 LocationInput.Focus();
             }
+            btnBrowse.IsEnabled = true;
         }
     }
 
