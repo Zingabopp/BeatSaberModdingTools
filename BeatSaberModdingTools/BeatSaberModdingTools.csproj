@@ -89,6 +89,7 @@
     <Compile Include="BuildTools\BuildToolsRefsParser.cs" />
     <Compile Include="Utilities\DebugExtensions.cs" />
     <Compile Include="Utilities\EnvUtils.cs" />
+    <Compile Include="Utilities\FolderSelectDialog.cs" />
     <Compile Include="Utilities\IExecuteWithObject.cs" />
     <Compile Include="Utilities\IExecuteWithObjectAndResult.cs" />
     <Compile Include="Utilities\Paths.cs" />
