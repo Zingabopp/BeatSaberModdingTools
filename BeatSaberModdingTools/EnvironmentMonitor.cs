@@ -64,9 +64,9 @@ namespace BeatSaberModdingTools
         {
             //RefreshProjects();
         }
-        private void SolutionEvents_OnAfterOpenProject(object sender, Microsoft.VisualStudio.Shell.Events.OpenProjectEventArgs e)
+        private async void SolutionEvents_OnAfterOpenProject(object sender, Microsoft.VisualStudio.Shell.Events.OpenProjectEventArgs e)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             ProjectModel projModel = null;
             e.Hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
             if (projectObj is EnvDTE.Project project)
@@ -125,9 +125,9 @@ namespace BeatSaberModdingTools
 
         }
 
-        private void SolutionEvents_OnBeforeUnloadProject(object sender, Microsoft.VisualStudio.Shell.Events.LoadProjectEventArgs e)
+        private async void SolutionEvents_OnBeforeUnloadProject(object sender, Microsoft.VisualStudio.Shell.Events.LoadProjectEventArgs e)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             e.RealHierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
             EnvDTE.Project project = (EnvDTE.Project)projectObj;
             Projects.TryRemove(project.FullName, out _);
@@ -166,6 +166,7 @@ namespace BeatSaberModdingTools
                 if (projModel.IsBSIPAProject)
                     BsipaProjectInSolution = true;
                 Projects.TryAdd(projModel.ProjectPath, projModel);
+                ThreadHelper.ThrowIfNotOnUIThread();
                 OnProjectLoaded(project, projModel);
             }
             if (BsipaProjectInSolution == null)
@@ -214,8 +215,9 @@ namespace BeatSaberModdingTools
 
 
 
-        public void OnProjectLoaded(Microsoft.Build.Evaluation.Project project, ProjectModel projectModel)
+        public async void OnProjectLoaded(Microsoft.Build.Evaluation.Project project, ProjectModel projectModel)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             if (projectModel.IsBSIPAProject)
                 BsipaProjectInSolution = true;
             Microsoft.Build.Evaluation.Project userProj = null;
