@@ -1,4 +1,6 @@
 ﻿using BeatSaberModdingTools.Models;
+using Gameloop.Vdf;
+using Gameloop.Vdf.Linq;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -6,32 +8,47 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using static BeatSaberModdingTools.Utilities.Paths;
 
 namespace BeatSaberModdingTools.Utilities
 {
     public static class BeatSaberTools
     {
-        // Using Path.Combine makes it safe for regions that don't use '\' as a directory separator?
-        private static readonly string STEAM_REG_KEY = Path.Combine("SOFTWARE", "Microsoft", "Windows", "CurrentVersion", "Uninstall", "Steam App 620980");
+        /// <summary>
+        /// Path to the Steam Beat Saber uninstall registry entry, not always present.
+        /// </summary>
+        private static readonly string STEAM_BS_UNINSTALL_REG_KEY = Path.Combine("SOFTWARE", "Microsoft", "Windows", "CurrentVersion", "Uninstall", "Steam App 620980");
+        /// <summary>
+        /// Path to config.vdf from the Steam install folder.
+        /// </summary>
+        private static readonly string STEAM_CONFIG_PATH = Path.Combine("config", "config.vdf");
+
+        private static readonly string STEAM_PATH_KEY = Path.Combine("SOFTWARE", "WOW6432Node", "Valve", "Steam");
+
         //private const string STEAM_REG_KEY = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 620980";
         private static readonly string OCULUS_LM_KEY = Path.Combine("SOFTWARE", "WOW6432Node", "Oculus VR, LLC", "Oculus", "Config");
         private static readonly string OCULUS_CU_KEY = Path.Combine("SOFTWARE", "Oculus VR, LLC", "Oculus", "Libraries");
         //private const string OCULUS_REG_KEY = @"SOFTWARE\WOW6432Node\Oculus VR, LLC\Oculus\Config";
         public static BeatSaberInstall[] GetBeatSaberPathsFromRegistry()
         {
-            var installList = new List<BeatSaberInstall>();
+            List<BeatSaberInstall> installList = new List<BeatSaberInstall>();
             using (RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))// Doesn't work in 32 bit mode without this
             {
-                using (var steamKey = hklm?.OpenSubKey(STEAM_REG_KEY))
+                string installedBS = GetInstalledSteamBeatSaber(hklm);
+                if (installedBS != null)
+                    installList.Add(new BeatSaberInstall(installedBS, InstallType.Steam));
+                string[] steamLibraries = GetSteamLibraryPaths();
+                foreach (string library in steamLibraries)
                 {
-                    var path = (string)steamKey?.GetValue("InstallLocation", string.Empty);
-                    if (IsBeatSaberDirectory(path))
-                        installList.Add(new BeatSaberInstall(path, InstallType.Steam));
+                    string matchedLocation = FindBeatSaberInSteamLibrary(library);
+                    if(!string.IsNullOrEmpty(matchedLocation) 
+                        && !matchedLocation.Equals(installedBS, StringComparison.OrdinalIgnoreCase))
+                    {
+                        installList.Add(new BeatSaberInstall(matchedLocation, InstallType.Steam));
+                    }
                 }
                 string[] oculusLibraries = GetOculusLibraryPaths();
-                foreach (var library in oculusLibraries)
+                foreach (string library in oculusLibraries)
                 {
                     string matchedLocation = FindBeatSaberInOculusLibrary(library);
                     if (!string.IsNullOrEmpty(matchedLocation))
@@ -39,6 +56,17 @@ namespace BeatSaberModdingTools.Utilities
                 }
             }
             return installList.ToArray();
+        }
+
+        public static string GetInstalledSteamBeatSaber(RegistryKey hklm)
+        {
+            using (RegistryKey steamKey = hklm?.OpenSubKey(STEAM_BS_UNINSTALL_REG_KEY))
+            {
+                string path = (string)steamKey?.GetValue("InstallLocation", string.Empty);
+                if (IsBeatSaberDirectory(path))
+                    return path;
+            }
+            return null;
         }
 
         public static string FindBeatSaberInOculusLibrary(string oculusLibraryPath)
@@ -59,14 +87,57 @@ namespace BeatSaberModdingTools.Utilities
             return matchedLocation;
         }
 
+        public static string FindBeatSaberInSteamLibrary(string steamLibraryPath)
+        {
+            string possibleLocation = Path.Combine(steamLibraryPath, "SteamApps", "common", "Beat Saber");
+            if (Directory.Exists(possibleLocation))
+            {
+                if (IsBeatSaberDirectory(possibleLocation))
+                    return possibleLocation;
+            }
+            return null;
+        }
+
+        public static string[] GetSteamLibraryPaths()
+        {
+            string[] libraryPaths = Array.Empty<string>();
+            using (RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))// Doesn't work in 32 bit mode without this
+            {
+                using (RegistryKey steamKey = hklm?.OpenSubKey(STEAM_PATH_KEY))
+                {
+                    string path = (string)steamKey?.GetValue("InstallPath", string.Empty);
+                    if (path != null && path.Length > 0)
+                    {
+                        string configPath = Path.Combine(path, STEAM_CONFIG_PATH);
+                        if (File.Exists(configPath))
+                        {
+
+                            VProperty v = VdfConvert.Deserialize(File.ReadAllText(configPath));
+                            VToken ics = v?.Value;
+                            VToken soft = ics?["Software"];
+                            VToken valve = soft?["Valve"];
+                            VObject steamSettings = valve?["Steam"] as VObject;
+                            VProperty[] settings = steamSettings?.Children<VProperty>()?.ToArray();
+                            if (settings != null)
+                            {
+                                libraryPaths = settings.Where(p => p.Key.StartsWith("BaseInstallFolder"))
+                                    .Select(p => p.Value.ToString()).ToArray();
+                            }
+                        }
+                    }
+                }
+            }
+            return libraryPaths;
+        }
+
         public static string[] GetOculusLibraryPaths()
         {
             List<string> paths = new List<string>();
             using (RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)) // Doesn't work in 32 bit mode without this
             {
-                using (var oculusKey = hklm?.OpenSubKey(OCULUS_LM_KEY))
+                using (RegistryKey oculusKey = hklm?.OpenSubKey(OCULUS_LM_KEY))
                 {
-                    var path = (string)oculusKey?.GetValue("InitialAppLibrary", string.Empty);
+                    string path = (string)oculusKey?.GetValue("InitialAppLibrary", string.Empty);
                     if (!string.IsNullOrEmpty(path))
                     {
                         paths.Add(path);
@@ -79,11 +150,11 @@ namespace BeatSaberModdingTools.Utilities
                 {
                     if (oculusKey != null && oculusKey.SubKeyCount > 0)
                     {
-                        foreach (var libraryKeyName in oculusKey.GetSubKeyNames())
+                        foreach (string libraryKeyName in oculusKey.GetSubKeyNames())
                         {
                             using (RegistryKey library = oculusKey.OpenSubKey(libraryKeyName))
                             {
-                                var path = (string)library?.GetValue("OriginalPath", string.Empty);
+                                string path = (string)library?.GetValue("OriginalPath", string.Empty);
                                 if (!string.IsNullOrEmpty(path) && !paths.Contains(path))
                                     paths.Add(path);
                             }
@@ -144,7 +215,7 @@ namespace BeatSaberModdingTools.Utilities
             catch { return false; }
             if (bsDir.Exists)
             {
-                var files = bsDir.GetFiles("Beat Saber.exe");
+                FileInfo[] files = bsDir.GetFiles("Beat Saber.exe");
                 return files.Count() > 0;
             }
             return false;
@@ -152,17 +223,17 @@ namespace BeatSaberModdingTools.Utilities
 
         public static List<ReferenceModel> GetAvailableReferences(string beatSaberDir)
         {
-            var retList = new List<ReferenceModel>();
+            List<ReferenceModel> retList = new List<ReferenceModel>();
             if (string.IsNullOrEmpty(beatSaberDir) || !Directory.Exists(beatSaberDir)) return retList;
-            var libraryPaths = new string[] { Path_Managed, Path_Libs, Path_Plugins };
-            foreach (var path in libraryPaths)
+            string[] libraryPaths = new string[] { Path_Managed, Path_Libs, Path_Plugins };
+            foreach (string path in libraryPaths)
             {
                 try
                 {
-                    var fullPath = new DirectoryInfo(Path.Combine(beatSaberDir, path));
+                    DirectoryInfo fullPath = new DirectoryInfo(Path.Combine(beatSaberDir, path));
                     if (fullPath.Exists)
                     {
-                        foreach (var item in fullPath.GetFiles("*.dll").ToArray())
+                        foreach (FileInfo item in fullPath.GetFiles("*.dll").ToArray())
                         {
                             ReferenceModel refItem = null;
                             refItem = CreateReferenceFromFile(item.FullName);
@@ -186,7 +257,7 @@ namespace BeatSaberModdingTools.Utilities
             //var assembly = System.Reflection.Assembly.ReflectionOnlyLoadFrom(fileName);
             //var assemblyName = assembly.GetName();
             string version = FileVersionInfo.GetVersionInfo(fileName).FileVersion;
-            var refItem = new ReferenceModel(Path.GetFileNameWithoutExtension(fileName))
+            ReferenceModel refItem = new ReferenceModel(Path.GetFileNameWithoutExtension(fileName))
             {
                 Version = version,
                 HintPath = fileName

@@ -42,121 +42,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildTasks\GetCommitHash_Test.cs" />
-    <Compile Include="BuildTasks\GetManifestInfo_Test.cs" />
-    <None Include="Data\BuildTaskTests\.git\COMMIT_EDITMSG" />
-    <None Include="Data\BuildTaskTests\.git\config" />
-    <None Include="Data\BuildTaskTests\.git\description" />
-    <None Include="Data\BuildTaskTests\.git\FETCH_HEAD">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\BuildTaskTests\.git\HEAD">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\BuildTaskTests\.git\hooks\applypatch-msg.sample" />
-    <None Include="Data\BuildTaskTests\.git\hooks\commit-msg.sample" />
-    <None Include="Data\BuildTaskTests\.git\hooks\fsmonitor-watchman.sample" />
-    <None Include="Data\BuildTaskTests\.git\hooks\post-update.sample" />
-    <None Include="Data\BuildTaskTests\.git\hooks\pre-applypatch.sample" />
-    <None Include="Data\BuildTaskTests\.git\hooks\pre-commit.sample" />
-    <None Include="Data\BuildTaskTests\.git\hooks\pre-push.sample" />
-    <None Include="Data\BuildTaskTests\.git\hooks\pre-rebase.sample" />
-    <None Include="Data\BuildTaskTests\.git\hooks\pre-receive.sample" />
-    <None Include="Data\BuildTaskTests\.git\hooks\prepare-commit-msg.sample" />
-    <None Include="Data\BuildTaskTests\.git\hooks\update.sample" />
-    <None Include="Data\BuildTaskTests\.git\index" />
-    <None Include="Data\BuildTaskTests\.git\info\exclude" />
-    <None Include="Data\BuildTaskTests\.git\logs\HEAD" />
-    <None Include="Data\BuildTaskTests\.git\logs\refs\heads\master" />
-    <None Include="Data\BuildTaskTests\.git\logs\refs\remotes\origin\master" />
-    <None Include="Data\BuildTaskTests\.git\objects\01\efacbe5dbcf74fbeca096ab5ef99d59e37225c" />
-    <None Include="Data\BuildTaskTests\.git\objects\07\6a8b4864be83c441b61e781803fe67ab37d71b" />
-    <None Include="Data\BuildTaskTests\.git\objects\0e\9a1e1890024a43813bae20d9878b0ee2197ec4" />
-    <None Include="Data\BuildTaskTests\.git\objects\10\af7169cec61b8fa914114154a1ace085807fb8" />
-    <None Include="Data\BuildTaskTests\.git\objects\15\76ab21587b4ddadac600bd30244f3884c911aa" />
-    <None Include="Data\BuildTaskTests\.git\objects\16\9de626a2274ce3254159a1fa71c2c68e7de10d" />
-    <None Include="Data\BuildTaskTests\.git\objects\17\f0668b1530ea50eabdb696c2471ff45a9d5dd9" />
-    <None Include="Data\BuildTaskTests\.git\objects\1e\9c02c08b0786457d645a22203ef2f157501c1b" />
-    <None Include="Data\BuildTaskTests\.git\objects\1f\f0c423042b46cb1d617b81efb715defbe8054d" />
-    <None Include="Data\BuildTaskTests\.git\objects\22\5d24b8d9eba8659fc52acd4d8fd6a3ba901f89" />
-    <None Include="Data\BuildTaskTests\.git\objects\27\8acd6e1d46125fc073fd04761d9d85a3750791" />
-    <None Include="Data\BuildTaskTests\.git\objects\2c\f9cfcb812fd2f5bd71590c961e5f8218693e07" />
-    <None Include="Data\BuildTaskTests\.git\objects\2d\4440d9ef9355021712d659c95e971b8bf8a722" />
-    <None Include="Data\BuildTaskTests\.git\objects\30\31ce7f8d3e87119ac469088abdae23d4c4f187" />
-    <None Include="Data\BuildTaskTests\.git\objects\37\d3cd6f5935e92c6585c89f42f68550dc68a068" />
-    <None Include="Data\BuildTaskTests\.git\objects\3b\9c39e40c70dcf8e2b5e157323c988cc6cef9b5" />
-    <None Include="Data\BuildTaskTests\.git\objects\3e\f0e304eb381d5ef65c71554cc7bdbaea099747" />
-    <None Include="Data\BuildTaskTests\.git\objects\43\e1f6438f83e809e01d8792d9fcf91af58c8e99" />
-    <None Include="Data\BuildTaskTests\.git\objects\46\8ba1135c395cf8dc7c5fc75fef6becf0e1ac48" />
-    <None Include="Data\BuildTaskTests\.git\objects\47\31a7562e8783d7dd26bc87e5accb3942d59f6b" />
-    <None Include="Data\BuildTaskTests\.git\objects\4c\e6fddec962ff3b86038d9939b6be5dfc1e6351" />
-    <None Include="Data\BuildTaskTests\.git\objects\4d\63731a714fbdbb7c73a6a192310cd2e129525e" />
-    <None Include="Data\BuildTaskTests\.git\objects\4d\6a08859c3946d2d3128c3f92a060d727386577" />
-    <None Include="Data\BuildTaskTests\.git\objects\4e\b42bc36ec0f0b1e5b12919df78e2517bf56ee5" />
-    <None Include="Data\BuildTaskTests\.git\objects\52\6f2acafc3409ec6e3e58e7ab9e19e52c3ba03c" />
-    <None Include="Data\BuildTaskTests\.git\objects\52\8c9307e7a5045591cf1fa3360cab9cf8d0a92d" />
-    <None Include="Data\BuildTaskTests\.git\objects\54\7be5e23cbc6b07fb843e8e942dd37b13f64078" />
-    <None Include="Data\BuildTaskTests\.git\objects\56\8805dc6c0b61b7d898478e905c2e72d6fa0b66" />
-    <None Include="Data\BuildTaskTests\.git\objects\58\e962bf96eedd93f292f2513cd8edb502698a17" />
-    <None Include="Data\BuildTaskTests\.git\objects\5e\146d1d5697d0da03fcfd6a4144dab0f87d0f3e" />
-    <None Include="Data\BuildTaskTests\.git\objects\5f\a51cf86d45e69a42c748a75a3058f21489e88d" />
-    <None Include="Data\BuildTaskTests\.git\objects\66\916e42eb913c8bad9115dbf70e7cda6bce87da" />
-    <None Include="Data\BuildTaskTests\.git\objects\6a\79957b69c86ca982c7bbfbb583f29c94ee3577" />
-    <None Include="Data\BuildTaskTests\.git\objects\6b\aaa29d5d140663b0fcad91fa30e14a3dad18d2" />
-    <None Include="Data\BuildTaskTests\.git\objects\6d\74e704612ac84f5aa9561c518025ec293f642d" />
-    <None Include="Data\BuildTaskTests\.git\objects\6f\8492cc26846f77cdfbb9ac056326a2efc1d9c8" />
-    <None Include="Data\BuildTaskTests\.git\objects\70\1910b8498a7ad2782f4b17caab03d5151e1df2" />
-    <None Include="Data\BuildTaskTests\.git\objects\71\ec9e81c06a3741bbbf34b165bf1176faf5fe90" />
-    <None Include="Data\BuildTaskTests\.git\objects\74\97b0e55ab3b2503bd3674f33c71549ebacdef0" />
-    <None Include="Data\BuildTaskTests\.git\objects\7c\4211025303fd6bc3b4877d1341473ad651c6f9" />
-    <None Include="Data\BuildTaskTests\.git\objects\83\61da3c9be31c65f37fccbdb7b54c709e554880" />
-    <None Include="Data\BuildTaskTests\.git\objects\83\dfb87e12f745bc83d5961ba0078ac51593d9b2" />
-    <None Include="Data\BuildTaskTests\.git\objects\89\ef2f0258f2fa2be1da3d0049ae2fcedd0e062e" />
-    <None Include="Data\BuildTaskTests\.git\objects\8b\60838835ecd7c3584ca8698bac0bcfd2361838" />
-    <None Include="Data\BuildTaskTests\.git\objects\8d\07a9e30b21f359412850b54a258f05f455adb2" />
-    <None Include="Data\BuildTaskTests\.git\objects\8d\336c1592988c2768c6d9e88c037e9d69ece91e" />
-    <None Include="Data\BuildTaskTests\.git\objects\9a\eec629e494393e3499160f2509e0f446f3dbf4" />
-    <None Include="Data\BuildTaskTests\.git\objects\9d\ac34c768cc5300693c8bf8a651bf22a6f279a4" />
-    <None Include="Data\BuildTaskTests\.git\objects\ac\390f8525a04c3fd38e9399b13008755315eb6d" />
-    <None Include="Data\BuildTaskTests\.git\objects\ad\2c33e20ff89b8da91498ee4e65208aa483f61e" />
-    <None Include="Data\BuildTaskTests\.git\objects\b1\7e9c883a686b13f6c197a23ee0a43d8c72f157" />
-    <None Include="Data\BuildTaskTests\.git\objects\b2\8fcd151de421eb3a808033d8d3c2707be172d9" />
-    <None Include="Data\BuildTaskTests\.git\objects\bb\018b617a6ea41b1ef76c42645882489b39eaeb" />
-    <None Include="Data\BuildTaskTests\.git\objects\bc\46000920556816134ddfe791614475840e045f" />
-    <None Include="Data\BuildTaskTests\.git\objects\c1\b36768f8312d6548880164d128c545594c0572" />
-    <None Include="Data\BuildTaskTests\.git\objects\c5\8af621de6f1c9d37a36a734840ab74c5892bb8" />
-    <None Include="Data\BuildTaskTests\.git\objects\c5\a13c9c180ccd40f58338472ad0bd4d9b983428" />
-    <None Include="Data\BuildTaskTests\.git\objects\c8\c7c1d80febb1c64a5c0b0bb4b0bb174790a424" />
-    <None Include="Data\BuildTaskTests\.git\objects\c9\61617c65d62ada18017a150f3acb6cd8ccce32" />
-    <None Include="Data\BuildTaskTests\.git\objects\cd\683d8e5f9f0b82b66d59444a69632e758fdb78" />
-    <None Include="Data\BuildTaskTests\.git\objects\ce\2b8aaff5c12ae41914b681df896483f86cde9f" />
-    <None Include="Data\BuildTaskTests\.git\objects\cf\a68b1ba9ee1b4e6337cde4a43bf8dade07d67f" />
-    <None Include="Data\BuildTaskTests\.git\objects\d3\953f9cfb6195430c8f399a9b5af7a3337ee608" />
-    <None Include="Data\BuildTaskTests\.git\objects\d8\9eb57ec82b6c20a3a9ea46e1dff4a0332476fa" />
-    <None Include="Data\BuildTaskTests\.git\objects\d8\a8e9d2925e4324924c2036e7052fd7d9185b4a" />
-    <None Include="Data\BuildTaskTests\.git\objects\df\df44aeeea10a9c329188322f73946e5656a634" />
-    <None Include="Data\BuildTaskTests\.git\objects\e1\13baefcac2f5b95deb78bc87a0dbd5863150e6" />
-    <None Include="Data\BuildTaskTests\.git\objects\e1\b553227633a264c88942706e519c839d79aea0" />
-    <None Include="Data\BuildTaskTests\.git\objects\e4\a03baf78519173bead3f10c05f0e6e68f2f23e" />
-    <None Include="Data\BuildTaskTests\.git\objects\e4\e389b8d478c87036d1e686a6914ea550fb24d1" />
-    <None Include="Data\BuildTaskTests\.git\objects\ef\76bfce67aa74c9bd6686346653d2f6931523fd" />
-    <None Include="Data\BuildTaskTests\.git\objects\ef\ee539f1e077bf047eaa830c85facfe218f2ba6" />
-    <None Include="Data\BuildTaskTests\.git\objects\f1\847b97833d30161c7dd3ee7599d178a1f08f09" />
-    <None Include="Data\BuildTaskTests\.git\objects\f2\a3c9742ea47d430af2e476c3446b717c0f857b" />
-    <None Include="Data\BuildTaskTests\.git\objects\f2\c1ed00af259804a24757a225c1d9f06b27952a" />
-    <None Include="Data\BuildTaskTests\.git\objects\f4\6bed195e0c2412dc94af5da69686aafdaf0af5" />
-    <None Include="Data\BuildTaskTests\.git\objects\f6\0b02693aabf55963ab831e012a0a60c05dc3f2" />
-    <None Include="Data\BuildTaskTests\.git\objects\fb\712ca7dc83d97d09956924a2fd819583688ea5" />
-    <None Include="Data\BuildTaskTests\.git\objects\ff\35e7cde359ec16710061116f593a4b4b6fd2e9" />
-    <None Include="Data\BuildTaskTests\.git\ORIG_HEAD" />
-    <None Include="Data\BuildTaskTests\.git\refs\heads\master">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\BuildTaskTests\.git\refs\remotes\origin\master" />
-    <None Include="Data\BuildTaskTests\BeatSync_AssemblyInfo.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <Compile Include="BuildTasks\TestLogger.cs" />
     <Compile Include="BuildTools\RefsNode_Tests.cs" />
     <Compile Include="BuildTools\RefsTxtReading_Tests.cs" />
     <Compile Include="BuildTools\CommandNode_Tests.cs" />
@@ -166,6 +51,7 @@
     <Compile Include="Models\SettingsModel_Tests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\BeatSaberTools_Tests.cs" />
     <Compile Include="ViewModels\SettingsViewModel_Tests\NotifyPropertyChanged_Tests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -192,7 +78,6 @@
     <Content Include="Data\BSMLPractice.csproj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\BuildTaskTests\.git\ms-persist.xml" />
     <Content Include="Data\BuildTools\refs.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -203,28 +88,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Data\BuildTaskTests\BeatSync_manifest_WrongVersion.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\BuildTaskTests\BeatSync_manifest_WhiteSpace.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\BuildTaskTests\BeatSync_manifest_MissingVersion.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\BuildTaskTests\BeatSync_manifest_MissingGameVer.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\BuildTaskTests\BeatSync_manifest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\BuildTaskTests\.git\objects\info\" />
-    <Folder Include="Data\BuildTaskTests\.git\objects\pack\" />
-    <Folder Include="Data\BuildTaskTests\.git\refs\tags\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
