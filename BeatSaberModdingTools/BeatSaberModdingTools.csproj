@@ -90,6 +90,7 @@
     <Compile Include="Utilities\DebugExtensions.cs" />
     <Compile Include="Utilities\EnvUtils.cs" />
     <Compile Include="Utilities\FolderSelectDialog.cs" />
+    <Compile Include="Utilities\Helpers.cs" />
     <Compile Include="Utilities\IExecuteWithObject.cs" />
     <Compile Include="Utilities\IExecuteWithObjectAndResult.cs" />
     <Compile Include="Utilities\Paths.cs" />
@@ -161,6 +162,9 @@
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.7.3069">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

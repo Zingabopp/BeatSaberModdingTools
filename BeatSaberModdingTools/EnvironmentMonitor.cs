@@ -64,73 +64,99 @@ namespace BeatSaberModdingTools
         {
             //RefreshProjects();
         }
+#pragma warning disable VSTHRD100 // Avoid async void methods
         private async void SolutionEvents_OnAfterOpenProject(object sender, Microsoft.VisualStudio.Shell.Events.OpenProjectEventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            ProjectModel projModel = null;
-            e.Hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
-            if (projectObj is EnvDTE.Project project)
+            try
             {
-                var newProject = EnvUtils.GetProject(project.FullName);
-                if (newProject == null) return; // This event seems to randomly trigger if the project is closed and the csproj file is opened in the editor.
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                ProjectModel projModel = null;
+                e.Hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
+                if (projectObj is EnvDTE.Project project)
                 {
-                    projModel = CreateProjectModel(newProject);
-                    if (Projects.TryAdd(newProject.FullPath, projModel))
-                        OnProjectLoaded(newProject, projModel);
+                    var newProject = EnvUtils.GetProject(project.FullName);
+                    if (newProject == null) return; // This event seems to randomly trigger if the project is closed and the csproj file is opened in the editor.
+                    {
+                        projModel = CreateProjectModel(newProject);
+                        if (Projects.TryAdd(newProject.FullPath, projModel))
+                            OnProjectLoaded(newProject, projModel);
+                    }
+                }
+                else
+                {
+                    var newProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p =>
+                        !Projects.ContainsKey(p.FullPath)
+                        && !p.FullPath.EndsWith(".user")).ToList();
+                    foreach (var item in newProjects)
+                    {
+                        var projectModel = CreateProjectModel(item);
+                        if (Projects.TryAdd(item.FullPath, projectModel))
+                            OnProjectLoaded(item, projectModel);
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                var newProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p =>
-                    !Projects.ContainsKey(p.FullPath)
-                    && !p.FullPath.EndsWith(".user")).ToList();
-                foreach (var item in newProjects)
-                {
-                    var projectModel = CreateProjectModel(item);
-                    if (Projects.TryAdd(item.FullPath, projectModel))
-                        OnProjectLoaded(item, projectModel);
-                }
+                _ = Helpers.ShowErrorAsync("Open Project", $"Error in AfterOpenProject event: {ex.Message}\n{ex}");
             }
         }
 
+#pragma warning disable VSTHRD100 // Avoid async void methods
         private async void SolutionEvents_OnAfterLoadProject(object sender, Microsoft.VisualStudio.Shell.Events.LoadProjectEventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            ProjectModel projModel = null;
-            e.RealHierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
-
-            if (projectObj is EnvDTE.Project project)
+            try
             {
-                var interfaces = project.GetType().GetInterfaces();
-                var newProject = EnvUtils.GetProject(project.FullName);
-                if (newProject != null)
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                ProjectModel projModel = null;
+                e.RealHierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
+
+                if (projectObj is EnvDTE.Project project)
                 {
-                    projModel = CreateProjectModel(newProject);
-                    if (Projects.TryAdd(newProject.FullPath, projModel))
-                        OnProjectLoaded(newProject, projModel);
+                    var interfaces = project.GetType().GetInterfaces();
+                    var newProject = EnvUtils.GetProject(project.FullName);
+                    if (newProject != null)
+                    {
+                        projModel = CreateProjectModel(newProject);
+                        if (Projects.TryAdd(newProject.FullPath, projModel))
+                            OnProjectLoaded(newProject, projModel);
+                    }
+                }
+                else
+                {
+                    var newProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p =>
+                        !Projects.ContainsKey(p.FullPath)
+                        && !p.FullPath.EndsWith(".user")).ToList();
+                    foreach (var item in newProjects)
+                    {
+                        var projectModel = CreateProjectModel(item);
+                        if (Projects.TryAdd(item.FullPath, projectModel))
+                            OnProjectLoaded(item, projectModel);
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                var newProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p =>
-                    !Projects.ContainsKey(p.FullPath)
-                    && !p.FullPath.EndsWith(".user")).ToList();
-                foreach (var item in newProjects)
-                {
-                    var projectModel = CreateProjectModel(item);
-                    if (Projects.TryAdd(item.FullPath, projectModel))
-                        OnProjectLoaded(item, projectModel);
-                }
+                _ = Helpers.ShowErrorAsync("After Load Project", $"Error in AfterLoadProject event: {ex.Message}\n{ex}");
             }
-
         }
 
+#pragma warning disable VSTHRD100 // Avoid async void methods
         private async void SolutionEvents_OnBeforeUnloadProject(object sender, Microsoft.VisualStudio.Shell.Events.LoadProjectEventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            e.RealHierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
-            EnvDTE.Project project = (EnvDTE.Project)projectObj;
-            Projects.TryRemove(project.FullName, out _);
+            try
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                e.RealHierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
+                EnvDTE.Project project = (EnvDTE.Project)projectObj;
+                Projects.TryRemove(project.FullName, out _);
+            }
+            catch (Exception ex)
+            {
+                _ = Helpers.ShowErrorAsync("Before Unload Project", $"Error in BeforeUnloadProject event: {ex.Message}\n{ex}");
+            }
         }
 
         private void SolutionEvents_OnBeforeCloseSolution(object sender, EventArgs e)
@@ -215,39 +241,48 @@ namespace BeatSaberModdingTools
 
 
 
+#pragma warning disable VSTHRD100 // Avoid async void methods
         public async void OnProjectLoaded(Microsoft.Build.Evaluation.Project project, ProjectModel projectModel)
+#pragma warning restore VSTHRD100 // Avoid async void methods
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            if (projectModel.IsBSIPAProject)
-                BsipaProjectInSolution = true;
-            Microsoft.Build.Evaluation.Project userProj = null;
             try
             {
-                userProj = EnvUtils.GetProject(project.FullPath + ".user");
-                if (userProj == null) return;
-            }
-            catch (InvalidOperationException) { return; }
-            var installPath = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
-            var projBeatSaberDir = project.GetPropertyValue("BeatSaberDir");
-            var userBeatSaberDir = userProj.GetPropertyValue("BeatSaberDir");
-            if (BSMTSettingsManager.Instance.CurrentSettings.GenerateUserFileOnExisting
-                && !string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
-                && projectModel.IsBSIPAProject)
-            {
-                Utilities.EnvUtils.SetReferencePaths(userProj, projectModel, project, null);
-                if (!string.IsNullOrEmpty(userBeatSaberDir) &&
-                    userBeatSaberDir != BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                if (projectModel.IsBSIPAProject)
+                    BsipaProjectInSolution = true;
+                Microsoft.Build.Evaluation.Project userProj = null;
+                try
                 {
-                    var prop = userProj.GetProperty("BeatSaberDir");
-                    string message = $"Overriding BeatSaberDir in {projectModel.ProjectName} to \n{prop?.EvaluatedValue}\n(Old path: {userBeatSaberDir})";
-                    VsShellUtilities.ShowMessageBox(
-                        this.package,
-                        message,
-                        $"{projectModel.ProjectName}: Auto Set BeatSaberDir",
-                        OLEMSGICON.OLEMSGICON_INFO,
-                        OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                        OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                    userProj = EnvUtils.GetProject(project.FullPath + ".user");
+                    if (userProj == null) return;
                 }
+                catch (InvalidOperationException) { return; }
+                var installPath = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
+                var projBeatSaberDir = project.GetPropertyValue("BeatSaberDir");
+                var userBeatSaberDir = userProj.GetPropertyValue("BeatSaberDir");
+                if (BSMTSettingsManager.Instance.CurrentSettings.GenerateUserFileOnExisting
+                    && !string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
+                    && projectModel.IsBSIPAProject)
+                {
+                    Utilities.EnvUtils.SetReferencePaths(userProj, projectModel, project, null);
+                    if (!string.IsNullOrEmpty(userBeatSaberDir) &&
+                        userBeatSaberDir != BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
+                    {
+                        var prop = userProj.GetProperty("BeatSaberDir");
+                        string message = $"Overriding BeatSaberDir in {projectModel.ProjectName} to \n{prop?.EvaluatedValue}\n(Old path: {userBeatSaberDir})";
+                        VsShellUtilities.ShowMessageBox(
+                            this.package,
+                            message,
+                            $"{projectModel.ProjectName}: Auto Set BeatSaberDir",
+                            OLEMSGICON.OLEMSGICON_INFO,
+                            OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                            OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _ = Helpers.ShowErrorAsync("OnProjectLoaded", $"Error in OnProjectLoaded: {ex.Message}\n{ex}");
             }
         }
 
