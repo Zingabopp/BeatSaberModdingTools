@@ -75,5 +75,26 @@ namespace BeatSaberModdingTools.Models
             else
                 return false;
         }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 57113324;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ChosenInstallPath);
+            hashCode = hashCode * -1521134295 + GenerateUserFileWithTemplate.GetHashCode();
+            hashCode = hashCode * -1521134295 + GenerateUserFileOnExisting.GetHashCode();
+            hashCode = hashCode * -1521134295 + SetManifestJsonDefaults.GetHashCode();
+            hashCode = hashCode * -1521134295 + CopyToIPAPendingOnBuild.GetHashCode();
+            hashCode = hashCode * -1521134295 + BuildReferenceType.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Manifest_Author);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Manifest_Donation);
+            hashCode = hashCode * -1521134295 + Manifest_AuthorEnabled.GetHashCode();
+            hashCode = hashCode * -1521134295 + Manifest_DonationEnabled.GetHashCode();
+            return hashCode;
+        }
     }
 }
