@@ -65,6 +65,11 @@ namespace BeatSaberModdingTools
             //RefreshProjects();
         }
 #pragma warning disable VSTHRD100 // Avoid async void methods
+        /// <summary>
+        /// Called on solution load if extension is loaded.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void SolutionEvents_OnAfterOpenProject(object sender, Microsoft.VisualStudio.Shell.Events.OpenProjectEventArgs e)
 #pragma warning restore VSTHRD100 // Avoid async void methods
         {
@@ -98,7 +103,7 @@ namespace BeatSaberModdingTools
             }
             catch (Exception ex)
             {
-                _ = Helpers.ShowErrorAsync("Open Project", $"Error in AfterOpenProject event: {ex.Message}\n{ex}");
+                await Helpers.ShowErrorAsync("Open Project", $"Error in AfterOpenProject event: {ex.Message}\n{ex}");
             }
         }
 
@@ -138,7 +143,7 @@ namespace BeatSaberModdingTools
             }
             catch (Exception ex)
             {
-                _ = Helpers.ShowErrorAsync("After Load Project", $"Error in AfterLoadProject event: {ex.Message}\n{ex}");
+                await Helpers.ShowErrorAsync("After Load Project", $"Error in AfterLoadProject event: {ex.Message}\n{ex}");
             }
         }
 
@@ -155,7 +160,7 @@ namespace BeatSaberModdingTools
             }
             catch (Exception ex)
             {
-                _ = Helpers.ShowErrorAsync("Before Unload Project", $"Error in BeforeUnloadProject event: {ex.Message}\n{ex}");
+                await Helpers.ShowErrorAsync("Before Unload Project", $"Error in BeforeUnloadProject event: {ex.Message}\n{ex}");
             }
         }
 
@@ -282,7 +287,7 @@ namespace BeatSaberModdingTools
             }
             catch (Exception ex)
             {
-                _ = Helpers.ShowErrorAsync("OnProjectLoaded", $"Error in OnProjectLoaded: {ex.Message}\n{ex}");
+                await Helpers.ShowErrorAsync("OnProjectLoaded", $"Error in OnProjectLoaded: {ex.Message}\n{ex}");
             }
         }
 
