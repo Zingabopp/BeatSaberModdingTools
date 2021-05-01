@@ -1,5 +1,5 @@
 # Beat Saber Modding Tools
-Convenience tools and templates for creating Beat Saber mods.
+Convenience tools and templates for creating Beat Saber mods. The extension (VSIX) only works for Visual Studio 2019. A Rider port with dotnet templates is being worked on [Here](https://github.com/Fernthedev/BSMT-Rider).
 **A wiki has been started [here](https://github.com/Zingabopp/BeatSaberModdingTools/wiki) with more details on using the extension**
 
 # Beat Saber Modding Tools VSIX Features
