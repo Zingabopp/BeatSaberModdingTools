@@ -61,6 +61,12 @@
     <Compile Include="Commands\CommandSetGuids.cs" />
     <Compile Include="Menus\ReferenceContextSubmenu.cs" />
     <Compile Include="Models\ActiveSettings.cs" />
+    <Compile Include="Models\Projects\IProjectElement.cs" />
+    <Compile Include="Models\Projects\IProjectProperty.cs" />
+    <Compile Include="Models\Projects\IProjectModel.cs" />
+    <Compile Include="Models\Projects\IProjectItem.cs" />
+    <Compile Include="Models\Projects\IProjectReference.cs" />
+    <Compile Include="Models\Projects\ProjectItemType.cs" />
     <Compile Include="Utilities\BeatSaberTools.cs" />
     <Compile Include="Commands\AddProjectReferencePaths.cs" />
     <Compile Include="Commands\OpenSettingsWindowCommand.cs" />
@@ -74,7 +80,7 @@
     <Compile Include="Menus\ProjectContextSubmenu.cs" />
     <Compile Include="Models\BeatSaberInstall.cs" />
     <Compile Include="Models\ISettingsModel.cs" />
-    <Compile Include="Models\ProjectModel.cs" />
+    <Compile Include="Models\Projects\ProjectModel.cs" />
     <Compile Include="Models\ReadOnlySettingsModel.cs" />
     <Compile Include="Models\ReferenceModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
@@ -115,7 +121,6 @@
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WizardImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -136,7 +141,6 @@
   <ItemGroup>
     <Reference Include="CustomMarshalers" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -154,12 +158,12 @@
       <Version>0.6.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem">
-      <Version>15.8.243</Version>
+      <Version>17.0.667-pre</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.206" ExcludeAssets="runtime">
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.0-previews-3-31605-261" ExcludeAssets="runtime">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.7.3069">
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.4183-preview4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -201,7 +205,7 @@
         <ProjectReference Include="..\MonoBehaviourTemplate\MonoBehaviourTemplate.csproj">
           <Project>{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}</Project>
           <Name>MonoBehaviourTemplate</Name>
-          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
+          <VSIXSubPath>ItemTemplates</VSIXSubPath>
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
           <TemplateType>Item</TemplateType>
@@ -209,28 +213,28 @@
         <ProjectReference Include="..\BSMLTemplate\BSMLFileTemplate.csproj">
           <Project>{59658DC0-71DF-4344-A608-66B0B5E38838}</Project>
           <Name>BSMLFileTemplate</Name>
-          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
+          <VSIXSubPath>ItemTemplates</VSIXSubPath>
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
         </ProjectReference>
         <ProjectReference Include="..\BSMLViewControllerTemplate\BSMLViewControllerTemplate.csproj">
           <Project>{4B6E24D9-D390-46FB-8F72-50AB696AE846}</Project>
           <Name>BSMLViewControllerTemplate</Name>
-          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
+          <VSIXSubPath>ItemTemplates</VSIXSubPath>
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
         </ProjectReference>
         <ProjectReference Include="..\HarmonyPatchItemTemplate\HarmonyPatchItemTemplate.csproj">
           <Project>{4f53efe0-47dc-4aa2-94be-6ba7494ec042}</Project>
           <Name>HarmonyPatchItemTemplate</Name>
-          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
+          <VSIXSubPath>ItemTemplates</VSIXSubPath>
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
         </ProjectReference>
         <ProjectReference Include="..\BSIPA Manifest\BSIPA Manifest.csproj">
           <Project>{5187C807-6976-4B61-9435-9C4C93F4A0AD}</Project>
           <Name>BSIPA Manifest</Name>
-          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
+          <VSIXSubPath>ItemTemplates</VSIXSubPath>
           <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
           <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
         </ProjectReference>
