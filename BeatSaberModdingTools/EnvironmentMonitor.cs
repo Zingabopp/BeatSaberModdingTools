@@ -1,21 +1,13 @@
-﻿using BeatSaberModdingTools.Models;
+﻿using BeatSaberModdingTools.Models.Projects;
 using BeatSaberModdingTools.Utilities;
-using EnvDTE;
-using EnvDTE80;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
-using System.CodeDom;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VSLangProj;
 using Task = System.Threading.Tasks.Task;
 
 namespace BeatSaberModdingTools
@@ -43,7 +35,7 @@ namespace BeatSaberModdingTools
 
         public bool? BsipaProjectInSolution;
         private AsyncPackage package;
-        public ConcurrentDictionary<string, ProjectModel> Projects { get; } = new ConcurrentDictionary<string, ProjectModel>();
+        public ConcurrentDictionary<string, IProjectModel> Projects { get; } = new ConcurrentDictionary<string, IProjectModel>();
 
 
         public static async Task InitializeAsync(AsyncPackage package)
@@ -76,26 +68,25 @@ namespace BeatSaberModdingTools
             try
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                ProjectModel projModel = null;
+                IProjectModel projModel = null;
                 e.Hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
                 if (projectObj is EnvDTE.Project project)
                 {
-                    var newProject = EnvUtils.GetProject(project.FullName);
-                    if (newProject == null) return; // This event seems to randomly trigger if the project is closed and the csproj file is opened in the editor.
-                    {
-                        projModel = CreateProjectModel(newProject);
-                        if (Projects.TryAdd(newProject.FullPath, projModel))
-                            OnProjectLoaded(newProject, projModel);
-                    }
+                    Microsoft.Build.Evaluation.Project newProject = EnvUtils.GetProject(project.FullName);
+                    if (newProject == null)
+                        return; // This event seems to randomly trigger if the project is closed and the csproj file is opened in the editor.
+                    projModel = CreateProjectModel(newProject);
+                    if (Projects.TryAdd(newProject.FullPath, projModel))
+                        OnProjectLoaded(newProject, projModel);
                 }
                 else
                 {
-                    var newProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p =>
+                    List<Microsoft.Build.Evaluation.Project> newProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p =>
                         !Projects.ContainsKey(p.FullPath)
                         && !p.FullPath.EndsWith(".user")).ToList();
-                    foreach (var item in newProjects)
+                    foreach (Microsoft.Build.Evaluation.Project item in newProjects)
                     {
-                        var projectModel = CreateProjectModel(item);
+                        IProjectModel projectModel = CreateProjectModel(item);
                         if (Projects.TryAdd(item.FullPath, projectModel))
                             OnProjectLoaded(item, projectModel);
                     }
@@ -114,13 +105,13 @@ namespace BeatSaberModdingTools
             try
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                ProjectModel projModel = null;
+                IProjectModel projModel = null;
                 e.RealHierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
 
                 if (projectObj is EnvDTE.Project project)
                 {
-                    var interfaces = project.GetType().GetInterfaces();
-                    var newProject = EnvUtils.GetProject(project.FullName);
+                    Type[] interfaces = project.GetType().GetInterfaces();
+                    Microsoft.Build.Evaluation.Project newProject = EnvUtils.GetProject(project.FullName);
                     if (newProject != null)
                     {
                         projModel = CreateProjectModel(newProject);
@@ -130,12 +121,12 @@ namespace BeatSaberModdingTools
                 }
                 else
                 {
-                    var newProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p =>
+                    List<Microsoft.Build.Evaluation.Project> newProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p =>
                         !Projects.ContainsKey(p.FullPath)
                         && !p.FullPath.EndsWith(".user")).ToList();
-                    foreach (var item in newProjects)
+                    foreach (Microsoft.Build.Evaluation.Project item in newProjects)
                     {
-                        var projectModel = CreateProjectModel(item);
+                        IProjectModel projectModel = CreateProjectModel(item);
                         if (Projects.TryAdd(item.FullPath, projectModel))
                             OnProjectLoaded(item, projectModel);
                     }
@@ -183,17 +174,17 @@ namespace BeatSaberModdingTools
                 if (ID == 684 || ID == 337)
                     return;
             }
-            var thing = Guid;
+            string thing = Guid;
         }
 
         public void RefreshProjects()
         {
             BsipaProjectInSolution = null;
             Projects.Clear();
-            var loadedProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p => p.ProjectFileLocation.File.EndsWith(".csproj")).ToList();
-            foreach (var project in loadedProjects)
+            List<Microsoft.Build.Evaluation.Project> loadedProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p => p.ProjectFileLocation.File.EndsWith(".csproj")).ToList();
+            foreach (Microsoft.Build.Evaluation.Project project in loadedProjects)
             {
-                var projModel = CreateProjectModel(project);
+                IProjectModel projModel = CreateProjectModel(project);
                 if (projModel.IsBSIPAProject)
                     BsipaProjectInSolution = true;
                 Projects.TryAdd(projModel.ProjectPath, projModel);
@@ -204,7 +195,7 @@ namespace BeatSaberModdingTools
                 BsipaProjectInSolution = false;
         }
 
-        public bool TryGetProject(string projectFilePath, out ProjectModel projectModel, out Microsoft.Build.Evaluation.Project project)
+        public bool TryGetProject(string projectFilePath, out IProjectModel projectModel, out Microsoft.Build.Evaluation.Project project)
         {
             projectModel = null;
             project = EnvUtils.GetProject(projectFilePath);
@@ -222,7 +213,7 @@ namespace BeatSaberModdingTools
             return retVal;
         }
 
-        public ProjectModel CreateProjectModel(Microsoft.Build.Evaluation.Project buildProject)
+        public IProjectModel CreateProjectModel(Microsoft.Build.Evaluation.Project buildProject)
         {
             string projectPath = buildProject.ProjectFileLocation.File;
             string guidStr = buildProject.GetProperty("ProjectGuid")?.EvaluatedValue;
@@ -230,24 +221,25 @@ namespace BeatSaberModdingTools
             if (!string.IsNullOrEmpty(guidStr))
                 projectGuid = new Guid(buildProject.GetProperty("ProjectGuid").EvaluatedValue);
             string projectName = buildProject.GetProperty("AssemblyName").EvaluatedValue;
-            var references = buildProject.GetItems("Reference").ToList();
+            List<Microsoft.Build.Evaluation.ProjectItem> references = buildProject.GetItems("Reference").ToList();
             bool isBsipa = buildProject.GetItems("Reference").Any(i => i.EvaluatedInclude.StartsWith("IPA.Loader"));
-            var bsDirProp = buildProject.GetProperty("BeatSaberDir");
-            var projCap = Models.ProjectCapabilities.None;
+            ProjectProperty bsDirProp = buildProject.GetProperty("BeatSaberDir");
+            ProjectCapabilities projCap = ProjectCapabilities.None;
             ProjectOptions projOptions = ProjectOptions.None;
             if (bsDirProp != null)
             {
-                projCap |= Models.ProjectCapabilities.BeatSaberDir;
+                projCap |= ProjectCapabilities.BeatSaberDir;
                 projOptions |= ProjectOptions.BeatSaberDir;
             }
-            var projectModel = new ProjectModel(projectGuid, projectName, projectPath, isBsipa, projOptions, projOptions, projCap);
+            //throw new NotImplementedException();
+            IProjectModel projectModel = new ProjectModel(projectGuid, projectName, projectPath, isBsipa, projOptions, projOptions, projCap);
             return projectModel;
         }
 
 
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
-        public async void OnProjectLoaded(Microsoft.Build.Evaluation.Project project, ProjectModel projectModel)
+        public async void OnProjectLoaded(Microsoft.Build.Evaluation.Project project, IProjectModel projectModel)
 #pragma warning restore VSTHRD100 // Avoid async void methods
         {
             try
@@ -262,9 +254,9 @@ namespace BeatSaberModdingTools
                     if (userProj == null) return;
                 }
                 catch (InvalidOperationException) { return; }
-                var installPath = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
-                var projBeatSaberDir = project.GetPropertyValue("BeatSaberDir");
-                var userBeatSaberDir = userProj.GetPropertyValue("BeatSaberDir");
+                string installPath = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
+                string projBeatSaberDir = project.GetPropertyValue("BeatSaberDir");
+                string userBeatSaberDir = userProj.GetPropertyValue("BeatSaberDir");
                 if (BSMTSettingsManager.Instance.CurrentSettings.GenerateUserFileOnExisting
                     && !string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
                     && projectModel.IsBSIPAProject)
@@ -273,7 +265,7 @@ namespace BeatSaberModdingTools
                     if (!string.IsNullOrEmpty(userBeatSaberDir) &&
                         userBeatSaberDir != BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath)
                     {
-                        var prop = userProj.GetProperty("BeatSaberDir");
+                        ProjectProperty prop = userProj.GetProperty("BeatSaberDir");
                         string message = $"Overriding BeatSaberDir in {projectModel.ProjectName} to \n{prop?.EvaluatedValue}\n(Old path: {userBeatSaberDir})";
                         VsShellUtilities.ShowMessageBox(
                             this.package,
