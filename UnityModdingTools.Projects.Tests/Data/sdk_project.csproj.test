@@ -41,8 +41,18 @@
     <None Remove="UI\settings.bsml" />
   </ItemGroup>
   <ItemGroup Condition="'$(NCrunch)' == '1'">
+    <Reference Include="DoubleCondition" Condition="'$(SeeingDouble)' == 'True'">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\DoubleCondition.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="Test">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Test.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="AfterTest" Condition="'$(SeeingDouble)' == 'False'">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\AfterTest.dll</HintPath>
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>

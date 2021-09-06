@@ -94,7 +94,5 @@ namespace BeatSaberModdingTools.ViewModels
                 NotifyPropertyChanged();
             }
         }
-
-
     }
 }

@@ -43,10 +43,10 @@ namespace BeatSaberModdingTools.ViewModels
                 if(t == null)
                     return false;
                 return t.Name == "Main"
-                || t.Name.StartsWith("HM")
-                || t.Name.StartsWith("Zenject")
-                || t.Name == "BeatmapCore"
-                || t.Name == "GameplayCore";
+                    || t.Name.StartsWith("HM")
+                    || t.Name.StartsWith("Zenject")
+                    || t.Name == "BeatmapCore"
+                    || t.Name == "GameplayCore";
             })),
             new ReferenceFilter("System", Paths.Path_Managed, "System."),
             new ReferenceFilter("Unity", Paths.Path_Managed, "Unity."),

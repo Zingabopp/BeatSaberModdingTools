@@ -36,7 +36,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnityModdingTools.Abstracti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnityModdingTools.Projects", "UnityModdingTools.Projects\UnityModdingTools.Projects.csproj", "{74405322-4302-4F79-8B24-90026B204353}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityModdingTools.Projects.Tests", "UnityModdingTools.Projects.Tests\UnityModdingTools.Projects.Tests.csproj", "{F36569C3-7F75-44A1-AD64-80ABDD6F9A7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnityModdingTools.Projects.Tests", "UnityModdingTools.Projects.Tests\UnityModdingTools.Projects.Tests.csproj", "{F36569C3-7F75-44A1-AD64-80ABDD6F9A7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityModdingTools.ReferenceManager", "UnityModdingTools.ReferenceManager\UnityModdingTools.ReferenceManager.csproj", "{461A4B3C-AED9-48DB-B5C1-5988D12F50D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityModdingTools.Common", "UnityModdingTools.Common\UnityModdingTools.Common.csproj", "{A2198CC1-1C9F-411A-9FD0-6A4E12624A7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,6 +108,14 @@ Global
 		{F36569C3-7F75-44A1-AD64-80ABDD6F9A7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F36569C3-7F75-44A1-AD64-80ABDD6F9A7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F36569C3-7F75-44A1-AD64-80ABDD6F9A7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{461A4B3C-AED9-48DB-B5C1-5988D12F50D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{461A4B3C-AED9-48DB-B5C1-5988D12F50D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{461A4B3C-AED9-48DB-B5C1-5988D12F50D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{461A4B3C-AED9-48DB-B5C1-5988D12F50D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2198CC1-1C9F-411A-9FD0-6A4E12624A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2198CC1-1C9F-411A-9FD0-6A4E12624A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2198CC1-1C9F-411A-9FD0-6A4E12624A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2198CC1-1C9F-411A-9FD0-6A4E12624A7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
