@@ -60,6 +60,7 @@ namespace UnityModdingTools.Common.Configuration
             }
         }
 
+
         [JsonConstructor]
         public ReferenceManagerFilterSetting([JsonProperty(nameof(Name))] string name)
         {

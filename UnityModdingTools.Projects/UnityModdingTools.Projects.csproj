@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UnityModdingTools.Abstractions\UnityModdingTools.Abstractions.csproj" />
+    <ProjectReference Include="..\UnityModdingTools.Common\UnityModdingTools.Common.csproj" />
   </ItemGroup>
 
 </Project>

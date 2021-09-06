@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UnityModdingTools.Projects
+namespace UnityModdingTools.Common.Models
 {
     public class ReferenceModel
     {

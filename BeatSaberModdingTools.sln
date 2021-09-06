@@ -42,6 +42,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityModdingTools.Reference
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityModdingTools.Common", "UnityModdingTools.Common\UnityModdingTools.Common.csproj", "{A2198CC1-1C9F-411A-9FD0-6A4E12624A7C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{12D651BB-4490-4AED-B053-574845BEA79C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityModdingTools.ReferenceManager.Tests", "UnityModdingTools.ReferenceManager.Tests\UnityModdingTools.ReferenceManager.Tests.csproj", "{3D9E0F15-FE92-4277-BDF9-4B29D0B668B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -116,9 +120,17 @@ Global
 		{A2198CC1-1C9F-411A-9FD0-6A4E12624A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2198CC1-1C9F-411A-9FD0-6A4E12624A7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2198CC1-1C9F-411A-9FD0-6A4E12624A7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D9E0F15-FE92-4277-BDF9-4B29D0B668B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D9E0F15-FE92-4277-BDF9-4B29D0B668B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D9E0F15-FE92-4277-BDF9-4B29D0B668B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D9E0F15-FE92-4277-BDF9-4B29D0B668B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F36569C3-7F75-44A1-AD64-80ABDD6F9A7E} = {12D651BB-4490-4AED-B053-574845BEA79C}
+		{3D9E0F15-FE92-4277-BDF9-4B29D0B668B4} = {12D651BB-4490-4AED-B053-574845BEA79C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DED5D638-9BB3-4B39-88FE-BBB3E7193999}

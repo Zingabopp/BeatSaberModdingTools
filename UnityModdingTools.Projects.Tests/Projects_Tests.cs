@@ -4,11 +4,12 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using UnityModdingTools.Abstractions;
+using UnityModdingTools.Common.Models;
 
 namespace UnityModdingTools.Projects.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class Projects_Tests
     {
         public int ChangedCalled = 0;
 

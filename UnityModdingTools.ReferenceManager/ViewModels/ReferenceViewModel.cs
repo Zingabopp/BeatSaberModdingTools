@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityModdingTools.Common.Models;
 using UnityModdingTools.Common.MVVM;
 using UnityModdingTools.Projects;
 #nullable enable

@@ -38,6 +38,7 @@ namespace BeatSaberModdingTools.ViewModels
         public ObservableCollection<ReferenceFilter> Filters { get; } = new ObservableCollection<ReferenceFilter>()
         {
             new ReferenceFilter("<all>", string.Empty, string.Empty),
+            // Main;HM*;Zenject*;BeatmapCore;GameplayCore
             new ReferenceFilter("Game", Paths.Path_Managed, new Func<ReferenceItemViewModel, bool>(t =>
             {
                 if(t == null)
