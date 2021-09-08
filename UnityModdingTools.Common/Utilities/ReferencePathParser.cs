@@ -36,26 +36,37 @@ namespace UnityModdingTools.Common.Utilities
             return new ParseResult(match);
         }
 
+        public static ParseResult Parse(string assemblyPath, string[]? relativeDirs)
+        {
+            string pattern = MakeRegexPattern(relativeDirs);
+            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            Match match = regex.Match(assemblyPath);
+            return new ParseResult(match);
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="relativeDirs"></param>
         /// <returns></returns>
-        public static string MakeRegexPattern(string[]? relativeDirs)
+        public static string MakeRegexPattern(params string[]? relativeDirs)
         {
             //if (relativeDirs == null || relativeDirs.Length == 0)
             //    return PathRegexTemplate_NoRelativeDirs;
-            StringBuilder builder = new StringBuilder();
-            if (relativeDirs != null)
+            string regexString = PathRegexTemplate;
+            if (relativeDirs != null && relativeDirs.Length > 0)
             {
+                StringBuilder builder = new StringBuilder();
                 foreach (var dir in relativeDirs)
                 {
                     if (builder.Length > 0)
                         builder.Append('|');
                     builder.Append($"{FormatRegexStr(dir, true)}");
                 }
+                regexString = regexString.Replace(RelativeDirTag, builder.ToString());
             }
-            string regexString = PathRegexTemplate.Replace(RelativeDirTag, builder.ToString());
+            else
+                regexString = regexString.Replace(RelativeDirTag, "");
             return regexString;
         }
 
