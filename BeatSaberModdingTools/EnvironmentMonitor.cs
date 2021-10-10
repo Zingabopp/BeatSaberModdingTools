@@ -1,4 +1,4 @@
-﻿using BeatSaberModdingTools.Models.Projects;
+﻿using BeatSaberModdingTools.Models;
 using BeatSaberModdingTools.Utilities;
 using Microsoft.Build.Evaluation;
 using Microsoft.VisualStudio;
@@ -35,7 +35,7 @@ namespace BeatSaberModdingTools
 
         public bool? BsipaProjectInSolution;
         private AsyncPackage package;
-        public ConcurrentDictionary<string, IProjectModel> Projects { get; } = new ConcurrentDictionary<string, IProjectModel>();
+        public ConcurrentDictionary<string, ProjectModel> Projects { get; } = new ConcurrentDictionary<string, ProjectModel>();
 
 
         public static async Task InitializeAsync(AsyncPackage package)
@@ -68,7 +68,7 @@ namespace BeatSaberModdingTools
             try
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                IProjectModel projModel = null;
+                ProjectModel projModel = null;
                 e.Hierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
                 if (projectObj is EnvDTE.Project project)
                 {
@@ -86,7 +86,7 @@ namespace BeatSaberModdingTools
                         && !p.FullPath.EndsWith(".user")).ToList();
                     foreach (Microsoft.Build.Evaluation.Project item in newProjects)
                     {
-                        IProjectModel projectModel = CreateProjectModel(item);
+                        ProjectModel projectModel = CreateProjectModel(item);
                         if (Projects.TryAdd(item.FullPath, projectModel))
                             OnProjectLoaded(item, projectModel);
                     }
@@ -105,7 +105,7 @@ namespace BeatSaberModdingTools
             try
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                IProjectModel projModel = null;
+                ProjectModel projModel = null;
                 e.RealHierarchy.GetProperty(VSConstants.VSITEMID_ROOT, (int)__VSHPROPID.VSHPROPID_ExtObject, out object projectObj);
 
                 if (projectObj is EnvDTE.Project project)
@@ -126,7 +126,7 @@ namespace BeatSaberModdingTools
                         && !p.FullPath.EndsWith(".user")).ToList();
                     foreach (Microsoft.Build.Evaluation.Project item in newProjects)
                     {
-                        IProjectModel projectModel = CreateProjectModel(item);
+                        ProjectModel projectModel = CreateProjectModel(item);
                         if (Projects.TryAdd(item.FullPath, projectModel))
                             OnProjectLoaded(item, projectModel);
                     }
@@ -184,7 +184,7 @@ namespace BeatSaberModdingTools
             List<Microsoft.Build.Evaluation.Project> loadedProjects = ProjectCollection.GlobalProjectCollection.LoadedProjects.Where(p => p.ProjectFileLocation.File.EndsWith(".csproj")).ToList();
             foreach (Microsoft.Build.Evaluation.Project project in loadedProjects)
             {
-                IProjectModel projModel = CreateProjectModel(project);
+                ProjectModel projModel = CreateProjectModel(project);
                 if (projModel.IsBSIPAProject)
                     BsipaProjectInSolution = true;
                 Projects.TryAdd(projModel.ProjectPath, projModel);
@@ -195,7 +195,7 @@ namespace BeatSaberModdingTools
                 BsipaProjectInSolution = false;
         }
 
-        public bool TryGetProject(string projectFilePath, out IProjectModel projectModel, out Microsoft.Build.Evaluation.Project project)
+        public bool TryGetProject(string projectFilePath, out ProjectModel projectModel, out Microsoft.Build.Evaluation.Project project)
         {
             projectModel = null;
             project = EnvUtils.GetProject(projectFilePath);
@@ -213,7 +213,7 @@ namespace BeatSaberModdingTools
             return retVal;
         }
 
-        public IProjectModel CreateProjectModel(Microsoft.Build.Evaluation.Project buildProject)
+        public ProjectModel CreateProjectModel(Microsoft.Build.Evaluation.Project buildProject)
         {
             string projectPath = buildProject.ProjectFileLocation.File;
             string guidStr = buildProject.GetProperty("ProjectGuid")?.EvaluatedValue;
@@ -232,14 +232,14 @@ namespace BeatSaberModdingTools
                 projOptions |= ProjectOptions.BeatSaberDir;
             }
             //throw new NotImplementedException();
-            IProjectModel projectModel = new ProjectModel(projectGuid, projectName, projectPath, isBsipa, projOptions, projOptions, projCap);
+            ProjectModel projectModel = new ProjectModel(projectGuid, projectName, projectPath, isBsipa, projOptions, projOptions, projCap);
             return projectModel;
         }
 
 
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
-        public async void OnProjectLoaded(Microsoft.Build.Evaluation.Project project, IProjectModel projectModel)
+        public async void OnProjectLoaded(Microsoft.Build.Evaluation.Project project, ProjectModel projectModel)
 #pragma warning restore VSTHRD100 // Avoid async void methods
         {
             try

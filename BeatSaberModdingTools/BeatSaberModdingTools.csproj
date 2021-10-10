@@ -61,12 +61,7 @@
     <Compile Include="Commands\CommandSetGuids.cs" />
     <Compile Include="Menus\ReferenceContextSubmenu.cs" />
     <Compile Include="Models\ActiveSettings.cs" />
-    <Compile Include="Models\Projects\IProjectElement.cs" />
-    <Compile Include="Models\Projects\IProjectProperty.cs" />
-    <Compile Include="Models\Projects\IProjectModel.cs" />
-    <Compile Include="Models\Projects\IProjectItem.cs" />
-    <Compile Include="Models\Projects\IProjectReference.cs" />
-    <Compile Include="Models\Projects\ProjectItemType.cs" />
+    <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Utilities\BeatSaberTools.cs" />
     <Compile Include="Commands\AddProjectReferencePaths.cs" />
     <Compile Include="Commands\OpenSettingsWindowCommand.cs" />
@@ -80,7 +75,6 @@
     <Compile Include="Menus\ProjectContextSubmenu.cs" />
     <Compile Include="Models\BeatSaberInstall.cs" />
     <Compile Include="Models\ISettingsModel.cs" />
-    <Compile Include="Models\Projects\ProjectModel.cs" />
     <Compile Include="Models\ReadOnlySettingsModel.cs" />
     <Compile Include="Models\ReferenceModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
@@ -163,7 +157,7 @@
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.0-previews-3-31605-261" ExcludeAssets="runtime">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.4183-preview4">
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.5232">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
