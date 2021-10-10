@@ -9,7 +9,6 @@ namespace UnityModdingTools.Common.Tests.Utilities
     public class ReferencePathParser_Tests
     {
         private static string[] BSRelativeDirs => new string[] { "Beat Saber_Data\\Managed", "Plugins", "Libs" };
-        private static string[] BSRelativeForwardSlashDirs => new string[] { "Beat Saber_Data\\Managed", "Plugins", "Libs" };
 
         [TestMethod]
         [DataTestMethod]

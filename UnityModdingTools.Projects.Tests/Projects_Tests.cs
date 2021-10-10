@@ -19,7 +19,7 @@ namespace UnityModdingTools.Projects.Tests
             string asmName = GetType().Namespace;
             string path = asmName + ".Data.sdk_project.csproj.test";
 
-            ReferenceModel refModel = new("AddTest")
+            ReferenceModel refModel = new ReferenceModel("AddTest")
             {
                 HintPath = "C:\\Test\\AddTest.dll",
                 Private = CopyLocal.False
@@ -28,7 +28,7 @@ namespace UnityModdingTools.Projects.Tests
             string[] thing = Assembly.GetExecutingAssembly().GetManifestResourceNames();
             using System.IO.Stream rs = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
             XDocument proj = XDocument.Load(rs);
-            XElement projElement = proj.FirstNode as XElement;
+            XElement projElement = (XElement)proj.FirstNode;
             XElement refGroup = projElement.Elements(Names.ItemGroup).Where(e =>
                 e.Attribute("Condition") == null &&
                 e.Elements(Names.Reference).Any()).FirstOrDefault();
@@ -47,7 +47,7 @@ namespace UnityModdingTools.Projects.Tests
             string asmName = GetType().Namespace;
             string path = asmName + ".Data.sdk_project.csproj.test";
 
-            ReferenceModel refModel = new("AddTest")
+            ReferenceModel refModel = new ReferenceModel("AddTest")
             {
                 HintPath = "C:\\Test\\AddTest.dll",
                 Private = CopyLocal.False
@@ -56,7 +56,7 @@ namespace UnityModdingTools.Projects.Tests
             string[] thing = Assembly.GetExecutingAssembly().GetManifestResourceNames();
             using System.IO.Stream rs = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
             XDocument proj = XDocument.Load(rs);
-            XElement projElement = proj.FirstNode as XElement;
+            XElement projElement = (XElement)proj.FirstNode;
             var refs = proj.FindReferences();
         }
 
@@ -66,7 +66,7 @@ namespace UnityModdingTools.Projects.Tests
         {
             XDocument userProj = Utilities.GenerateUserProject();
             userProj.Changed += UserProj_Changed;
-            XElement projElement = userProj.FirstNode as XElement;
+            XElement projElement = (XElement)userProj.FirstNode;
             Assert.AreEqual("Project", projElement.Name.LocalName);
             XAttribute attribute = projElement.Attribute("ToolsVersion");
             Assert.AreEqual("Current", attribute.Value);

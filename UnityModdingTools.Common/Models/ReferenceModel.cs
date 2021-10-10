@@ -7,6 +7,7 @@ namespace UnityModdingTools.Common.Models
     public class ReferenceModel
     {
         public string Name { get; }
+        public string? Version { get; set; }
         public string? HintPath { get; set; }
         /// <summary>
         /// CopyLocal
@@ -41,6 +42,7 @@ namespace UnityModdingTools.Common.Models
             return obj is ReferenceModel model &&
                    Name == model.Name &&
                    HintPath == model.HintPath &&
+                   Version == model.Version &&
                    Private == model.Private;
         }
 
@@ -49,6 +51,7 @@ namespace UnityModdingTools.Common.Models
             int hashCode = 1926118681;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
             hashCode = hashCode * -1521134295 + EqualityComparer<string?>.Default.GetHashCode(HintPath);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string?>.Default.GetHashCode(Version);
             hashCode = hashCode * -1521134295 + Private.GetHashCode();
             return hashCode;
         }
