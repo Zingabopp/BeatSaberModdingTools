@@ -17,6 +17,7 @@
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6.1,)" />
+        <Dependency d:Source="Installed" Id="UnityModdingTools.Templates.BeatSaber.107d46bc-376e-4542-8383-e9d8b5568458" DisplayName="UnityModdingTools.Templates.BeatSaber" Version="[1.0.0,10.0)" d:InstallSource="Download" Location="https://marketplace.visualstudio.com/items?itemName=Zingabopp.BeatSaberModTemplates" />
     </Dependencies>
     <Prerequisites>
         <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,17.0)" DisplayName="Visual Studio core editor" />
@@ -24,13 +25,5 @@
     <Assets>
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="%CurrentProject%" TargetVersion="[15.0,17.0)" Path="|%CurrentProject%|" AssemblyName="|%CurrentProject%;AssemblyName|" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="BSIPA Plugin (Core)" TargetVersion="[15.0,17.0)" d:TargetPath="|BSIPA Plugin (Core);TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="BSIPA Plugin (Disableable)" TargetVersion="[15.0,17.0)" d:TargetPath="|BSIPA Plugin (Disableable);TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="MonoBehaviourTemplate" TargetVersion="[15.0,17.0)" d:TargetPath="|MonoBehaviourTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="BSMLFileTemplate" TargetVersion="[15.0,17.0)" d:TargetPath="|BSMLFileTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="BSMLViewControllerTemplate" TargetVersion="[15.0,17.0)" d:TargetPath="|BSMLViewControllerTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="HarmonyPatchItemTemplate" TargetVersion="[15.0,17.0)" d:TargetPath="|HarmonyPatchItemTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="Project" d:ProjectName="BSIPA Plugin (Bare)" TargetVersion="[15.0,17.0)" d:TargetPath="|BSIPA Plugin (Bare);TemplateProjectOutputGroup|" Path="ProjectTemplates" d:VsixSubPath="ProjectTemplates" />
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="BSIPA Manifest" TargetVersion="[15.0,17.0)" d:TargetPath="|BSIPA Manifest;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
     </Assets>
 </PackageManifest>

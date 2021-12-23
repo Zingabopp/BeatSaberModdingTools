@@ -115,7 +115,6 @@
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WizardImplementation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -136,7 +135,6 @@
   <ItemGroup>
     <Reference Include="CustomMarshalers" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -156,10 +154,10 @@
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem">
       <Version>15.8.243</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.206" ExcludeAssets="runtime">
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.10.31321.278" ExcludeAssets="runtime">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.7.3069">
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.11.35">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -173,69 +171,7 @@
     </Content>
   </ItemGroup>
   <Choose>
-    <When Condition="'$(NCrunch)' != '1'">
-      <ItemGroup>
-        <ProjectReference Include="..\BSIPA Plugin %28Bare%29\BSIPA Plugin %28Bare%29.csproj">
-          <Project>{f87fd4e5-9cc9-4e02-b5bf-e8e65665375e}</Project>
-          <Name>BSIPA Plugin %28Bare%29</Name>
-          <VSIXSubPath>ProjectTemplates</VSIXSubPath>
-          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-        </ProjectReference>
-        <ProjectReference Include="..\BSIPA Plugin %28Core%29\BSIPA Plugin %28Core%29.csproj">
-          <Project>{FDD1EB88-E09B-4A1A-8269-1DA738930B5B}</Project>
-          <Name>BSIPA Plugin %28Core%29</Name>
-          <VSIXSubPath>ProjectTemplates</VSIXSubPath>
-          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-        </ProjectReference>
-        <ProjectReference Include="..\BSIPA Plugin %28Disableable%29\BSIPA Plugin %28Disableable%29.csproj">
-          <Project>{F87FD4E5-9CC9-4E02-B5BF-E8E65665375F}</Project>
-          <Name>BSIPA Plugin %28Disableable%29</Name>
-          <VSIXSubPath>ProjectTemplates</VSIXSubPath>
-          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-        </ProjectReference>
-      </ItemGroup>
-      <ItemGroup>
-        <ProjectReference Include="..\MonoBehaviourTemplate\MonoBehaviourTemplate.csproj">
-          <Project>{5C93C6BF-74D3-41E9-A344-B1EC2FC70510}</Project>
-          <Name>MonoBehaviourTemplate</Name>
-          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
-          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-          <TemplateType>Item</TemplateType>
-        </ProjectReference>
-        <ProjectReference Include="..\BSMLTemplate\BSMLFileTemplate.csproj">
-          <Project>{59658DC0-71DF-4344-A608-66B0B5E38838}</Project>
-          <Name>BSMLFileTemplate</Name>
-          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
-          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-        </ProjectReference>
-        <ProjectReference Include="..\BSMLViewControllerTemplate\BSMLViewControllerTemplate.csproj">
-          <Project>{4B6E24D9-D390-46FB-8F72-50AB696AE846}</Project>
-          <Name>BSMLViewControllerTemplate</Name>
-          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
-          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-        </ProjectReference>
-        <ProjectReference Include="..\HarmonyPatchItemTemplate\HarmonyPatchItemTemplate.csproj">
-          <Project>{4f53efe0-47dc-4aa2-94be-6ba7494ec042}</Project>
-          <Name>HarmonyPatchItemTemplate</Name>
-          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
-          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-        </ProjectReference>
-        <ProjectReference Include="..\BSIPA Manifest\BSIPA Manifest.csproj">
-          <Project>{5187C807-6976-4B61-9435-9C4C93F4A0AD}</Project>
-          <Name>BSIPA Manifest</Name>
-          <VSIXSubPath>ItemTemplates\Beat Saber</VSIXSubPath>
-          <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-          <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-        </ProjectReference>
-      </ItemGroup>
-    </When>
+    <When Condition="'$(NCrunch)' != '1'" />
   </Choose>
   <ItemGroup>
     <Content Include="Commands\Resources\SetBeatSaberDirCommand.png" />
