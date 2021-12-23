@@ -20,7 +20,7 @@ namespace BeatSaberModdingTools.ViewModels
             BSMTSettingsManager.SubscribeExecuteOnChange(new WeakAction(ExecuteOnAppSettingsChange));
         }
 
-        private ReadOnlySettingsModel PreviousSettings => new ReadOnlySettingsModel(BSMTSettingsManager.Instance.CurrentSettings);
+        private SettingsModel PreviousSettings => new SettingsModel(BSMTSettingsManager.Instance.CurrentSettings);
         private SettingsModel _currentSettings;
         private readonly Action ExecuteOnAppSettingsChange;
 

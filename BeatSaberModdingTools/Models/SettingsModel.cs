@@ -7,30 +7,23 @@ using System.Threading.Tasks;
 
 namespace BeatSaberModdingTools.Models
 {
-    public class SettingsModel : ISettingsModel, IEquatable<ISettingsModel>
+    public class SettingsModel : SettingsBase, IEquatable<ISettingsModel>
     {
 
-        public string ChosenInstallPath { get; set; }
+        public override string ChosenInstallPath { get; set; }
+        public override bool GenerateUserFileWithTemplate { get; set; }
+        public override bool GenerateUserFileOnExisting { get; set; }
+        public override bool SetManifestJsonDefaults { get; set; }
+        public override bool CopyToIPAPendingOnBuild { get; set; }
+        public override BuildReferenceType BuildReferenceType { get; set; }
+        public override string Manifest_Author { get; set; }
+        public override string Manifest_Donation { get; set; }
 
-        public bool GenerateUserFileWithTemplate { get; set; }
+        public override bool Manifest_AuthorEnabled { get; set; }
 
-        public bool GenerateUserFileOnExisting { get; set; }
+        public override bool Manifest_DonationEnabled { get; set; }
 
-        public bool SetManifestJsonDefaults { get; set; }
-
-        public bool CopyToIPAPendingOnBuild { get; set; }
-
-        public BuildReferenceType BuildReferenceType { get; set; }
-
-        public string Manifest_Author { get; set; }
-
-        public string Manifest_Donation { get; set; }
-
-        public bool Manifest_AuthorEnabled { get; set; }
-
-        public bool Manifest_DonationEnabled { get; set; }
-
-        public SettingsModel() 
+        public SettingsModel()
         {
             ChosenInstallPath = string.Empty;
         }
@@ -47,25 +40,6 @@ namespace BeatSaberModdingTools.Models
             Manifest_Donation = settingsModel.Manifest_Donation;
             Manifest_AuthorEnabled = settingsModel.Manifest_AuthorEnabled;
             Manifest_DonationEnabled = settingsModel.Manifest_DonationEnabled;
-        }
-
-        object ICloneable.Clone()
-        {
-            return new SettingsModel(this);
-        }
-
-        public bool Equals(ISettingsModel other)
-        {
-            return GenerateUserFileWithTemplate == other.GenerateUserFileWithTemplate
-                && GenerateUserFileOnExisting == other.GenerateUserFileOnExisting
-                && SetManifestJsonDefaults == other.SetManifestJsonDefaults
-                && CopyToIPAPendingOnBuild == other.CopyToIPAPendingOnBuild
-                && BuildReferenceType == other.BuildReferenceType
-                && ChosenInstallPath == other.ChosenInstallPath
-                && Manifest_Author == other.Manifest_Author
-                && Manifest_Donation == other.Manifest_Donation
-                && Manifest_AuthorEnabled == other.Manifest_AuthorEnabled
-                && Manifest_DonationEnabled == other.Manifest_DonationEnabled;
         }
 
         public override bool Equals(object other)

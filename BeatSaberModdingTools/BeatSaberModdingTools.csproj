@@ -61,6 +61,7 @@
     <Compile Include="Commands\CommandSetGuids.cs" />
     <Compile Include="Menus\ReferenceContextSubmenu.cs" />
     <Compile Include="Models\ActiveSettings.cs" />
+    <Compile Include="Models\SettingsBase.cs" />
     <Compile Include="Utilities\BeatSaberTools.cs" />
     <Compile Include="Commands\AddProjectReferencePaths.cs" />
     <Compile Include="Commands\OpenSettingsWindowCommand.cs" />
@@ -75,7 +76,6 @@
     <Compile Include="Models\BeatSaberInstall.cs" />
     <Compile Include="Models\ISettingsModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
-    <Compile Include="Models\ReadOnlySettingsModel.cs" />
     <Compile Include="Models\ReferenceModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,27 +6,28 @@ using System.Threading.Tasks;
 
 namespace BeatSaberModdingTools.Models
 {
-    public interface ISettingsModel : ICloneable, IEquatable<ISettingsModel>
+    public interface ISettingsModel : IEquatable<ISettingsModel>
     {
-        string ChosenInstallPath { get; }
+        string ChosenInstallPath { get; set; }
 
-        bool GenerateUserFileWithTemplate { get; }
+        bool GenerateUserFileWithTemplate { get; set; }
 
-        bool GenerateUserFileOnExisting { get; }
+        bool GenerateUserFileOnExisting { get; set; }
 
-        bool SetManifestJsonDefaults { get; }
+        bool SetManifestJsonDefaults { get; set; }
 
-        bool CopyToIPAPendingOnBuild { get; }
+        bool CopyToIPAPendingOnBuild { get; set; }
 
-        BuildReferenceType BuildReferenceType { get; }
+        BuildReferenceType BuildReferenceType { get; set; }
 
-        string Manifest_Author { get; }
+        string Manifest_Author { get; set; }
 
-        string Manifest_Donation { get; }
+        string Manifest_Donation { get; set; }
 
-        bool Manifest_AuthorEnabled { get; }
+        bool Manifest_AuthorEnabled { get; set; }
 
-        bool Manifest_DonationEnabled { get; }
+        bool Manifest_DonationEnabled { get; set; }
+        void Populate(ISettingsModel other);
     }
 
     public enum BuildReferenceType : byte

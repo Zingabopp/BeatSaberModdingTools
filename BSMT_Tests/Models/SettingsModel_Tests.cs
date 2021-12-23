@@ -81,7 +81,7 @@ namespace BSMT_Tests.Models
                 Manifest_DonationEnabled = donationEnabled
             };
 
-            var copy = new ReadOnlySettingsModel(original);
+            var copy = new SettingsModel(original);
 
             Assert.AreEqual(original, copy);
         }
@@ -119,7 +119,7 @@ namespace BSMT_Tests.Models
                     prop.SetValue(original, BuildReferenceType.DirectoryJunctions);
                 else
                     Assert.Fail($"Type {prop.PropertyType} is unhandled for {prop.Name}");
-                var copy = new ReadOnlySettingsModel(original);
+                var copy = new SettingsModel(original);
                 Assert.AreEqual(original, copy, $"Failed after setting {prop.Name}");
             }
         }
@@ -160,7 +160,7 @@ namespace BSMT_Tests.Models
                     prop.SetValue(changed, BuildReferenceType.DirectoryJunctions);
                 else
                     Assert.Fail($"Type {prop.PropertyType} is unhandled for {prop.Name}");
-                var readOnlyChanged = new ReadOnlySettingsModel(changed);
+                var readOnlyChanged = new SettingsModel(changed);
                 Assert.AreEqual(changed, readOnlyChanged);
                 Assert.AreNotEqual(original, changed, $"Failed after setting {prop.Name}");
                 Assert.AreNotEqual(original, readOnlyChanged, $"Failed after setting {prop.Name}");
