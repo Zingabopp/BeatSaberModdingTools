@@ -297,7 +297,7 @@ namespace BeatSaberModdingTools.ViewModels
             //buildProject.Save();
             CheckChangedReferences();
         }
-        private static readonly string[] PathProperties = new string[] { "BeatSaberReferences", "BeatSaberDir" };
+        private static readonly string[] PathProperties = new string[] { "GameReferences", "BeatSaberReferences", "BeatSaberDir" };
         private void UpdateAvailableReferenceRoots(Project project)
         {
             if (project == null)
