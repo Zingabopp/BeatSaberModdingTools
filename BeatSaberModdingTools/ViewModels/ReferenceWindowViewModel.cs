@@ -232,18 +232,18 @@ namespace BeatSaberModdingTools.ViewModels
 
         public void UpdateReferences()
         {
-            UpdateReferencesLegacy();
-            return;
             if (IsSDK)
             {
                 UpdateReferencesSdk();
             }
             else
             {
+                UpdateReferencesLegacy();
+                return;
             }
         }
 
-        public async void UpdateReferencesSdk()
+        public void UpdateReferencesSdk()
         {
             try
             {
@@ -289,28 +289,11 @@ namespace BeatSaberModdingTools.ViewModels
                     }
                 }
                 buildProject = EvaluationProject;
+                string path = buildProject.FullPath;
                 if (IsSDK)
                 {
                     _project.Project.Save();
-                    await Task.Delay(1000);
-                    Microsoft.Build.Definition.ProjectOptions options = new Microsoft.Build.Definition.ProjectOptions()
-                    {
-                        EvaluationContext = Microsoft.Build.Evaluation.Context.EvaluationContext.Create(Microsoft.Build.Evaluation.Context.EvaluationContext.SharingPolicy.Shared),
-                        GlobalProperties = buildProject.GlobalProperties,
-                        ProjectCollection = buildProject.ProjectCollection,
-                        LoadSettings = ProjectLoadSettings.Default
-                    };
-                    Project userProject = ProjectCollection.GlobalProjectCollection.LoadedProjects
-                        .Where(p => p.FullPath.Equals(buildProject.FullPath + ".user", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-                    if (userProject != null)
-                        ProjectCollection.GlobalProjectCollection.UnloadProject(userProject);
-                    buildProject = ProjectCollection.GlobalProjectCollection.LoadedProjects
-                        .Where(p => p.FullPath.Equals(buildProject.FullPath, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-                    if (buildProject != null)
-                        ProjectCollection.GlobalProjectCollection.UnloadProject(buildProject);
-                    Microsoft.Build.Construction.ProjectRootElement.Open(buildProject.FullPath);
-                    await Task.Delay(1000);
-                    buildProject = Project.FromFile(ProjectFilePath, options);
+                    buildProject = new Project(path, null, null, new ProjectCollection());
                 }
                 if (buildProject != null)
                 {
@@ -350,11 +333,11 @@ namespace BeatSaberModdingTools.ViewModels
                             }
                         }
                     }
-                    buildProject.MarkDirty();
+                    //buildProject.MarkDirty();
                 }
-                //buildProject.ReevaluateIfNecessary();
                 if (IsSDK)
                 {
+                    //buildProject.ReevaluateIfNecessary();
                     buildProject.Save();
                 }
                 CheckChangedReferences();
