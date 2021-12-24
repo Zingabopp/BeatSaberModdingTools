@@ -195,7 +195,7 @@ namespace BeatSaberModdingTools.ViewModels
             AvailableReferences.Clear();
             var refItems = BeatSaberTools.GetAvailableReferences(BeatSaberDir);
             var buildProject = EvaluationProject;
-            if(buildProject == null)
+            if (buildProject == null)
                 WarningText = $"Could not load project information from '{ProjectFilePath}'";
             ProjectItem[] references = buildProject?.Items.Where(obj => obj.ItemType == "Reference").ToArray() ?? Array.Empty<ProjectItem>();
             var projRefs = new List<ReferenceModel>();
@@ -232,6 +232,142 @@ namespace BeatSaberModdingTools.ViewModels
 
         public void UpdateReferences()
         {
+            UpdateReferencesLegacy();
+            return;
+            if (IsSDK)
+            {
+                UpdateReferencesSdk();
+            }
+            else
+            {
+            }
+        }
+
+        public async void UpdateReferencesSdk()
+        {
+            try
+            {
+                var changedRefs = AvailableReferences.Where(r => r.StartedInProject != r.IsInProject).ToArray();
+                var removedRefs = changedRefs.Where(r => !r.IsInProject).ToArray();
+                Dictionary<string, Reference> references = new Dictionary<string, Reference>();
+                foreach (Reference reference in _project.References)
+                {
+                    if (!references.ContainsKey(reference.Name))
+                        references.Add(reference.Name, reference);
+                }
+                foreach (var item in removedRefs)
+                {
+                    if (references.TryGetValue(item.Name, out Reference reference))
+                    {
+                        reference.Remove();
+                        item.StartedInProject = false;
+                        item.IsInProject = false;
+                    }
+                }
+                var addedRefs = changedRefs.Where(r => r.IsInProject).ToArray();
+                Project buildProject = EvaluationProject;
+                foreach (var item in addedRefs)
+                {
+                    //var refPath = item.HintPath.Replace(BeatSaberDir, "$(BeatSaberDir)");
+                    if (!references.TryGetValue(item.Name, out Reference reference))
+                    {
+                        reference = _project.References.Add(item.HintPath);
+                        if (!IsSDK)
+                        {
+                            reference.CopyLocal = false;
+                        }
+                        else if (buildProject != null)
+                        {
+                            //buildProject.
+                        }
+                        item.StartedInProject = true;
+                    }
+                    else
+                    {
+                        item.StartedInProject = true;
+                        item.IsInProject = true;
+                    }
+                }
+                buildProject = EvaluationProject;
+                if (IsSDK)
+                {
+                    _project.Project.Save();
+                    await Task.Delay(1000);
+                    Microsoft.Build.Definition.ProjectOptions options = new Microsoft.Build.Definition.ProjectOptions()
+                    {
+                        EvaluationContext = Microsoft.Build.Evaluation.Context.EvaluationContext.Create(Microsoft.Build.Evaluation.Context.EvaluationContext.SharingPolicy.Shared),
+                        GlobalProperties = buildProject.GlobalProperties,
+                        ProjectCollection = buildProject.ProjectCollection,
+                        LoadSettings = ProjectLoadSettings.Default
+                    };
+                    Project userProject = ProjectCollection.GlobalProjectCollection.LoadedProjects
+                        .Where(p => p.FullPath.Equals(buildProject.FullPath + ".user", StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                    if (userProject != null)
+                        ProjectCollection.GlobalProjectCollection.UnloadProject(userProject);
+                    buildProject = ProjectCollection.GlobalProjectCollection.LoadedProjects
+                        .Where(p => p.FullPath.Equals(buildProject.FullPath, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                    if (buildProject != null)
+                        ProjectCollection.GlobalProjectCollection.UnloadProject(buildProject);
+                    Microsoft.Build.Construction.ProjectRootElement.Open(buildProject.FullPath);
+                    await Task.Delay(1000);
+                    buildProject = Project.FromFile(ProjectFilePath, options);
+                }
+                if (buildProject != null)
+                {
+                    string rootPath = GetReferenceRootPath(buildProject);
+                    foreach (var item in addedRefs)
+                    {
+                        var refsTest = buildProject.Items.Where(obj =>
+                        {
+                            string i = obj.UnevaluatedInclude;
+                            bool ret = obj.ItemType == "Reference"
+                                && !i.StartsWith("C:", StringComparison.OrdinalIgnoreCase)
+                                && !i.StartsWith("$(MSBuildThisFileDirectory)", StringComparison.OrdinalIgnoreCase)
+                                ;
+                            if (ret)
+                            {
+                                return true;
+                            }
+                            return false;
+                        }).ToArray();
+                        var newRef = buildProject.Items.Where(obj => obj.ItemType == "Reference" && GetSimpleReferenceName(obj.EvaluatedInclude) == item.Name).FirstOrDefault();
+                        string hintPath = item.HintPath;
+                        if (rootPath != null)
+                            hintPath = $"{rootPath}\\{item.RelativeDirectory}\\{item.Name}.dll";
+                        KeyValuePair<string, string>[] meta = new KeyValuePair<string, string>[]
+                        {
+                        new KeyValuePair<string, string>("HintPath", hintPath),
+                        new KeyValuePair<string, string>("Private", "False"),
+                        new KeyValuePair<string, string>("SpecificVersion", "False")
+                        };
+                        //if (newRef == null)
+                        //    newRef = buildProject.AddItem("Reference", item.Name).FirstOrDefault();
+                        if (newRef != null)
+                        {
+                            foreach (var pair in meta)
+                            {
+                                newRef.SetMetadataValue(pair.Key, pair.Value);
+                            }
+                        }
+                    }
+                    buildProject.MarkDirty();
+                }
+                //buildProject.ReevaluateIfNecessary();
+                if (IsSDK)
+                {
+                    buildProject.Save();
+                }
+                CheckChangedReferences();
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+            }
+        }
+
+
+        public void UpdateReferencesLegacy()
+        {
             var changedRefs = AvailableReferences.Where(r => r.StartedInProject != r.IsInProject).ToArray();
             var removedRefs = changedRefs.Where(r => !r.IsInProject).ToArray();
             Dictionary<string, Reference> references = new Dictionary<string, Reference>();
@@ -256,7 +392,8 @@ namespace BeatSaberModdingTools.ViewModels
                 if (!references.TryGetValue(item.Name, out Reference reference))
                 {
                     reference = _project.References.Add(item.HintPath);
-                    reference.CopyLocal = false;
+                    if (!IsSDK)
+                        reference.CopyLocal = false;
                     item.StartedInProject = true;
                 }
                 else
@@ -310,7 +447,7 @@ namespace BeatSaberModdingTools.ViewModels
                 .GroupBy(r => r)
                 .Select(g => new KeyValuePair<string, int>(g.Key.Trim('$', '(', ')'), g.Count()))
                 .OrderByDescending(p => p.Value).ToArray();
-            for(int i = 0; i < rootsUsed.Length; i++)
+            for (int i = 0; i < rootsUsed.Length; i++)
             {
                 if (PathProperties.Contains(rootsUsed[i].Key))
                     ProjectProperties.Add(rootsUsed[i].Key);
