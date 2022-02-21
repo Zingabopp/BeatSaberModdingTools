@@ -293,7 +293,7 @@ namespace BeatSaberModdingTools.ViewModels
                 if (IsSDK)
                 {
                     _project.Project.Save();
-                    buildProject = new Project(path, null, null, new ProjectCollection());
+                    buildProject = new Project(path, null, null, new ProjectCollection()); // TODO: dispose ProjectCollection when finished
                 }
                 if (buildProject != null)
                 {
