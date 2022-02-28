@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using BeatSaberModdingTools.Views;
 using Task = System.Threading.Tasks.Task;
 using Microsoft.VisualStudio.Shell.Settings;
+using BeatSaberModdingTools.Utilities;
 
 namespace BeatSaberModdingTools.Commands
 {
@@ -100,12 +101,18 @@ namespace BeatSaberModdingTools.Commands
             //}
 
             //IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
-            BSMTSettingsManager.Instance.Reload();
-            var settingsDialog = new SettingsWindow();
-            
-            var returnedTrue = settingsDialog.ShowDialog() ?? false;
-            if (returnedTrue)
-                BSMTSettingsManager.Instance.Store(settingsDialog.ReturnSettings);
+            try
+            {
+                BSMTSettingsManager.Instance.Reload();
+                var settingsDialog = new SettingsWindow(package);
+
+                var returnedTrue = settingsDialog.ShowDialog() ?? false;
+                if (returnedTrue)
+                    BSMTSettingsManager.Instance.Store(settingsDialog.ReturnSettings);
+            } catch (Exception ex)
+            {
+                Helpers.ShowError("BSMT Settings", $"Error opening settings dialog: {ex.Message}\n{ex.StackTrace}");
+            }
         }
     }
 }

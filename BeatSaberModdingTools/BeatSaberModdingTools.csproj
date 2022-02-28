@@ -93,6 +93,8 @@
     <Compile Include="Utilities\Helpers.cs" />
     <Compile Include="Utilities\IExecuteWithObject.cs" />
     <Compile Include="Utilities\IExecuteWithObjectAndResult.cs" />
+    <Compile Include="Utilities\INotificationHandler.cs" />
+    <Compile Include="Utilities\NotificationHandler.cs" />
     <Compile Include="Utilities\Paths.cs" />
     <Compile Include="Utilities\ProjectParser.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />

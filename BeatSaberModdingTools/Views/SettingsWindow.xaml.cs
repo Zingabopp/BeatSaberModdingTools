@@ -10,6 +10,7 @@ using System.Windows.Interop;
 using BeatSaberModdingTools.Models;
 using BeatSaberModdingTools.Utilities;
 using BeatSaberModdingTools.ViewModels;
+using Microsoft.VisualStudio.Shell;
 
 namespace BeatSaberModdingTools.Views
 {
@@ -20,9 +21,9 @@ namespace BeatSaberModdingTools.Views
     {
         WindowViewModel WindowViewModel;
         WindowInteropHelper InteropHelper;
-        public SettingsWindow()
+        public SettingsWindow(AsyncPackage package)
         {
-            WindowViewModel = new WindowViewModel();
+            WindowViewModel = new WindowViewModel(new NotificationHandler(package));
             DataContext = WindowViewModel;
             InitializeComponent();
             InteropHelper = new WindowInteropHelper(this);

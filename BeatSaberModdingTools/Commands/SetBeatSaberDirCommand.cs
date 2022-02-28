@@ -99,38 +99,45 @@ namespace BeatSaberModdingTools.Commands
             string title = "Error setting BeatSaberDir:";
             OLEMSGICON icon = OLEMSGICON.OLEMSGICON_CRITICAL;
             string message;
-            if (string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath))
+            try
             {
-                icon = OLEMSGICON.OLEMSGICON_CRITICAL;
-                message = "You don't appear to have a Beat Saber install path chosen in 'Extensions > Beat Saber Modding Tools > Settings'.";
-            }
-            else if (TryGetSelectedProject(package, out ProjectModel projectModel, out Project project, out EnvDTE.Project dteProject))
-            {
-                if (projectModel.IsBSIPAProject)
+                if (string.IsNullOrEmpty(BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath))
                 {
-                    if (projectModel.SupportedCapabilities.HasFlag(ProjectCapabilities.BeatSaberDir))
+                    icon = OLEMSGICON.OLEMSGICON_CRITICAL;
+                    message = "You don't appear to have a Beat Saber install path chosen in 'Extensions > Beat Saber Modding Tools > Settings'.";
+                }
+                else if (TryGetSelectedProject(package, out ProjectModel projectModel, out Project project, out EnvDTE.Project dteProject))
+                {
+                    if (projectModel.IsBSIPAProject)
                     {
-                        try
+                        if (projectModel.SupportedCapabilities.HasFlag(ProjectCapabilities.BeatSaberDir))
                         {
-                            var userProj = EnvUtils.GetProject(projectModel.ProjectPath + ".user");
-                            message = SetBeatSaberDir(userProj, projectModel, project, dteProject);
-                            icon = OLEMSGICON.OLEMSGICON_INFO; 
-                            title = "Set BeatSaberDir:";
+                            try
+                            {
+                                var userProj = EnvUtils.GetProject(projectModel.ProjectPath + ".user");
+                                message = SetBeatSaberDir(userProj, projectModel, project, dteProject);
+                                icon = OLEMSGICON.OLEMSGICON_INFO;
+                                title = "Set BeatSaberDir:";
+                            }
+                            catch (Exception ex)
+                            {
+                                message = $"{ex.Message}\n{ex.StackTrace}";
+                            }
                         }
-                        catch (Exception ex)
-                        {
-                            message = ex.Message;
-                        }
+                        else
+                            message = $"Project {projectModel.ProjectName} doesn't support the BeatSaberDir property";
                     }
                     else
-                        message = $"Project {projectModel.ProjectName} doesn't support the BeatSaberDir property";
+                        message = $"Project {projectModel.ProjectName} does not appear to be a BSIPA project.";
                 }
                 else
-                    message = $"Project {projectModel.ProjectName} does not appear to be a BSIPA project.";
+                    message = "Unable to get project information.";
             }
-            else
-                message = "Unable to get project information.";
+            catch (Exception ex)
+            {
 
+                message = $"Something went wrong in SetBeatSaberDirCommand: {ex.Message}\n{ex.StackTrace}";
+            }
             // Show a message box to prove we were here
             VsShellUtilities.ShowMessageBox(
                 this.package,

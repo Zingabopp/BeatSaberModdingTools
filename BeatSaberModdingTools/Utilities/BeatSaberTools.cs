@@ -41,7 +41,7 @@ namespace BeatSaberModdingTools.Utilities
                 foreach (string library in steamLibraries)
                 {
                     string matchedLocation = FindBeatSaberInSteamLibrary(library);
-                    if(!string.IsNullOrEmpty(matchedLocation) 
+                    if (!string.IsNullOrEmpty(matchedLocation)
                         && !matchedLocation.Equals(installedBS, StringComparison.OrdinalIgnoreCase))
                     {
                         installList.Add(new BeatSaberInstall(matchedLocation, InstallType.Steam));
@@ -111,17 +111,23 @@ namespace BeatSaberModdingTools.Utilities
                         string configPath = Path.Combine(path, STEAM_CONFIG_PATH);
                         if (File.Exists(configPath))
                         {
-
-                            VProperty v = VdfConvert.Deserialize(File.ReadAllText(configPath));
-                            VToken ics = v?.Value;
-                            VToken soft = ics?["Software"];
-                            VToken valve = soft?["Valve"];
-                            VObject steamSettings = valve?["Steam"] as VObject;
-                            VProperty[] settings = steamSettings?.Children<VProperty>()?.ToArray();
-                            if (settings != null)
+                            try
                             {
-                                libraryPaths = settings.Where(p => p.Key.StartsWith("BaseInstallFolder"))
-                                    .Select(p => p.Value.ToString()).ToArray();
+                                VProperty v = VdfConvert.Deserialize(File.ReadAllText(configPath));
+                                VToken ics = v?.Value;
+                                VToken soft = ics?["Software"];
+                                VToken valve = soft?["Valve"];
+                                VObject steamSettings = valve?["Steam"] as VObject;
+                                VProperty[] settings = steamSettings?.Children<VProperty>()?.ToArray();
+                                if (settings != null)
+                                {
+                                    libraryPaths = settings.Where(p => p.Key.StartsWith("BaseInstallFolder"))
+                                        .Select(p => p.Value.ToString()).ToArray();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new Exception($"Error reading Steam config file ('{configPath}'): {ex.Message}. Unable to find Steam Beat Saber installs.", ex);
                             }
                         }
                     }

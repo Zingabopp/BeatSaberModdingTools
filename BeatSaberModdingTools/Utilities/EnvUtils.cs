@@ -86,29 +86,38 @@ namespace BeatSaberModdingTools.Utilities
         public static string SetBeatSaberDir(Project userProj, ProjectModel projectModel, Project project, EnvDTE.Project dteProject)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            string beatSaberDir = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
-            string userProjPath = userProj?.FullPath ?? project.FullPath + ".user";
-            userProj = userProj ?? ProjectCollection.GlobalProjectCollection.GetLoadedProjects(userProjPath).FirstOrDefault();
+            string beatSaberDir = null;
+            string userProjPath = null;
             bool userFileCreated = false;
-            if (userProj == null)
+            try
             {
-                if (!File.Exists(userProjPath))
+                beatSaberDir = BSMTSettingsManager.Instance.CurrentSettings.ChosenInstallPath;
+                userProjPath = userProj?.FullPath ?? project.FullPath + ".user";
+                userProj = userProj ?? ProjectCollection.GlobalProjectCollection.GetLoadedProjects(userProjPath).FirstOrDefault();
+                if (userProj == null)
                 {
-                    File.WriteAllText(userProjPath, CreateUserProject(beatSaberDir));
-                    userProj = ProjectCollection.GlobalProjectCollection.LoadProject(userProjPath);
-                    userFileCreated = true;
-                    //dteProject.ProjectItems.AddFromFile(userProjPath);
+                    if (!File.Exists(userProjPath))
+                    {
+                        File.WriteAllText(userProjPath, CreateUserProject(beatSaberDir));
+                        userProj = ProjectCollection.GlobalProjectCollection.LoadProject(userProjPath);
+                        userFileCreated = true;
+                        //dteProject.ProjectItems.AddFromFile(userProjPath);
+                    }
+                    if (File.Exists(userProjPath))
+                        userProj = ProjectCollection.GlobalProjectCollection.LoadProject(userProjPath);
                 }
-                if (File.Exists(userProjPath))
-                    userProj = ProjectCollection.GlobalProjectCollection.LoadProject(userProjPath);
-            }
-            ProjectProperty prop = userProj?.SetProperty("BeatSaberDir", beatSaberDir) ?? throw new InvalidOperationException("Could not access or create csproj.user file.");
-            userProj.MarkDirty();
-            userProj.Save();
-            project.MarkDirty();
-            project.ReevaluateIfNecessary();
+                ProjectProperty prop = userProj?.SetProperty("BeatSaberDir", beatSaberDir) ?? throw new InvalidOperationException("Could not access or create csproj.user file.");
+                userProj.MarkDirty();
+                userProj.Save();
+                project.MarkDirty();
+                project.ReevaluateIfNecessary(); 
+                return $"Setting BeatSaberDir in {projectModel.ProjectName} to \n{prop.EvaluatedValue}{(userFileCreated ? "\n\nYou may need to reload the project." : "")}";
 
-            return $"Setting BeatSaberDir in {projectModel.ProjectName} to \n{prop.EvaluatedValue}{(userFileCreated ? "\n\nYou may need to reload the project." : "")}";
+            }
+            catch (Exception ex)
+            {
+                return $"Failed to set BeatSaberDir: {ex.Message}\nbeatSaberDir: '{beatSaberDir}'|userProjLoaded: {userProj != null}|userProjPath: '{userProjPath}'\n{ex.StackTrace}";
+            }
         }
 
         public static string GetReferencePathString(string beatSaberDir)

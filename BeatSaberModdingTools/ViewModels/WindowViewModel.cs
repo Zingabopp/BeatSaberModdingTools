@@ -6,11 +6,13 @@ using System.Linq;
 using BeatSaberModdingTools.Utilities;
 using System.Windows.Threading;
 using System.Collections.Specialized;
+using System.Runtime.CompilerServices;
 
 namespace BeatSaberModdingTools.ViewModels
 {
     public class WindowViewModel : ViewModelBase
     {
+        INotificationHandler _notificationHandler;
         public ObservableCollection<BeatSaberInstall> DesignExample => new ObservableCollection<BeatSaberInstall>()
         {
             new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam),
@@ -18,17 +20,30 @@ namespace BeatSaberModdingTools.ViewModels
             new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual)
         };
 
-        public WindowViewModel()
+        public WindowViewModel(INotificationHandler notificationHandler)
         {
             if (BSMTSettingsManager.Instance == null)
                 BSMTSettingsManager.UseDefaultManager();
-            var detectedLocations = BeatSaberTools.GetBeatSaberPathsFromRegistry();
-            BeatSaberLocations = new ObservableCollection<BeatSaberInstall>(detectedLocations);
-            SettingsViewModel = new SettingsViewModel();
-            //AddLocation(new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam));
-            //AddLocation(new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus));
-            //AddLocation(new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual));
-            SetInstallByPath(SettingsViewModel.CurrentSettings.ChosenInstallPath);
+            _notificationHandler = notificationHandler;
+            try
+            {
+                SettingsViewModel = new SettingsViewModel();
+                //AddLocation(new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam));
+                //AddLocation(new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus));
+                //AddLocation(new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual));
+                var detectedLocations = BeatSaberTools.GetBeatSaberPathsFromRegistry();
+                BeatSaberLocations = new ObservableCollection<BeatSaberInstall>(detectedLocations);
+                SetInstallByPath(SettingsViewModel.CurrentSettings.ChosenInstallPath);
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex);
+                if (BeatSaberLocations == null)
+                {
+                    BeatSaberLocations = new ObservableCollection<BeatSaberInstall>();
+                    SetInstallByPath(SettingsViewModel.CurrentSettings.ChosenInstallPath);
+                }
+            }
         }
 
         public void SetInstallByPath(string path)
@@ -38,7 +53,7 @@ namespace BeatSaberModdingTools.ViewModels
                 path = Path.GetFullPath(path);
             }
             catch { }
-            if(!string.IsNullOrEmpty(path))
+            if (!string.IsNullOrEmpty(path))
             {
                 var matchingInstall = BeatSaberLocations.Where(i => string.Equals(Path.GetFullPath(i.InstallPath), path, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                 if (matchingInstall != null)
@@ -196,19 +211,35 @@ namespace BeatSaberModdingTools.ViewModels
             }
         }
         #endregion
-
+        private void ShowError(string title, string message)
+        {
+            _notificationHandler.ShowError(title, message);
+        }
+        private void ShowError(Exception ex, [CallerMemberName] string title = null)
+        {
+            _notificationHandler?.ShowError(title, $"{ex.Message}\n{ex.StackTrace}");
+        }
         private bool PathDidChange(string oldPath, string newPath)
         {
-            if (string.IsNullOrEmpty(oldPath) || string.IsNullOrEmpty(newPath))
+            try
+            {
+                if (string.IsNullOrEmpty(oldPath) || string.IsNullOrEmpty(newPath))
+                    return true;
+                var directorySeparators = new string[] { Path.DirectorySeparatorChar.ToString(), Path.AltDirectorySeparatorChar.ToString() };
+                var oldPathLastChar = oldPath.Substring(oldPath.Length - 1);
+                var newPathLastChar = newPath.Substring(newPath.Length - 1);
+                if (directorySeparators.Any(s => s.Equals(oldPathLastChar)))
+                    return true;
+                if (oldPath.Equals(newPath.Substring(0, newPath.Length - 1)) && directorySeparators.Any(s => s.Equals(newPathLastChar)))
+                    return false;
                 return true;
-            var directorySeparators = new string[] { Path.DirectorySeparatorChar.ToString(), Path.AltDirectorySeparatorChar.ToString() };
-            var oldPathLastChar = oldPath.Substring(oldPath.Length - 1);
-            var newPathLastChar = newPath.Substring(newPath.Length - 1);
-            if (directorySeparators.Any(s => s.Equals(oldPathLastChar)))
+
+            }
+            catch (Exception ex)
+            {
+                ShowError("PathDidChange", $"{ex.Message}\n{ex.StackTrace}");
                 return true;
-            if (oldPath.Equals(newPath.Substring(0, newPath.Length - 1)) && directorySeparators.Any(s => s.Equals(newPathLastChar)))
-                return false;
-            return true;
+            }
         }
 
         private TimeSpan _notifyLocationTimerInterval = new TimeSpan(0, 0, 0, 0, 500);
