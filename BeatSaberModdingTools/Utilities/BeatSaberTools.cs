@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using static BeatSaberModdingTools.Utilities.Paths;
 
 namespace BeatSaberModdingTools.Utilities
@@ -113,17 +114,7 @@ namespace BeatSaberModdingTools.Utilities
                         {
                             try
                             {
-                                VProperty v = VdfConvert.Deserialize(File.ReadAllText(configPath));
-                                VToken ics = v?.Value;
-                                VToken soft = ics?["Software"];
-                                VToken valve = soft?["Valve"];
-                                VObject steamSettings = valve?["Steam"] as VObject;
-                                VProperty[] settings = steamSettings?.Children<VProperty>()?.ToArray();
-                                if (settings != null)
-                                {
-                                    libraryPaths = settings.Where(p => p.Key.StartsWith("BaseInstallFolder"))
-                                        .Select(p => p.Value.ToString()).ToArray();
-                                }
+                                libraryPaths = LibrariesFromVdf(configPath);
                             }
                             catch (Exception ex)
                             {
@@ -134,6 +125,39 @@ namespace BeatSaberModdingTools.Utilities
                 }
             }
             return libraryPaths;
+        }
+
+        private static Regex SteamVdfInstallRegex = new Regex(@"^.*\""BaseInstallFolder_\d+\""\s*\""(.+)\""", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+
+        public static string[] LibrariesFromVdf(string configPath)
+        {
+            string[] libraryPaths = null;
+            string vdf = File.ReadAllText(configPath);
+            MatchCollection matches = SteamVdfInstallRegex.Matches(vdf);
+            if(matches.Count > 0)
+            {
+                libraryPaths = new string[matches.Count];
+                for (int i = 0; i < matches.Count; i++)
+                {
+                    libraryPaths[i] = matches[i].Groups[1].Value.Replace("\\\\", "\\");
+                }
+
+            }
+            /*
+
+            VProperty v = VdfConvert.Deserialize(File.ReadAllText(configPath));
+            VToken ics = v?.Value;
+            VToken soft = ics?["Software"];
+            VToken valve = soft?["Valve"];
+            VObject steamSettings = valve?["Steam"] as VObject;
+            VProperty[] settings = steamSettings?.Children<VProperty>()?.ToArray();
+            if (settings != null)
+            {
+                libraryPaths = settings.Where(p => p.Key.StartsWith("BaseInstallFolder"))
+                    .Select(p => p.Value.ToString()).ToArray();
+            }
+            */
+            return libraryPaths ?? Array.Empty<string>();
         }
 
         public static string[] GetOculusLibraryPaths()
