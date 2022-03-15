@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-	<Metadata>
-		<Identity Id="BeatSaberModdingToolsInstaller.c6a253d2-2234-4376-ad66-f769645c1516" Version="0.9.4" Language="en-US" Publisher="Zingabopp" />
-		<DisplayName>BeatSaberModdingTools</DisplayName>
-		<Description xml:space="preserve">Tools and templates for creating Beat Saber mods.</Description>
-		<MoreInfo>https://github.com/Zingabopp/BeatSaberModdingTools</MoreInfo>
-		<License>LICENSE.txt</License>
-		<GettingStartedGuide>https://github.com/Zingabopp/BeatSaberModdingTools/wiki</GettingStartedGuide>
-		<Icon>beat_saber.ico</Icon>
-		<PreviewImage>beat_saber.ico</PreviewImage>
-		<Tags>Beat Saber</Tags>
-		<Preview>true</Preview>
-	</Metadata>
-	<Installation>
-		<InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Community">
-			<ProductArchitecture>x86</ProductArchitecture>
-		</InstallationTarget>
-		<InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Community">
-			<ProductArchitecture>amd64</ProductArchitecture>
-		</InstallationTarget>
-		<InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Pro">
-			<ProductArchitecture>x86</ProductArchitecture>
-		</InstallationTarget>
-		<InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Pro">
-			<ProductArchitecture>amd64</ProductArchitecture>
-		</InstallationTarget>
-		<InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Enterprise">
-			<ProductArchitecture>x86</ProductArchitecture>
-		</InstallationTarget>
-		<InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Enterprise">
-			<ProductArchitecture>amd64</ProductArchitecture>
-		</InstallationTarget>
-	</Installation>
-	<Dependencies>
-		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6.1,)" />
-		<Dependency d:Source="Installed" Id="UnityModdingTools.Templates.BeatSaber.107d46bc-376e-4542-8383-e9d8b5568458" DisplayName="UnityModdingTools.Templates.BeatSaber" Version="[1.0.0,10.0)" d:InstallSource="Download" Location="https://marketplace.visualstudio.com/items?itemName=Zingabopp.BeatSaberModTemplates" />
-	</Dependencies>
-	<Prerequisites>
-		<Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,18.0)" DisplayName="Visual Studio core editor" />
-	</Prerequisites>
-	<Assets>
-		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-		<Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="%CurrentProject%" TargetVersion="[16.0,18.0)" Path="|%CurrentProject%|" AssemblyName="|%CurrentProject%;AssemblyName|" />
-	</Assets>
+    <Metadata>
+        <Identity Id="BeatSaberModdingToolsInstaller.c6a253d2-2234-4376-ad66-f769645c1516" Version="0.9.5" Language="en-US" Publisher="Zingabopp" />
+        <DisplayName>BeatSaberModdingTools</DisplayName>
+        <Description xml:space="preserve">Tools and templates for creating Beat Saber mods.</Description>
+        <MoreInfo>https://github.com/Zingabopp/BeatSaberModdingTools</MoreInfo>
+        <License>LICENSE.txt</License>
+        <GettingStartedGuide>https://github.com/Zingabopp/BeatSaberModdingTools/wiki</GettingStartedGuide>
+        <Icon>beat_saber.ico</Icon>
+        <PreviewImage>beat_saber.ico</PreviewImage>
+        <Tags>Beat Saber</Tags>
+        <Preview>true</Preview>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Community">
+            <ProductArchitecture>x86</ProductArchitecture>
+        </InstallationTarget>
+        <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Community">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
+        <InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Pro">
+            <ProductArchitecture>x86</ProductArchitecture>
+        </InstallationTarget>
+        <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Pro">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
+        <InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Enterprise">
+            <ProductArchitecture>x86</ProductArchitecture>
+        </InstallationTarget>
+        <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Enterprise">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6.1,)" />
+        <Dependency d:Source="Installed" Id="UnityModdingTools.Templates.BeatSaber.107d46bc-376e-4542-8383-e9d8b5568458" DisplayName="UnityModdingTools.Templates.BeatSaber" Version="[1.0.0,10.0)" d:InstallSource="Download" Location="https://marketplace.visualstudio.com/items?itemName=Zingabopp.BeatSaberModTemplates" />
+    </Dependencies>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,18.0)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="%CurrentProject%" TargetVersion="[16.0,18.0)" Path="|%CurrentProject%|" AssemblyName="|%CurrentProject%;AssemblyName|" />
+    </Assets>
 </PackageManifest>

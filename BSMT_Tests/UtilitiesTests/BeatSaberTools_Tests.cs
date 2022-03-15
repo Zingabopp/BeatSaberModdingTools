@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BeatSaberModdingTools.Utilities;
 
-namespace BSMT_Tests.Utilities
+namespace BSMT_Tests.UtilitiesTests
 {
     [TestClass]
     public class BeatSaberTools_Tests

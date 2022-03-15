@@ -51,7 +51,8 @@
     <Compile Include="Models\SettingsModel_Tests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\BeatSaberTools_Tests.cs" />
+    <Compile Include="UtilitiesTests\BeatSaberTools_Tests.cs" />
+    <Compile Include="UtilitiesTests\SteamVDF_Reader.cs" />
     <Compile Include="ViewModels\SettingsViewModel_Tests\NotifyPropertyChanged_Tests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,7 +89,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Data\config.vdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
