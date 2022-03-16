@@ -2,7 +2,10 @@
 **Starting with version 0.9.4, all templates have been moved to their own extension. [UnityModdingTools.Templates.BeatSaber](https://marketplace.visualstudio.com/items?itemName=Zingabopp.BeatSaberModTemplates) can be downloaded from the Visual Studio Marketplace (website or inside Visual Studio).**
 
 Convenience IDE features for creating Beat Saber mods. The extension (VSIX) only works for Visual Studio 2019 and 2022. A Rider port with dotnet templates is being worked on [Here](https://github.com/Fernthedev/BSMT-Rider).
+
 **A wiki has been started [here](https://github.com/Zingabopp/BeatSaberModdingTools/wiki) with more details on using the extension**
+
+**JetBrains Rider Alternative:** A similar extension for the JetBrains Rider IDE can be found [Here](https://github.com/Fernthedev/BSMT-Rider)
 
 # Beat Saber Modding Tools VSIX Features
 * Settings to make creating mods more convenient
