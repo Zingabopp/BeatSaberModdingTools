@@ -16,9 +16,11 @@ namespace BeatSaberModdingTools.ViewModels
         public ObservableCollection<BeatSaberInstall> DesignExample => new ObservableCollection<BeatSaberInstall>()
         {
             new BeatSaberInstall(@"C:\SteamInstall", InstallType.Steam),
-            new BeatSaberInstall(@"C:\OculusInstall\DDDDDDDDDD\AAAAAAAAAA\VVVVVVVVVVVV\CCCCCCCCCCCCCC\SSSSSSSSSSSSSS\F", InstallType.Oculus),
-            new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual)
+            new BeatSaberInstall(@"C:\OculusInstall", InstallType.Oculus),
+            new BeatSaberInstall(@"C:\ManualInstall", InstallType.Manual),
+            new BeatSaberInstall(@"C:\BSManager\BSInstances\x.xx.x", InstallType.BSManager)
         };
+        public WindowViewModel() { }
 
         public WindowViewModel(INotificationHandler notificationHandler)
         {

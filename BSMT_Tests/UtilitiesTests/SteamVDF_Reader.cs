@@ -16,7 +16,7 @@ namespace BSMT_Tests.UtilitiesTests
         public void ReadVdf()
         {
             string path = Path.Combine("Data", "config.vdf");
-            int expectedResults = 2;
+            int expectedResults = 4;
             string[] libraryPaths = BeatSaberTools.LibrariesFromVdf(path);
             Assert.AreEqual(expectedResults, libraryPaths.Length);
             foreach (var libPath in libraryPaths)
