@@ -151,20 +151,20 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Gameloop.Vdf">
-      <Version>0.6.1</Version>
+      <Version>0.6.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem">
       <Version>15.8.243</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.10.31321.278" ExcludeAssets="runtime">
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.8.37222" ExcludeAssets="runtime">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.5232">
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.8.2365">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +180,7 @@
     <Content Include="Commands\Resources\AddProjectReference.png" />
     <Content Include="Commands\Resources\AddProjectReferencePaths.png" />
     <Content Include="Commands\Resources\OpenSettingsWindowCommand.png" />
+    <EmbeddedResource Include="Icons\BSManager.png" />
     <Content Include="TODO.txt" />
     <EmbeddedResource Include="Icons\Manual.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

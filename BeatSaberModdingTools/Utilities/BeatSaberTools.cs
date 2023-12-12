@@ -2,6 +2,7 @@
 using Gameloop.Vdf;
 using Gameloop.Vdf.Linq;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,7 +23,7 @@ namespace BeatSaberModdingTools.Utilities
         /// <summary>
         /// Path to config.vdf from the Steam install folder.
         /// </summary>
-        private static readonly string STEAM_CONFIG_PATH = Path.Combine("config", "config.vdf");
+        private static readonly string STEAM_CONFIG_PATH = Path.Combine("config", "libraryfolders.vdf");
 
         private static readonly string STEAM_PATH_KEY = Path.Combine("SOFTWARE", "WOW6432Node", "Valve", "Steam");
 
@@ -33,7 +34,7 @@ namespace BeatSaberModdingTools.Utilities
         public static BeatSaberInstall[] GetBeatSaberPathsFromRegistry()
         {
             List<BeatSaberInstall> installList = new List<BeatSaberInstall>();
-            using (RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))// Doesn't work in 32 bit mode without this
+            using (RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)) // Doesn't work in 32 bit mode without this
             {
                 string installedBS = GetInstalledSteamBeatSaber(hklm);
                 if (installedBS != null)
@@ -54,6 +55,14 @@ namespace BeatSaberModdingTools.Utilities
                     string matchedLocation = FindBeatSaberInOculusLibrary(library);
                     if (!string.IsNullOrEmpty(matchedLocation))
                         installList.Add(new BeatSaberInstall(matchedLocation, InstallType.Oculus));
+                }
+                string[] bsManagerInstances = GetBSManagerInstances();
+                foreach (string instance in bsManagerInstances)
+                {
+                    if (File.Exists(Path.Combine(instance, "Beat Saber.exe")))
+                    {
+                        installList.Add(new BeatSaberInstall(instance, InstallType.BSManager));
+                    }
                 }
             }
             return installList.ToArray();
@@ -90,12 +99,43 @@ namespace BeatSaberModdingTools.Utilities
 
         public static string FindBeatSaberInSteamLibrary(string steamLibraryPath)
         {
-            string possibleLocation = Path.Combine(steamLibraryPath, "SteamApps", "common", "Beat Saber");
+            string possibleLocation = Path.Combine(steamLibraryPath, "steamapps", "common", "Beat Saber");
             if (Directory.Exists(possibleLocation))
             {
                 if (IsBeatSaberDirectory(possibleLocation))
                     return possibleLocation;
             }
+            return null;
+        }
+
+        public static string[] GetBSManagerInstances()
+        {
+            string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string configFilePath = Path.Combine(appDataFolder, "bs-manager", "config.json");
+
+            if (File.Exists(configFilePath))
+            {
+                try
+                {
+                    string configJson = File.ReadAllText(configFilePath);
+                    dynamic configData = JsonConvert.DeserializeObject(configJson);
+
+                    string installationFolder = configData["installation-folder"];
+                    if (!string.IsNullOrEmpty(installationFolder))
+                    {
+                        string bsInstancesFolder = Path.Combine(installationFolder, "BSManager", "BSInstances");
+                        if (Directory.Exists(bsInstancesFolder))
+                        {
+                            return Directory.GetDirectories(bsInstancesFolder).Select(folder => Path.GetFullPath(folder)).ToArray();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error reading config file: {e.Message}");
+                }
+            }
+
             return null;
         }
 
@@ -127,36 +167,18 @@ namespace BeatSaberModdingTools.Utilities
             return libraryPaths;
         }
 
-        private static Regex SteamVdfInstallRegex = new Regex(@"^.*\""BaseInstallFolder_\d+\""\s*\""(.+)\""", RegexOptions.Multiline | RegexOptions.IgnoreCase);
-
         public static string[] LibrariesFromVdf(string configPath)
         {
             string[] libraryPaths = null;
             string vdf = File.ReadAllText(configPath);
-            MatchCollection matches = SteamVdfInstallRegex.Matches(vdf);
-            if(matches.Count > 0)
-            {
-                libraryPaths = new string[matches.Count];
-                for (int i = 0; i < matches.Count; i++)
-                {
-                    libraryPaths[i] = matches[i].Groups[1].Value.Replace("\\\\", "\\");
-                }
 
-            }
-            /*
-
-            VProperty v = VdfConvert.Deserialize(File.ReadAllText(configPath));
-            VToken ics = v?.Value;
-            VToken soft = ics?["Software"];
-            VToken valve = soft?["Valve"];
-            VObject steamSettings = valve?["Steam"] as VObject;
-            VProperty[] settings = steamSettings?.Children<VProperty>()?.ToArray();
-            if (settings != null)
+            VProperty v = VdfConvert.Deserialize(File.OpenText(configPath));
+            VObject folderObject = v?.Value as VObject;
+            VProperty[] folderInfo = folderObject?.Children<VProperty>()?.ToArray();
+            if (folderInfo != null)
             {
-                libraryPaths = settings.Where(p => p.Key.StartsWith("BaseInstallFolder"))
-                    .Select(p => p.Value.ToString()).ToArray();
+                libraryPaths = folderInfo.Select((x) => (x.Value as VObject).Children<VProperty>().ToArray().Where((y) => y.Key == "path").Select((z) => z.Value.ToString()).First()).ToArray();
             }
-            */
             return libraryPaths ?? Array.Empty<string>();
         }
 
@@ -237,7 +259,7 @@ namespace BeatSaberModdingTools.Utilities
         {
             if (string.IsNullOrEmpty(path?.Trim()))
                 return false;
-            DirectoryInfo bsDir = null;
+            DirectoryInfo bsDir;
             try
             {
                 bsDir = new DirectoryInfo(path);

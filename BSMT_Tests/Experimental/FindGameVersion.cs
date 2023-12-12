@@ -19,24 +19,20 @@ namespace BSMT_Tests.Experimental
                 '\u000f', '\u0010', '\u0011', '\u0012', '\u0013', '\u0014', '\u0015', '\u0016',
                 '\u0017', '\u0018', '\u0019', '\u001a', '\u001b', '\u001c', '\u001d', '\u001f',
             };
-        public static readonly string GameDir = @"H:\SteamApps\SteamApps\common\Beat Saber";
+        public static readonly string GameDir = @"E:\SteamLibrary\steamapps\common\Beat Saber";
         public static string GetVersion()
         {
             string filename = Path.Combine(GameDir, "Beat Saber_Data", "globalgamemanagers");
-            using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
-            {
-                byte[] file = File.ReadAllBytes(filename);
-                byte[] bytes = new byte[16];
 
-                fs.Read(file, 0, Convert.ToInt32(fs.Length));
-                fs.Close();
-                int index = Encoding.Default.GetString(file).IndexOf("public.app-category.games") + 136;
+            byte[] file = File.ReadAllBytes(filename);
+            byte[] bytes = new byte[6];
 
-                Array.Copy(file, index, bytes, 0, 16);
-                string version = Encoding.Default.GetString(bytes).Trim(IllegalCharacters);
+            int index = Encoding.Default.GetString(file).IndexOf("public.app-category.games") + 152;
 
-                return version;
-            }
+            Array.Copy(file, index, bytes, 0, 6);
+            string version = Encoding.Default.GetString(bytes);
+
+            return version;
         }
 
         [TestMethod]
@@ -44,7 +40,7 @@ namespace BSMT_Tests.Experimental
         {
             string detectedVersion = GetVersion();
             Assert.IsFalse(string.IsNullOrEmpty(detectedVersion));
-            //Assert.AreEqual("1.6.2", detectedVersion);
+            Assert.AreEqual("1.33.0", detectedVersion);
         }
     }
 }

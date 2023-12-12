@@ -18,9 +18,11 @@ namespace BeatSaberModdingTools.Converters
         private const string SteamIconPath = "BeatSaberModdingTools.Icons.Steam.png";
         private const string OculusIconPath = "BeatSaberModdingTools.Icons.Oculus.png";
         private const string ManualIconPath = "BeatSaberModdingTools.Icons.Manual.png";
+        private const string BSManagerIconPath = "BeatSaberModdingTools.Icons.BSManager.png";
 
         static readonly Lazy<BitmapImage> SteamIcon = new Lazy<BitmapImage>(() => LoadImageFromResource(SteamIconPath));
         static readonly Lazy<BitmapImage> OculusIcon = new Lazy<BitmapImage>(() => LoadImageFromResource(OculusIconPath));
+        static readonly Lazy<BitmapImage> BSManagerIcon = new Lazy<BitmapImage>(() => LoadImageFromResource(BSManagerIconPath));
         static readonly Lazy<BitmapImage> ManualIcon = new Lazy<BitmapImage>(() => LoadImageFromResource(ManualIconPath));
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -29,6 +31,8 @@ namespace BeatSaberModdingTools.Converters
             {
                 switch (installType)
                 {
+                    case InstallType.BSManager:
+                        return BSManagerIcon?.Value;
                     case InstallType.Steam:
                         return SteamIcon?.Value;
                     case InstallType.Oculus:
@@ -50,6 +54,8 @@ namespace BeatSaberModdingTools.Converters
             {
                 switch (image.UriSource.OriginalString)
                 {
+                    case BSManagerIconPath:
+                        return InstallType.BSManager;
                     case SteamIconPath:
                         return InstallType.Steam;
                     case OculusIconPath:
@@ -71,10 +77,7 @@ namespace BeatSaberModdingTools.Converters
                 image.EndInit();
                 return image;
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch (Exception) { }
             return null;
         }
     }

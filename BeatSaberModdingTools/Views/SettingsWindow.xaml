@@ -8,7 +8,7 @@
              xmlns:models="clr-namespace:BeatSaberModdingTools.Models"
              xmlns:converters="clr-namespace:BeatSaberModdingTools.Converters"
              mc:Ignorable="d"
-             Height="425" Width="580" ResizeMode="NoResize" ShowInTaskbar="True" Title="Beat Saber Modding Tools Settings" Topmost="True"
+             Height="480" Width="580" ResizeMode="NoResize" ShowInTaskbar="True" Title="Beat Saber Modding Tools Settings" Topmost="True"
              d:DataContext="{d:DesignInstance Type=vm:WindowViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <converters:InstallTypeImageConverter x:Key="InstallTypeImageConverter"/>
@@ -59,8 +59,8 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="140" />
-            <RowDefinition Height="*"/>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="30" />
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
@@ -129,7 +129,7 @@
                 </Grid>
             </Grid>
         </GroupBox>
-        <UniformGrid Grid.Row="1"  x:Name="SettingsGrid" Columns="2" HorizontalAlignment="Stretch" Margin="0,5,0,0" DataContext="{Binding SettingsViewModel}">
+        <UniformGrid Grid.Row="1"  x:Name="SettingsGrid" Columns="2" Margin="0,5,0,0" DataContext="{Binding SettingsViewModel}">
             <StackPanel>
                 <GroupBox Header="Automation" IsEnabled="True" Grid.Column="0" Height="Auto" VerticalAlignment="Top" Margin="3,0,0,0">
                     <StackPanel Orientation="Vertical">
@@ -159,22 +159,22 @@
                         </CheckBox>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox IsEnabled="False" Margin="3,0,0,0">
+                <GroupBox IsEnabled="False">
                     <GroupBox.Resources>
-                        <Style TargetType="RadioButton">
+                        <Style TargetType="{x:Type RadioButton}">
                             <Setter Property="Margin" Value="0,3,0,0"/>
                         </Style>
                     </GroupBox.Resources>
                     <GroupBox.Header>
-                        <TextBlock Text="Reference Source Type" DataContext="{Binding BuildReferenceTypeChanged}" Style="{StaticResource  BoldOnChange}"/>
+                        <TextBlock Text="Reference Source Type" DataContext="{Binding BuildReferenceTypeChanged}" Style="{StaticResource BoldOnChange}"/>
                     </GroupBox.Header>
                     <StackPanel Orientation="Vertical">
                         <RadioButton GroupName="ReferenceSource" 
-                                     IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.UserFile}}">csproj.user file</RadioButton>
+                                     IsChecked="{Binding BuildReferenceType, ConverterParameter={x:Static models:BuildReferenceType.UserFile}, Converter={StaticResource ComparisonConverter}, Mode=TwoWay}" Content="csproj.user file"/>
                         <RadioButton GroupName="ReferenceSource" 
-                                     IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.BuildTools}}">BS Plugin BuildTools</RadioButton>
+                                     IsChecked="{Binding BuildReferenceType, ConverterParameter={x:Static models:BuildReferenceType.BuildTools}, Converter={StaticResource ComparisonConverter}, Mode=TwoWay}" Content="BS Plugin BuildTools"/>
                         <RadioButton GroupName="ReferenceSource" 
-                                     IsChecked="{Binding BuildReferenceType, Mode=TwoWay, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static models:BuildReferenceType.DirectoryJunctions}}">Directory Junctions</RadioButton>
+                                     IsChecked="{Binding BuildReferenceType, ConverterParameter={x:Static models:BuildReferenceType.DirectoryJunctions}, Converter={StaticResource ComparisonConverter}, Mode=TwoWay}" Content="Directory Junctions"/>
                     </StackPanel>
                 </GroupBox>
             </StackPanel>
@@ -256,7 +256,7 @@
                 </StackPanel>
             </GroupBox>
         </UniformGrid>
-        <Grid Grid.Row="2" x:Name="OkCancelButtons">
+        <Grid Grid.Row="2" x:Name="OkCancelButtons" Margin="0,4,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="10"/>

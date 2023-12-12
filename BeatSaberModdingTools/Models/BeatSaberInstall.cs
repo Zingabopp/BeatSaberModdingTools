@@ -19,7 +19,7 @@ namespace BeatSaberModdingTools.Models
         }
         public override string ToString()
         {
-            return $"{InstallType.ToString()}: {InstallPath}";
+            return $"{InstallType}: {InstallPath}";
         }
     }
 
@@ -27,6 +27,7 @@ namespace BeatSaberModdingTools.Models
     {
         Manual,
         Steam,
-        Oculus
+        Oculus,
+        BSManager
     }
 }
